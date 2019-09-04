@@ -10,7 +10,7 @@ function genRoute({ startPosition, endPosition, extras = [] }) {
     .map(latLon)
     .join(';')
 
-  return `/route/v1/driving/${destinations}`
+  return `/trip/v1/car/${destinations}?steps=true&geometries=geojson`
 }
 
 module.exports = {
