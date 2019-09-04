@@ -24,5 +24,5 @@ function toRadians(x) {
 }
 
 module.exports = {
-  getDistance: getDistance,
+  getDistance,
 }

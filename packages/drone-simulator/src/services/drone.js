@@ -1,9 +1,14 @@
 const got = require('got')
-const directions = require('./../directions')
+const directions = require('../utils/directions')
+const osrm = require('./osrm')
 
 async function init({ body: { start, stop, webhookUrl } }, res) {
   try {
-    console.log(start, stop, webhookUrl)
+    const {
+      data: { routes, waypoints, code },
+    } = await osrm.generate(start, stop)
+
+    console.log(routes, waypoints)
 
     const webhookRes = await sendDroneStatus(webhookUrl, {
       start,
@@ -18,13 +23,13 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
 
     res.json({ status: 'OK' })
   } catch (error) {
+    console.log(error)
     res.json({ status: 'ERROR', error })
   }
 }
 
 async function sendDroneStatus(webhookUrl, postBody) {
   return got(webhookUrl, { body: postBody, json: true })
-  //return "OK"
 }
 
 module.exports = {

@@ -1,12 +1,12 @@
 const config = require('@iteam/config')({
   file: `${__dirname}/../config.json`,
   defaults: {
-    foo: {
-      bar: 'baz',
-    },
+    port: 3000,
+    osrm: 'http://localhost:5000',
   },
 })
 
 module.exports = {
-  foo: config.get('foo'),
+  port: config.get('port'),
+  osrm: config.get('osrm'),
 }
