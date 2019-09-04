@@ -16,6 +16,12 @@
     "got": "^9.6.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2"
+    "@iteam/config": "^12.1.0",
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "jest-watch-typeahead": "^0.4.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1"
   }
 }
