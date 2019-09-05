@@ -2,26 +2,35 @@ const got = require('got')
 const directions = require('../utils/directions')
 const osrm = require('./osrm')
 
-async function simulateTrip(coords, webhookUrl) {
+async function simulateTrip(data, webhookUrl) {
+  const coords = [...data.coords]
   for (const coord of coords) {
-    const x = await waypoint(coord, webhookUrl)
+    const x = await waypoint(coord, data, webhookUrl)
   }
 }
 
 async function waypoint(
-  coords,
-  time = 6000,
-  webhookUrl = 'https://webhook.site/df03d8f1-4286-45c5-9f1d-0d2970c5a9ef'
+  coord,
+  data,
+  webhookUrl = 'https://webhook.site/df03d8f1-4286-45c5-9f1d-0d2970c5a9ef',
+  time = 6000
 ) {
-  return new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     setTimeout(async () => {
+      console.log('lapp', coord)
+      const travelledDistance = data.distances.shift()
+      data.travelledDistance += travelledDistance
+      data.totalDistance -= travelledDistance
+
       resolve(
         await sendDroneStatus(webhookUrl, {
-          currentPos: coords,
+          currentPos: coord,
           status: 'in progress',
           vehicle: 'Drone',
           batteryStatus: 900,
-          distance: '',
+          totalDistance: data.totalDistance,
+          travelledDistance: data.travelledDistance,
+          distances: data.distances,
           bearing: 0,
         })
       )
@@ -31,13 +40,15 @@ async function waypoint(
 
 async function init({ body: { start, stop, webhookUrl } }, res) {
   try {
-    const { data } = await osrm.generate(start, stop)
+    const osrmTrip = await osrm.generate(start, stop)
 
     const coords = [
       [start.lon, start.lat],
-      ...data.trips[0].geometry.coordinates,
+      ...osrmTrip.data.trips[0].geometry.coordinates,
       [stop.lon, stop.lat],
     ]
+
+    // calculate all waypoint distances
 
     const distances = coords.reduce((acc, curr, index, array) => {
       const next = array[index + 1] ? array[index + 1] : array[index]
@@ -48,13 +59,21 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
       return [...acc, distance]
     }, [])
 
+    // calculate total distance
+
     const totalDistance = distances.reduce((acc, curr) => {
       return (acc += curr)
     }, 0)
+    console.log('Distances -->', distances, totalDistance)
 
-    console.log(distances, totalDistance)
+    const data = {
+      coords,
+      distances,
+      totalDistance,
+      travelledDistance: 0,
+    }
 
-    await simulateTrip(coords, webhookUrl)
+    await simulateTrip(data, webhookUrl)
 
     const webhookRes = await sendDroneStatus(webhookUrl, {
       start,
