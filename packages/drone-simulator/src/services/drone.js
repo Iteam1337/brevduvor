@@ -1,6 +1,7 @@
 const got = require('got')
 const directions = require('../utils/directions')
 const osrm = require('./osrm')
+const moment = require('moment')
 
 const geoSim = async options => {
   let batteryStatus = options.batteryStatus
@@ -89,21 +90,29 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
       lat: cords[1],
     }))
 
+    const totalDistance = directions.calculateTotalDistance(coords)
+
     await sendDroneStatus(webhookUrl, {
       start,
       stop,
       currentPos: start,
-      distance: directions.getDistance(start, stop),
+      distance: totalDistance,
       bearing: 0,
       status: 'initiating',
       vehicle: 'Drone',
       batteryStatus,
+      departure: moment().format(),
+      eta: moment()
+        .add(directions.etaInMinutes(200, totalDistance), 'minutes')
+        .format(),
     })
 
     await geoSim({ coords, speed: 200, webhookUrl, batteryStatus })
 
     res.json({ status: 'OK' })
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 async function sendDroneStatus(webhookUrl, postBody) {

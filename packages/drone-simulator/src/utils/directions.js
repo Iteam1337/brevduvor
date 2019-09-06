@@ -23,6 +23,26 @@ function toRadians(x) {
   return x * 0.017453292519943295 // x * Math.PI / 180
 }
 
+const calculateTotalDistance = coordsList => {
+  return coordsList
+    .reduce((acc, curr, index, array) => {
+      const next = array[index + 1] ? array[index + 1] : array[index]
+
+      const distance = getDistance(curr, next)
+
+      return [...acc, distance]
+    }, [])
+    .reduce((acc, curr) => {
+      return (acc += curr)
+    }, 0)
+}
+
+const etaInMinutes = (speed, totalDistance) => {
+  return (totalDistance / 1000 / speed) * 60
+}
+
 module.exports = {
   getDistance,
+  calculateTotalDistance,
+  etaInMinutes,
 }
