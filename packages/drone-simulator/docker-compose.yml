@@ -36,3 +36,8 @@ services:
         fi
         # start application using extracted data in directory /data
         osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
+
+  redis:
+    image: redis:5-stretch
+    ports:
+      - 6379:6379

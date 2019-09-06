@@ -6,16 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon --inspect index.js"
+    "dev": "nodemon index.js",
+    "consumer": "nodemon ./src/consumer/consumer.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "got": "^9.6.0",
-    "moment": "^2.24.0"
+    "ioredis": "^4.14.0",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "@iteam/config": "^12.1.0",

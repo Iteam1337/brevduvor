@@ -1,13 +1,15 @@
-const got = require('got')
-const directions = require('../utils/directions')
 const osrm = require('./osrm')
 const moment = require('moment')
+const directions = require('../utils/directions')
+const got = require('got')
 
-const geoSim = async options => {
+const DRONE_SPEED = 100
+
+const interpolateCoords = async options => {
   let batteryStatus = options.batteryStatus
   const KM_IN_DEGREE = 110.562
   const SECONDS_IN_HOUR = 3600
-  const UPDATE_INTERVAL = 1000
+  const UPDATE_INTERVAL = 500
   let coords = options.coords,
     speed = (options.speed || 40) / SECONDS_IN_HOUR,
     current = {
@@ -43,8 +45,7 @@ const geoSim = async options => {
 
       setTimeout(step, UPDATE_INTERVAL)
     } else {
-      console.log('you have arrived')
-      await sendDroneStatus(options.webhookUrl, {
+      sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         status: 'Arrived',
         vehicle: 'Drone',
@@ -54,13 +55,13 @@ const geoSim = async options => {
     }
   }
 
-  const step = async () => {
+  const step = () => {
     currentStep++
     if (currentStep < numSteps) {
       current.coords.lat += rate.lat
       current.coords.lon += rate.lon
 
-      await sendDroneStatus(options.webhookUrl, {
+      sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         status: 'in progress',
         vehicle: 'Drone',
@@ -90,35 +91,52 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
       lat: cords[1],
     }))
 
-    const totalDistance = directions.calculateTotalDistance(coords)
+    interpolateCoords({ coords, speed: DRONE_SPEED, batteryStatus, webhookUrl })
 
-    await sendDroneStatus(webhookUrl, {
-      start,
-      stop,
-      currentPos: start,
-      distance: totalDistance,
-      bearing: 0,
-      status: 'initiating',
-      vehicle: 'Drone',
-      batteryStatus,
-      departure: moment().format(),
-      eta: moment()
-        .add(directions.etaInMinutes(200, totalDistance), 'minutes')
-        .format(),
-    })
-
-    await geoSim({ coords, speed: 200, webhookUrl, batteryStatus })
-
-    res.json({ status: 'OK' })
-  } catch (err) {
-    console.log(err)
-  }
+    res.send({ status: 200 })
+  } catch (err) {}
 }
 
-async function sendDroneStatus(webhookUrl, postBody) {
+async function setup({ body: { start, stop, webhookUrl } }, res) {
+  const osrmTrip = await osrm.generate(start, stop)
+
+  const coords = [
+    [start.lon, start.lat],
+    ...osrmTrip.data.trips[0].geometry.coordinates,
+    [stop.lon, stop.lat],
+  ].map(cords => ({
+    lon: cords[0],
+    lat: cords[1],
+  }))
+
+  const batteryStatus = 1000
+  const totalDistance = directions.calculateTotalDistance(coords)
+
+  await sendInitStatus(webhookUrl, {
+    start,
+    stop,
+    currentPos: start,
+    distance: totalDistance,
+    bearing: 0,
+    status: 'initiating',
+    vehicle: 'Drone',
+    batteryStatus,
+    departure: moment().format(),
+    eta: moment()
+      .add(directions.etaInMinutes(200, totalDistance), 'minutes')
+      .format(),
+  })
+}
+
+function sendDroneStatus(webhookUrl, postBody) {
+  return got(webhookUrl, { body: postBody, json: true })
+}
+
+function sendInitStatus(webhookUrl, postBody) {
   return got(webhookUrl, { body: postBody, json: true })
 }
 
 module.exports = {
   init,
+  setup,
 }

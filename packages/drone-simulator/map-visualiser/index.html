@@ -24,11 +24,29 @@
         bottom: 0;
         width: 100%;
       }
+      #controls {
+        padding: 1rem;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: white;
+      }
+      button {
+        padding: 0.5rem;
+        margin: 5px;
+        background: dodgerblue;
+        border: none;
+      }
     </style>
   </head>
 
   <body>
     <div id="map"></div>
+    <div id="controls">
+      <button id="setup">SETUP</button>
+      <button id="init">INIT</button>
+    </div>
+
     <script src="script.js" charset="utf-8"></script>
   </body>
 </html>
