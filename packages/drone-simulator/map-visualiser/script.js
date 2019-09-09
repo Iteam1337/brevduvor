@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 import { data } from './data.js'
-const socket = io('http://localhost:4000')
+const socket = io('http://localhost:3000')
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZmFyb3V0Y2hyaXMiLCJhIjoiY2swNm5ta25jMDJkOTNnazR4Y2pqOXRrYiJ9.CDXmGBkg0atIKLA8Z59ceA'
@@ -44,7 +44,7 @@ map.on('load', function() {
 })
 
 const doFetch = (url, data) => {
-  fetch(`http://localhost:4000/${url}`, {
+  fetch(`http://localhost:3000/${url}`, {
     method: 'POST',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
@@ -54,7 +54,7 @@ const doFetch = (url, data) => {
 
 document.querySelector('#setup').addEventListener('click', () => {
   doFetch('setup', {
-    webhookUrl: 'http://localhost:4000/droneSetupStatus',
+    webhookUrl: 'http://localhost:3000/droneSetupStatus',
     start: { lat: 42.347856, lon: -71.073668 },
     stop: { lat: 42.347555, lon: -71.065986 },
   })
@@ -62,7 +62,7 @@ document.querySelector('#setup').addEventListener('click', () => {
 
 document.querySelector('#init').addEventListener('click', () => {
   doFetch('init', {
-    webhookUrl: 'http://localhost:4000/droneFlightStatus',
+    webhookUrl: 'http://localhost:3000/droneFlightStatus',
     start: { lat: 42.347856, lon: -71.073668 },
     stop: { lat: 42.347555, lon: -71.065986 },
   })

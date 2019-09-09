@@ -98,34 +98,42 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
 }
 
 async function setup({ body: { start, stop, webhookUrl } }, res) {
-  const osrmTrip = await osrm.generate(start, stop)
+  try {
+    const osrmTrip = await osrm.generate(start, stop)
 
-  const coords = [
-    [start.lon, start.lat],
-    ...osrmTrip.data.trips[0].geometry.coordinates,
-    [stop.lon, stop.lat],
-  ].map(cords => ({
-    lon: cords[0],
-    lat: cords[1],
-  }))
+    const coords = [
+      [start.lon, start.lat],
+      ...osrmTrip.data.trips[0].geometry.coordinates,
+      [stop.lon, stop.lat],
+    ].map(cords => ({
+      lon: cords[0],
+      lat: cords[1],
+    }))
 
-  const batteryStatus = 1000
-  const totalDistance = directions.calculateTotalDistance(coords)
+    const batteryStatus = 1000
+    const totalDistance = directions.calculateTotalDistance(coords)
 
-  await sendInitStatus(webhookUrl, {
-    start,
-    stop,
-    currentPos: start,
-    distance: totalDistance,
-    bearing: 0,
-    status: 'initiating',
-    vehicle: 'Drone',
-    batteryStatus,
-    departure: moment().format(),
-    eta: moment()
-      .add(directions.etaInMinutes(200, totalDistance), 'minutes')
-      .format(),
-  })
+    const droneData = {
+      start,
+      stop,
+      currentPos: start,
+      distance: totalDistance,
+      bearing: 0,
+      status: 'initiating',
+      vehicle: 'Drone',
+      batteryStatus,
+      departure: moment().format(),
+      eta: moment()
+        .add(directions.etaInMinutes(200, totalDistance), 'minutes')
+        .format(),
+    }
+
+    console.log('setup droneData -->', droneData)
+
+    await sendInitStatus(webhookUrl, droneData)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 function sendDroneStatus(webhookUrl, postBody) {

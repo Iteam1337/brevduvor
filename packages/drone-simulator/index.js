@@ -1,5 +1,6 @@
 const express = require('express')
 const drone = require('./src/services/drone')
+const status = require('./src/services/status')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
@@ -16,5 +17,6 @@ app
 
 app.post('/setup', drone.setup)
 app.post('/init', drone.init)
+app.post('/status', status.receiveStatus)
 
 app.listen(port, () => console.log(`Service running on ${port}!🚀`))

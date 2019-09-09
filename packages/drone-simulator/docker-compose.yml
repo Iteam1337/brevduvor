@@ -41,3 +41,23 @@ services:
     image: redis:5-stretch
     ports:
       - 6379:6379
+
+  elasticsearch:
+    image: 'elasticsearch:7.3.1'
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      nproc: 3000
+      nofile: 65536
+      memlock: -1
+
+  kibana:
+    image: 'kibana:7.3.1'
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH=http://elasticsearch:9200
+    ports:
+      - '5601:5601'
