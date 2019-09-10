@@ -17,14 +17,11 @@ let make = (~initialViewState=initialState) => {
       initialState,
     );
 
-  <div
-    className="bg-blue-200 min-h-screen flex items-center justify-center text-4xl">
+  
     <DeckGL
       controller=true
       onViewStateChange={vp => dispatch(UpdateViewState(vp##viewState))}
       viewState=state
-    width=300
-    height=300
       layers=[||]>
       <StaticMap
         reuseMaps=true
@@ -33,5 +30,5 @@ let make = (~initialViewState=initialState) => {
         React.null
       </StaticMap>
     </DeckGL>
-  </div>;
+
 };

@@ -184,8 +184,8 @@ module DeckGL = {
       ~children: React.element,
       ~viewState: viewState,
       ~onViewStateChange: Js.t('a) => unit,
-      ~height: int,
-      ~width: int
+      ~height: int=?,
+      ~width: int=?
     ) =>
     React.element =
     "default";
