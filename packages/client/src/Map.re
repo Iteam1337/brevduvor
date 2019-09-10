@@ -23,6 +23,8 @@ let make = (~initialViewState=initialState) => {
       controller=true
       onViewStateChange={vp => dispatch(UpdateViewState(vp##viewState))}
       viewState=state
+    width=300
+    height=300
       layers=[||]>
       <StaticMap
         reuseMaps=true
