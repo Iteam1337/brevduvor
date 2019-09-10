@@ -35,7 +35,20 @@ let make = () => {
       </div>
     </div>
     <div className="w-3/4 bg-gray-400 h-12 relative min-h-screen">
-      <Map />
+      <Map
+        flyTo={ReactMapGl.DeckGL.viewState(
+          ~longitude=state.currentDestination.lon,
+          ~latitude=state.currentDestination.lat,
+          ~zoom=7,
+          ~transitionDuration=1000,
+          ~transitionInterpolator=ReactMapGl.Interpolator.FlyTo.make(),
+          (),
+        )}>
+        <Marker.Marker
+          latitude={state.currentDestination.lat}
+          longitude={state.currentDestination.lon}
+        />
+      </Map>
     </div>
   </div>;
 };
