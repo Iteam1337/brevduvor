@@ -2,9 +2,6 @@ import io from 'socket.io-client'
 import { data } from './data.js'
 const socket = io('http://localhost:3000')
 
-mapboxgl.accessToken =
-  'pk.eyJ1IjoiZmFyb3V0Y2hyaXMiLCJhIjoiY2swNm5ta25jMDJkOTNnazR4Y2pqOXRrYiJ9.CDXmGBkg0atIKLA8Z59ceA'
-
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/satellite-v9',

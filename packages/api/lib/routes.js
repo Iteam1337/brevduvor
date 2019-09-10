@@ -1,4 +1,5 @@
 const got = require('got')
+const config = require('./config')
 
 module.exports = (app, io) => {
   io.on('connection', client => {
@@ -6,14 +7,15 @@ module.exports = (app, io) => {
   })
 
   app.post('/setup', ({ body }, res) => {
-    got('http://localhost:3000/setup', {
+    got(`${config.DRONE_URL}/setup`, {
       body,
       json: true,
     }).catch(console.log)
   })
 
   app.post('/init', ({ body }, res) => {
-    got('http://localhost:3000/init', {
+    console.log(body)
+    got(`${config.DRONE_URL}/init`, {
       body,
       json: true,
     }).catch(err => {
@@ -22,10 +24,12 @@ module.exports = (app, io) => {
   })
 
   app.post('/droneSetupStatus', ({ body }, res) => {
+    console.log('droneSetupStatus: ', body)
     io.emit('droneSetupStatus', body)
   })
 
   app.post('/droneFlightStatus', ({ body }, res) => {
+    console.log('droneFlightStatus: ', body)
     io.emit('droneFlightStatus', body)
     res.send({ status: 200 })
   })

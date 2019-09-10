@@ -80,6 +80,7 @@ const interpolateCoords = async options => {
 async function init({ body: { start, stop, webhookUrl } }, res) {
   try {
     const batteryStatus = 1000
+    console.log({ start, stop })
     const osrmTrip = await osrm.generate(start, stop)
 
     const coords = [
@@ -137,6 +138,7 @@ async function setup({ body: { start, stop, webhookUrl } }, res) {
 }
 
 function sendDroneStatus(webhookUrl, postBody) {
+  console.log({ webhookUrl, postBody })
   return got(webhookUrl, { body: postBody, json: true })
 }
 

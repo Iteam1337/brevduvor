@@ -1,10 +1,11 @@
 const express = require('express')
-const drone = require('./src/services/drone')
-const status = require('./src/services/status')
+const drone = require('./services/drone')
+const status = require('./services/status')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const { port } = require('./config')
+
 const app = express()
-const port = 3000
 
 app
   .use(cors())
