@@ -22,7 +22,7 @@ let make = () => {
     <div className="w-1/4 bg-blue-400 min-h-screen flex">
       <div className="w-16 h-full"> "Yo"->React.string </div>
       <div className="w-full bg-white h-full">
-        <Select
+        <SelectDestination
           handleDestinationChange={selectedDestination =>
             dispatch(ChangeDestination(selectedDestination))
           }
