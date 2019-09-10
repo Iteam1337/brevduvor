@@ -7,7 +7,7 @@ let initialState = {currentDestination: Destination.storuman};
 
 [@react.component]
 let make = () => {
-  let (state, _dispatch) =
+  let (state, dispatch) =
     React.useReducer(
       (_state, action) =>
         switch (action) {
@@ -23,12 +23,14 @@ let make = () => {
       <div className="w-16 h-full"> "Yo"->React.string </div>
       <div className="w-full bg-white h-full">
         <Select
-          handleDestinationChange={a => Js.log(a)}
-          selectOptions=[|
+          handleDestinationChange={selectedDestination =>
+            dispatch(ChangeDestination(selectedDestination))
+          }
+          selectOptions=[
             Destination.storuman,
             Destination.kvikkjokk,
             Destination.slussfors,
-          |]
+          ]
         />
       </div>
     </div>
