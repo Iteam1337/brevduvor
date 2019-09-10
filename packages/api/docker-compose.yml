@@ -1,6 +1,26 @@
 version: '3.7'
 
 services:
+  elasticsearch:
+    image: 'elasticsearch:7.3.1'
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      nproc: 3000
+      nofile: 65536
+      memlock: -1
+
+  kibana:
+    image: 'kibana:7.3.1'
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH=http://elasticsearch:9200
+    ports:
+      - '5601:5601'
+
   osrm-backend:
     image: osrm/osrm-backend:v5.22.0
     environment:

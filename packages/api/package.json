@@ -1,0 +1,43 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "momentiris <momentiris@gmail.com>",
+  "homepage": "https://github.com/Iteam1337/brevduvor#readme",
+  "license": "ISC",
+  "main": "lib/api.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iteam1337/brevduvor.git"
+  },
+  "scripts": {
+    "test:unit": "jest --config ./jest.config.js",
+    "start": "node lib/server.js",
+    "dev": "nodemon lib/server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Iteam1337/brevduvor/issues"
+  },
+  "devDependencies": {
+    "@iteam/config": "^12.1.0",
+    "husky": "^3.0.5",
+    "jest": "^24.9.0",
+    "jest-watch-typeahead": "^0.4.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
