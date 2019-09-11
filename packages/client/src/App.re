@@ -26,7 +26,7 @@ let make = () => {
         </div>
       </div>
       <div className="w-full p-4 bg-white h-full flex flex-col">
-        <Select
+        <SelectDestination
           handleDestinationChange={selectedDestination =>
             dispatch(ChangeDestination(selectedDestination))
           }
