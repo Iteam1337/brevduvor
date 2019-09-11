@@ -18,13 +18,11 @@
       "module": "commonjs"
     }
   ],
+  "bsc-flags": ["-w -4", "-bs-super-errors"],
+  "ppx-flags": ["@ryb73/decco/ppx/ppx_decco.sh"],
   "suffix": ".bs.js",
   "namespace": true,
-  "bs-dependencies": [
-    "reason-react",
-    "bs-css",
-    "bs-fetch"
-  ],
+  "bs-dependencies": ["reason-react", "bs-css", "bs-fetch", "@ryb73/decco"],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",
     "bs-react-testing-library",

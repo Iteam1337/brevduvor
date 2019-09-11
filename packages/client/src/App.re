@@ -18,7 +18,10 @@ let make = () => {
       initialState,
     );
 
-  Js.log(state);
+  Js.log2(
+    "CurrentDestination",
+    state.currentDestination->Destination.t_encode,
+  );
 
   <div className="flex">
     <div className="py-6 px-4 bg-gray-800 min-h-screen">
