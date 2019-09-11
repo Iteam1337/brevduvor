@@ -1,11 +1,11 @@
 module Primary = {
   [@react.component]
   let make = (~children, ~type_="button", ~className=?) => {
-    let base = "w-full text-xs bg-blue-400 hover:bg-blue-600 text-white font-semibold
-        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-600";
+    let base = "w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
+        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500";
 
     let className =
-      Utils.makeClassName(~baseClassNames=base, ~propClassNames=className);
+      Utils.mergeClassNames([base, className->Utils.orEmptyStr]);
     <button className type_> children </button>;
   };
 };

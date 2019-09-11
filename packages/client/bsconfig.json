@@ -22,7 +22,8 @@
   "namespace": true,
   "bs-dependencies": [
     "reason-react",
-    "bs-css"
+    "bs-css",
+    "bs-fetch"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",
