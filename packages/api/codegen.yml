@@ -1,0 +1,13 @@
+overwrite: true
+schema: 'http://localhost:4000/graphql'
+documents: null
+generates:
+  lib/__generated__/brevduvor.d.ts:
+    config:
+      noSchemaStitching: true
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'
