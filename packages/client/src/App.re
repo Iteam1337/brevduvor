@@ -1,27 +1,48 @@
-type appState = {currentDestination: Destination.t};
+type appState = {
+  availableDestinations: list(Destination.t),
+  currentDestination: Destination.t,
+};
 
 type appActions =
+  | AvailableDestinations(list(Destination.t))
   | ChangeDestination(Destination.t)
   | SaveDestination(Destination.t);
 
-let initialState = {currentDestination: Destination.storuman};
+let initialState = {
+  availableDestinations: [],
+  currentDestination: Destination.storuman,
+};
 
 [@react.component]
 let make = () => {
-  let (state, dispatch) =
+  let ({currentDestination, availableDestinations}, dispatch) =
     React.useReducer(
-      (_state, action) =>
+      (state, action) =>
         switch (action) {
-        | ChangeDestination(dest) => {currentDestination: dest}
-        | SaveDestination(dest) => {currentDestination: dest}
+        | AvailableDestinations(availableDestinations) => {
+            ...state,
+            availableDestinations,
+          }
+        | ChangeDestination(dest) => {...state, currentDestination: dest}
+        | SaveDestination(dest) => {...state, currentDestination: dest}
         },
       initialState,
     );
 
-  Js.log2(
-    "CurrentDestination",
-    state.currentDestination->Destination.t_encode,
-  );
+  React.useEffect0(() => {
+    /* Fetch for available destinations */
+    dispatch(
+      AvailableDestinations([
+        Destination.storuman,
+        Destination.kvikkjokk,
+        Destination.slussfors,
+      ]),
+    );
+
+    None;
+  });
+
+  Js.log2("CurrentDestination", currentDestination->Destination.t_encode);
 
   <div className="flex">
     <div className="py-6 px-4 bg-gray-800 min-h-screen">
@@ -35,11 +56,7 @@ let make = () => {
           handleDestinationChange={selectedDestination =>
             dispatch(ChangeDestination(selectedDestination))
           }
-          selectOptions=[
-            Destination.storuman,
-            Destination.kvikkjokk,
-            Destination.slussfors,
-          ]
+          selectOptions=availableDestinations
         />
         <Button.Primary className="mt-auto">
           "Starta"->React.string
@@ -49,16 +66,16 @@ let make = () => {
     <div className="w-10/12 bg-gray-400 h-12 relative min-h-screen">
       <Map
         flyTo={ReactMapGl.DeckGL.viewState(
-          ~longitude=state.currentDestination.lon,
-          ~latitude=state.currentDestination.lat,
+          ~longitude=currentDestination.lon,
+          ~latitude=currentDestination.lat,
           ~zoom=12,
           ~transitionDuration=2000,
           ~transitionInterpolator=ReactMapGl.Interpolator.FlyTo.make(),
           (),
         )}>
         <Marker.Marker
-          latitude={state.currentDestination.lat}
-          longitude={state.currentDestination.lon}
+          latitude={currentDestination.lat}
+          longitude={currentDestination.lon}
         />
       </Map>
     </div>
