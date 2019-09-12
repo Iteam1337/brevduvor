@@ -1,21 +1,31 @@
 type appState = {
+  currentPosition: option(GeoLocation.Navigator.coordinates),
   availableDestinations: list(Shared.Destination.t),
   currentDestination: option(Shared.Destination.t),
 };
 
 type appActions =
+  | SetCurrentPosition(GeoLocation.Navigator.coordinates)
   | AvailableDestinations(list(Shared.Destination.t))
   | ChangeDestination(Shared.Destination.t)
   | SaveDestination(Shared.Destination.t);
 
-let initialState = {availableDestinations: [], currentDestination: None};
+let initialState = {
+  currentPosition: None,
+  availableDestinations: [],
+  currentDestination: None,
+};
 
 [@react.component]
 let make = () => {
-  let ({currentDestination, _}, dispatch) =
+  let ({currentDestination, currentPosition, _}, dispatch) =
     React.useReducer(
       (state, action) =>
         switch (action) {
+        | SetCurrentPosition(coordinates) => {
+            ...state,
+            currentPosition: Some(coordinates),
+          }
         | AvailableDestinations(availableDestinations) => {
             ...state,
             availableDestinations,
@@ -31,6 +41,10 @@ let make = () => {
         },
       initialState,
     );
+
+  GeoLocation.Navigator.getCurrentPosition(coords =>
+    dispatch(SetCurrentPosition(coords))
+  );
 
   let handleDestinationSelect = destination => {
     dispatch(ChangeDestination(destination));
@@ -57,14 +71,33 @@ let make = () => {
            flyTo={ReactMapGl.DeckGL.viewState(
              ~longitude=lon,
              ~latitude=lat,
-             ~zoom=12,
+             ~zoom=10,
              ~transitionDuration=2000,
              ~transitionInterpolator=ReactMapGl.Interpolator.FlyTo.make(),
              (),
            )}>
            <Marker.Marker latitude=lat longitude=lon />
          </Map>
-       | None => React.null
+       | None =>
+         switch (currentPosition) {
+         | Some({latitude: lat, longitude: lon}) =>
+           <Map
+             flyTo={ReactMapGl.DeckGL.viewState(
+               ~longitude=lon,
+               ~latitude=lat,
+               ~zoom=10,
+               (),
+             )}
+             initialViewState={ReactMapGl.DeckGL.viewState(
+               ~longitude=lon,
+               ~latitude=lat,
+               ~zoom=10,
+               (),
+             )}>
+             <Marker.Marker latitude=lat longitude=lon />
+           </Map>
+         | None => React.null
+         }
        }}
     </div>
   </div>;

@@ -31,7 +31,7 @@ let make = (~initialViewState=initialState, ~children, ~flyTo) => {
     viewState=state
     layers=[||]>
     <StaticMap
-      mapStyle="mapbox://styles/mapbox/navigation-guidance-night-v4"
+      mapStyle="mapbox://styles/mapbox/light-v10"
       reuseMaps=true
       preventStyleDiffing=true
       mapboxApiAccessToken=Config.mapboxToken>
