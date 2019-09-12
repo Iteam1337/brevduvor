@@ -15,37 +15,11 @@
 npm install
 ```
 
+
+Create introspection schema: 
+
 ```sh
 npm run schema
-```
-
-Note that the schema introspection doesn't follow exactly the structure that's needed.
-So currently you'll have to wrap the object like so:
-
-**Before:**
-
-```json
-{
-  "__schema": {
-    "queryType": {
-      // ...
-    }
-  }
-}
-```
-
-**After:**
-
-```json
-{
-  "data": {
-    "__schema": {
-      "queryType": {
-        // ...
-      }
-    }
-  }
-}
 ```
 
 then:
