@@ -58,6 +58,8 @@ let make = () => {
     </div>
     <div className="w-2/12 min-h-screen flex">
       <div className="w-full p-4 bg-white h-full flex flex-col">
+        <label> {js|Från:|js}->React.string </label>
+        <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
         <Button.Primary className="mt-auto">
           "Starta"->React.string
