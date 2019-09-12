@@ -10,7 +10,8 @@
     "test:watch": "jest --watch",
     "webpack": "webpack -w",
     "webpack:production": "NODE_ENV=production webpack",
-    "server": "webpack-dev-server"
+    "server": "webpack-dev-server",
+    "schema": "npx get-graphql-schema http://localhost:4000/graphql > graphql_schema.json --json"
   },
   "keywords": [
     "BuckleScript"
@@ -18,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.0",
     "@deck.gl/core": "^7.2.3",
     "@deck.gl/geo-layers": "^7.2.3",
     "@deck.gl/layers": "^7.2.3",
@@ -28,6 +30,8 @@
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-map-gl": "^5.0.10",
+    "reason-apollo": "^0.17.0",
+    "reason-apollo-hooks": "^2.5.1",
     "reason-react": "0.7.0"
   },
   "devDependencies": {
@@ -42,6 +46,7 @@
     "cross-env": "5.2.0",
     "css-loader": "3.2.0",
     "dotenv-webpack": "^1.7.0",
+    "graphql_ppx": "^0.2.8",
     "html-webpack-plugin": "3.2.0",
     "is-ci-cli": "1.1.1",
     "jest": "^24.9.0",

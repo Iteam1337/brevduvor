@@ -1,5 +1,6 @@
 [@react.component]
-let make = (~selectOptions: list(Destination.t), ~handleDestinationChange) => {
+let make =
+    (~selectOptions: list(Shared.Destination.t), ~handleDestinationChange) => {
   <div className="inline-block relative w-full">
     <select
       onChange={event => {

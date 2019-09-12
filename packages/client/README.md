@@ -6,12 +6,51 @@
 
 ```sh
  MAPBOX_TOKEN=<your_mapbox_token>
+ GRAPHQL_API=<graphql_api_uri>
 ```
 
 ## Run Project
 
 ```sh
 npm install
+```
+
+```sh
+npm run schema
+```
+
+Note that the schema introspection doesn't follow exactly the structure that's needed.
+So currently you'll have to wrap the object like so:
+
+**Before:**
+
+```json
+{
+  "__schema": {
+    "queryType": {
+      // ...
+    }
+  }
+}
+```
+
+**After:**
+
+```json
+{
+  "data": {
+    "__schema": {
+      "queryType": {
+        // ...
+      }
+    }
+  }
+}
+```
+
+then:
+
+```sh
 npm start
 # in another tab
 npm run server
@@ -40,16 +79,6 @@ that server-side routing handles your routes or that 404's are directed back to
 will allow Webpack to remove unused code.
 '
 
-## Build to Now
-
-This project includes building straight to [Now](https://zeit.co/) after Travis has validated
-tests and created a release. There are some steps that need to be taken to enable the setup.
-
-1. Get a token from your [Now dashboard](https://zeit.co/account/tokens)
-1. Set the token as `NOW_TOKEN` in Travis
-1. Uncomment the Now build steps in `.travis.yml`
-1. Add `now-build` to `package.json` scripts. Now runs this script during it build process:
-
 ```
-"now-build": "npm run build && npm run webpack:production"
+
 ```

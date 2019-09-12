@@ -9,12 +9,12 @@
       script:
         - npm run build
         - npm test
-    - stage: release
-      language: node_js
-      node_js:
-        - 12
-      script:
-        - npx semantic-release
+    # - stage: release
+    #   language: node_js
+    #   node_js:
+    #     - 12
+    #   script:
+    #     - npx semantic-release
     # Adding this step would deploy the built package to Now
     # Refer to README for more information
     # - stage: deploy
