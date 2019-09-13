@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server-express'
+import * as dronePosition from './dronePosition'
 
 const typeDefs = gql`
   type Mutation {
@@ -8,6 +9,10 @@ const typeDefs = gql`
   type Query {
     dummy: String
   }
+
+  type Subscription {
+    dronePosition(id: String!): DronePositionResponse
+  }
 `
 
-export default [typeDefs]
+export default [typeDefs, dronePosition.typeDefs]

@@ -1,6 +1,6 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
 
-export const initDrone: MutationResolvers['initDrone'] = async (_, { req }) => {
+export const initDrone: MutationResolvers['initDrone'] = async _ => {
   try {
     return 'Hello world'
   } catch (e) {

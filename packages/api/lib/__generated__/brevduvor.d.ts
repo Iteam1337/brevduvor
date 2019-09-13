@@ -4,6 +4,10 @@ import {
   GraphQLScalarTypeConfig,
 } from 'graphql'
 export type Maybe<T> = T | null
+export type RequireFields<T, K extends keyof T> = {
+  [X in Exclude<keyof T, K>]?: T[X]
+} &
+  { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -20,6 +24,24 @@ export enum CacheControlScope {
   Private = 'PRIVATE',
 }
 
+export type Coordinates = {
+  __typename?: 'Coordinates'
+  lat?: Maybe<Scalars['Int']>
+  lon?: Maybe<Scalars['Int']>
+}
+
+export type DronePositionResponse = {
+  __typename?: 'DronePositionResponse'
+  start?: Maybe<Coordinates>
+  stop?: Maybe<Coordinates>
+  currentPos?: Maybe<Coordinates>
+  bearing?: Maybe<Scalars['Int']>
+  status?: Maybe<Scalars['String']>
+  batteryStatus?: Maybe<Scalars['Int']>
+  departure?: Maybe<Scalars['String']>
+  eta?: Maybe<Scalars['String']>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   initDrone?: Maybe<Scalars['String']>
@@ -32,6 +54,15 @@ export type MutationInitDroneArgs = {
 export type Query = {
   __typename?: 'Query'
   dummy?: Maybe<Scalars['String']>
+}
+
+export type Subscription = {
+  __typename?: 'Subscription'
+  dronePosition?: Maybe<DronePositionResponse>
+}
+
+export type SubscriptionDronePositionArgs = {
+  id: Scalars['String']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -138,10 +169,13 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>
   String: ResolverTypeWrapper<Scalars['String']>
   Mutation: ResolverTypeWrapper<{}>
+  Subscription: ResolverTypeWrapper<{}>
+  DronePositionResponse: ResolverTypeWrapper<DronePositionResponse>
+  Coordinates: ResolverTypeWrapper<Coordinates>
+  Int: ResolverTypeWrapper<Scalars['Int']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
   Upload: ResolverTypeWrapper<Scalars['Upload']>
-  Int: ResolverTypeWrapper<Scalars['Int']>
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -149,10 +183,13 @@ export type ResolversParentTypes = {
   Query: {}
   String: Scalars['String']
   Mutation: {}
+  Subscription: {}
+  DronePositionResponse: DronePositionResponse
+  Coordinates: Coordinates
+  Int: Scalars['Int']
   Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
   Upload: Scalars['Upload']
-  Int: Scalars['Int']
 }
 
 export type CacheControlDirectiveResolver<
@@ -164,6 +201,40 @@ export type CacheControlDirectiveResolver<
     scope?: Maybe<Maybe<CacheControlScope>>
   }
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type CoordinatesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']
+> = {
+  lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  lon?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+}
+
+export type DronePositionResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['DronePositionResponse'] = ResolversParentTypes['DronePositionResponse']
+> = {
+  start?: Resolver<
+    Maybe<ResolversTypes['Coordinates']>,
+    ParentType,
+    ContextType
+  >
+  stop?: Resolver<Maybe<ResolversTypes['Coordinates']>, ParentType, ContextType>
+  currentPos?: Resolver<
+    Maybe<ResolversTypes['Coordinates']>,
+    ParentType,
+    ContextType
+  >
+  bearing?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  batteryStatus?: Resolver<
+    Maybe<ResolversTypes['Int']>,
+    ParentType,
+    ContextType
+  >
+  departure?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  eta?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
 
 export type MutationResolvers<
   ContextType = any,
@@ -184,14 +255,30 @@ export type QueryResolvers<
   dummy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = {
+  dronePosition?: SubscriptionResolver<
+    Maybe<ResolversTypes['DronePositionResponse']>,
+    'dronePosition',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionDronePositionArgs, 'id'>
+  >
+}
+
 export interface UploadScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
   name: 'Upload'
 }
 
 export type Resolvers<ContextType = any> = {
+  Coordinates?: CoordinatesResolvers<ContextType>
+  DronePositionResponse?: DronePositionResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  Subscription?: SubscriptionResolvers<ContextType>
   Upload?: GraphQLScalarType
 }
 
