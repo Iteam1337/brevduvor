@@ -4,7 +4,7 @@ type event =
   | UpdateViewState(Client.ReactMapGl.DeckGL.viewState);
 
 let initialState =
-  DeckGL.viewState(~longitude=19.837932, ~latitude=66.605854, ~zoom=7, ());
+  DeckGL.viewState(~longitude=19.837932, ~latitude=66.605854, ~zoom=10, ());
 
 [@react.component]
 let make = (~initialViewState=initialState, ~children, ~flyTo) => {
@@ -31,6 +31,7 @@ let make = (~initialViewState=initialState, ~children, ~flyTo) => {
     viewState=state
     layers=[||]>
     <StaticMap
+      mapStyle="mapbox://styles/mapbox/light-v10"
       reuseMaps=true
       preventStyleDiffing=true
       mapboxApiAccessToken=Config.mapboxToken>

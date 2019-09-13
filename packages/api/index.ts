@@ -7,7 +7,6 @@ import { createServer } from 'http'
 import pubsub from './lib/adapters/pubsub'
 
 setTimeout(() => {
-  console.log('bruh')
   const dronePosition = {
     departure: '13',
     eta: 'tja',

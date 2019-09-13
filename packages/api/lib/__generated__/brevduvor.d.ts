@@ -30,6 +30,13 @@ export type Coordinates = {
   lon?: Maybe<Scalars['Int']>
 }
 
+export type Destination = {
+  __typename?: 'Destination'
+  alias: Scalars['String']
+  lat: Scalars['Float']
+  lon: Scalars['Float']
+}
+
 export type DronePositionResponse = {
   __typename?: 'DronePositionResponse'
   start?: Maybe<Coordinates>
@@ -54,6 +61,7 @@ export type MutationInitDroneArgs = {
 export type Query = {
   __typename?: 'Query'
   dummy?: Maybe<Scalars['String']>
+  allDestinations: Array<Destination>
 }
 
 export type Subscription = {
@@ -168,6 +176,8 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>
   String: ResolverTypeWrapper<Scalars['String']>
+  Destination: ResolverTypeWrapper<Destination>
+  Float: ResolverTypeWrapper<Scalars['Float']>
   Mutation: ResolverTypeWrapper<{}>
   Subscription: ResolverTypeWrapper<{}>
   DronePositionResponse: ResolverTypeWrapper<DronePositionResponse>
@@ -182,6 +192,8 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Query: {}
   String: Scalars['String']
+  Destination: Destination
+  Float: Scalars['Float']
   Mutation: {}
   Subscription: {}
   DronePositionResponse: DronePositionResponse
@@ -208,6 +220,15 @@ export type CoordinatesResolvers<
 > = {
   lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   lon?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+}
+
+export type DestinationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Destination'] = ResolversParentTypes['Destination']
+> = {
+  alias?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  lon?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
 }
 
 export type DronePositionResponseResolvers<
@@ -253,6 +274,11 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   dummy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  allDestinations?: Resolver<
+    Array<ResolversTypes['Destination']>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type SubscriptionResolvers<
@@ -275,6 +301,7 @@ export interface UploadScalarConfig
 
 export type Resolvers<ContextType = any> = {
   Coordinates?: CoordinatesResolvers<ContextType>
+  Destination?: DestinationResolvers<ContextType>
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>

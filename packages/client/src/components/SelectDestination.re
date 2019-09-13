@@ -1,5 +1,6 @@
 [@react.component]
-let make = (~selectOptions: list(Destination.t), ~handleDestinationChange) => {
+let make =
+    (~selectOptions: list(Shared.Destination.t), ~handleDestinationChange) => {
   <div className="inline-block relative w-full">
     <select
       onChange={event => {
@@ -18,10 +19,8 @@ let make = (~selectOptions: list(Destination.t), ~handleDestinationChange) => {
        ->Belt.List.mapWithIndex((index, dest) =>
            <option
              value={string_of_int(index)}
-             key={
-               string_of_int(index) ++ "_" ++ dest.alias->Destination.toString
-             }>
-             {dest.alias->Destination.toString->React.string}
+             key={string_of_int(index) ++ "_" ++ dest.alias}>
+             dest.alias->React.string
            </option>
          )
        ->Belt.List.toArray

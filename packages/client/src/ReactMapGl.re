@@ -13,6 +13,7 @@ module StaticMap = {
     (
       ~children: React.element,
       ~reuseMaps: bool,
+      ~mapStyle: string,
       ~preventStyleDiffing: bool,
       ~mapboxApiAccessToken: string
     ) =>

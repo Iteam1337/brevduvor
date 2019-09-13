@@ -4,9 +4,8 @@ let invokeIfSet = (~callback, data) =>
   | None => ()
   };
 
-let makeClassName = (~baseClassNames, ~propClassNames) => {
-  switch (propClassNames) {
-  | None => baseClassNames
-  | Some(cn) => baseClassNames ++ " " ++ cn
-  };
+let mergeClassNames = (classNames: list(string)) => {
+  classNames->Belt.List.reduce("", (acc, cns) => acc ++ " " ++ cns);
 };
+
+let orEmptyStr = v => v->Belt.Option.getWithDefault("");

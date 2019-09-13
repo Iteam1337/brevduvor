@@ -18,11 +18,17 @@
       "module": "commonjs"
     }
   ],
+  "bsc-flags": ["-bs-super-errors", "-w -4"],
+  "ppx-flags": ["@ryb73/decco/ppx/ppx_decco.sh", "graphql_ppx/ppx"],
   "suffix": ".bs.js",
   "namespace": true,
   "bs-dependencies": [
     "reason-react",
-    "bs-css"
+    "bs-css",
+    "bs-fetch",
+    "@ryb73/decco",
+    "reason-apollo-hooks",
+    "reason-apollo"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",

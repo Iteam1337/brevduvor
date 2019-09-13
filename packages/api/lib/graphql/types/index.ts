@@ -8,6 +8,13 @@ const typeDefs = gql`
 
   type Query {
     dummy: String
+    allDestinations: [Destination!]!
+  }
+
+  type Destination {
+    alias: String!
+    lat: Float!
+    lon: Float!
   }
 
   type Subscription {

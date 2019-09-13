@@ -1,17 +1,40 @@
-type destinations = [ | `Storuman | `Slussfors | `Kvikkjokk];
-
-type t = {
-  alias: destinations,
-  lat: float,
-  lon: float,
+let toRecord = destination => {
+  Shared.Destination.alias: destination##alias,
+  lat: destination##lat,
+  lon: destination##lon,
 };
 
-let toString =
-  fun
-  | `Storuman => "Storuman"
-  | `Slussfors => "Slussfors"
-  | `Kvikkjokk => "Kvikkjokk";
+module AllDestinations = [%graphql
+  {|
+  query AllDestinations {
+    allDestinations {
+      alias
+      lat
+      lon
+    }
+  }
+|}
+];
 
-let storuman = {alias: `Storuman, lat: 65.090833, lon: 17.1075};
-let kvikkjokk = {alias: `Kvikkjokk, lat: 66.9501067, lon: 17.708610};
-let slussfors = {alias: `Slussfors, lat: 65.4308046, lon: 16.2481741};
+module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
+
+[@react.component]
+let make = (~handleDestinationSelect) => {
+  let (status, _) = AllDestinationsQuery.use();
+
+  <div>
+    {switch (status) {
+     | Loading => <p> {React.string("Loading...")} </p>
+     | Data(data) =>
+       let destinations =
+         data##allDestinations->Belt.Array.map(toRecord)->Belt.List.fromArray;
+       <SelectDestination
+         handleDestinationChange=handleDestinationSelect
+         selectOptions=destinations
+       />;
+     | NoData
+     | Error(_) =>
+       <p> {React.string("Could not get available end destinations.")} </p>
+     }}
+  </div>;
+};
