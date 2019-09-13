@@ -1,6 +1,7 @@
 [@react.component]
 let make = (~className=?, ~name) => {
-  let className = Utils.mergeClassNames(["fill-current", className->Utils.orEmptyStr]);
+  let className =
+    Utils.mergeClassNames(["fill-current", className->Utils.orEmptyStr]);
 
   switch (name) {
   | `Calendar =>
@@ -59,6 +60,12 @@ let make = (~className=?, ~name) => {
     <svg className xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
       <path
         d="M11 7l1.44 2.16c.31.47 1.01.84 1.57.84H17V8h-3l-1.44-2.16a5.94 5.94 0 0 0-1.4-1.4l-1.32-.88a1.72 1.72 0 0 0-1.7-.04L4 6v5h2V7l2-1-3 14h2l2.35-7.65L11 14v6h2v-8l-2.7-2.7L11 7zm1-3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+      />
+    </svg>
+  | `Marker =>
+    <svg className xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path
+        d="M256 0C153.755 0 70.573 83.182 70.573 185.426c0 126.888 165.939 313.167 173.004 321.035 6.636 7.391 18.222 7.378 24.846 0 7.065-7.868 173.004-194.147 173.004-321.035C441.425 83.182 358.244 0 256 0zm0 278.719c-51.442 0-93.292-41.851-93.292-93.293S204.559 92.134 256 92.134s93.291 41.851 93.291 93.293-41.85 93.292-93.291 93.292z"
       />
     </svg>
   };

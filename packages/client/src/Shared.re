@@ -1,4 +1,4 @@
-module Destination = {
+module GeoPosition = {
   type t = {
     alias: string,
     lat: float,

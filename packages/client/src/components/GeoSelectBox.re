@@ -1,6 +1,5 @@
 [@react.component]
-let make =
-    (~selectOptions: list(Shared.Destination.t), ~handleDestinationChange) => {
+let make = (~selectOptions: list(Shared.GeoPosition.t), ~onChange) => {
   <div className="inline-block relative w-full">
     <select
       onChange={event => {
@@ -10,7 +9,7 @@ let make =
           );
 
         switch (selectedDestination) {
-        | Some(destination) => handleDestinationChange(destination)
+        | Some(destination) => onChange(destination)
         | None => ()
         };
       }}

@@ -1,5 +1,5 @@
 let toRecord = destination => {
-  Shared.Destination.alias: destination##alias,
+  Shared.GeoPosition.alias: destination##alias,
   lat: destination##lat,
   lon: destination##lon,
 };
@@ -28,8 +28,8 @@ let make = (~handleDestinationSelect) => {
      | Data(data) =>
        let destinations =
          data##allDestinations->Belt.Array.map(toRecord)->Belt.List.fromArray;
-       <SelectDestination
-         handleDestinationChange=handleDestinationSelect
+       <GeoSelectBox
+         onChange=handleDestinationSelect
          selectOptions=destinations
        />;
      | NoData
