@@ -64,6 +64,7 @@ export type InitDroneReponse = {
 export type Mutation = {
   __typename?: 'Mutation'
   initDrone: InitDroneReponse
+  startDrone: StartDroneResponse
 }
 
 export type MutationInitDroneArgs = {
@@ -71,9 +72,19 @@ export type MutationInitDroneArgs = {
   stop: DestinationInput
 }
 
+export type MutationStartDroneArgs = {
+  id: Scalars['String']
+}
+
 export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
+}
+
+export type StartDroneResponse = {
+  __typename?: 'startDroneResponse'
+  id: Scalars['String']
+  status: Scalars['String']
 }
 
 export type Subscription = {
@@ -194,6 +205,7 @@ export type ResolversTypes = {
   DestinationInput: DestinationInput
   InitDroneReponse: ResolverTypeWrapper<InitDroneReponse>
   Coordinates: ResolverTypeWrapper<Coordinates>
+  startDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   Subscription: ResolverTypeWrapper<{}>
   DronePositionResponse: ResolverTypeWrapper<DronePositionResponse>
   Int: ResolverTypeWrapper<Scalars['Int']>
@@ -212,6 +224,7 @@ export type ResolversParentTypes = {
   DestinationInput: DestinationInput
   InitDroneReponse: InitDroneReponse
   Coordinates: Coordinates
+  startDroneResponse: StartDroneResponse
   Subscription: {}
   DronePositionResponse: DronePositionResponse
   Int: Scalars['Int']
@@ -291,6 +304,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationInitDroneArgs, 'start' | 'stop'>
   >
+  startDrone?: Resolver<
+    ResolversTypes['startDroneResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationStartDroneArgs, 'id'>
+  >
 }
 
 export type QueryResolvers<
@@ -302,6 +321,14 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >
+}
+
+export type StartDroneResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['startDroneResponse'] = ResolversParentTypes['startDroneResponse']
+> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type SubscriptionResolvers<
@@ -329,6 +356,7 @@ export type Resolvers<ContextType = any> = {
   InitDroneReponse?: InitDroneReponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  startDroneResponse?: StartDroneResponseResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>
   Upload?: GraphQLScalarType
 }
