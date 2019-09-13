@@ -1,7 +1,9 @@
 import * as Mutation from './mutations'
-import * as Query from './query'
+import * as Subscription from './subscriptions'
+import * as Query from './queries'
 
 export default {
   Mutation,
-  Query
+  Subscription,
+  Query,
 }

@@ -15,8 +15,7 @@
 npm install
 ```
 
-
-Create introspection schema: 
+Create introspection schema:
 
 ```sh
 npm run schema
