@@ -1,20 +1,18 @@
 import { gql } from 'apollo-server-express'
 import * as dronePosition from './dronePosition'
+import * as initDrone from './initiateDrone'
+import * as destinations from './destinations'
 
 const typeDefs = gql`
   type Mutation {
-    initDrone(input: String): String
+    initDrone(
+      start: DestinationInput!
+      stop: DestinationInput!
+    ): InitDroneReponse!
   }
 
   type Query {
-    dummy: String
     allDestinations: [Destination!]!
-  }
-
-  type Destination {
-    alias: String!
-    lat: Float!
-    lon: Float!
   }
 
   type Subscription {
@@ -22,4 +20,9 @@ const typeDefs = gql`
   }
 `
 
-export default [typeDefs, dronePosition.typeDefs]
+export default [
+  typeDefs,
+  dronePosition.typeDefs,
+  initDrone.typeDefs,
+  destinations.typeDefs,
+]

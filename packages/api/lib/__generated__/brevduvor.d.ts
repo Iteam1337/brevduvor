@@ -26,8 +26,8 @@ export enum CacheControlScope {
 
 export type Coordinates = {
   __typename?: 'Coordinates'
-  lat?: Maybe<Scalars['Int']>
-  lon?: Maybe<Scalars['Int']>
+  lat: Scalars['Float']
+  lon: Scalars['Float']
 }
 
 export type Destination = {
@@ -37,11 +37,17 @@ export type Destination = {
   lon: Scalars['Float']
 }
 
+export type DestinationInput = {
+  alias: Scalars['String']
+  lat: Scalars['Float']
+  lon: Scalars['Float']
+}
+
 export type DronePositionResponse = {
   __typename?: 'DronePositionResponse'
   start?: Maybe<Coordinates>
   stop?: Maybe<Coordinates>
-  currentPos?: Maybe<Coordinates>
+  currentPos: Coordinates
   bearing?: Maybe<Scalars['Int']>
   status?: Maybe<Scalars['String']>
   batteryStatus?: Maybe<Scalars['Int']>
@@ -49,18 +55,24 @@ export type DronePositionResponse = {
   eta?: Maybe<Scalars['String']>
 }
 
+export type InitDroneReponse = {
+  __typename?: 'InitDroneReponse'
+  waypoints?: Maybe<Array<Maybe<Coordinates>>>
+  id?: Maybe<Scalars['String']>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
-  initDrone?: Maybe<Scalars['String']>
+  initDrone: InitDroneReponse
 }
 
 export type MutationInitDroneArgs = {
-  input?: Maybe<Scalars['String']>
+  start: DestinationInput
+  stop: DestinationInput
 }
 
 export type Query = {
   __typename?: 'Query'
-  dummy?: Maybe<Scalars['String']>
   allDestinations: Array<Destination>
 }
 
@@ -175,13 +187,15 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>
-  String: ResolverTypeWrapper<Scalars['String']>
   Destination: ResolverTypeWrapper<Destination>
+  String: ResolverTypeWrapper<Scalars['String']>
   Float: ResolverTypeWrapper<Scalars['Float']>
   Mutation: ResolverTypeWrapper<{}>
+  DestinationInput: DestinationInput
+  InitDroneReponse: ResolverTypeWrapper<InitDroneReponse>
+  Coordinates: ResolverTypeWrapper<Coordinates>
   Subscription: ResolverTypeWrapper<{}>
   DronePositionResponse: ResolverTypeWrapper<DronePositionResponse>
-  Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
@@ -191,13 +205,15 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {}
-  String: Scalars['String']
   Destination: Destination
+  String: Scalars['String']
   Float: Scalars['Float']
   Mutation: {}
+  DestinationInput: DestinationInput
+  InitDroneReponse: InitDroneReponse
+  Coordinates: Coordinates
   Subscription: {}
   DronePositionResponse: DronePositionResponse
-  Coordinates: Coordinates
   Int: Scalars['Int']
   Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
@@ -218,8 +234,8 @@ export type CoordinatesResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']
 > = {
-  lat?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
-  lon?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  lon?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
 }
 
 export type DestinationResolvers<
@@ -241,11 +257,7 @@ export type DronePositionResponseResolvers<
     ContextType
   >
   stop?: Resolver<Maybe<ResolversTypes['Coordinates']>, ParentType, ContextType>
-  currentPos?: Resolver<
-    Maybe<ResolversTypes['Coordinates']>,
-    ParentType,
-    ContextType
-  >
+  currentPos?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
   bearing?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   batteryStatus?: Resolver<
@@ -257,15 +269,27 @@ export type DronePositionResponseResolvers<
   eta?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
+export type InitDroneReponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InitDroneReponse'] = ResolversParentTypes['InitDroneReponse']
+> = {
+  waypoints?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Coordinates']>>>,
+    ParentType,
+    ContextType
+  >
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   initDrone?: Resolver<
-    Maybe<ResolversTypes['String']>,
+    ResolversTypes['InitDroneReponse'],
     ParentType,
     ContextType,
-    MutationInitDroneArgs
+    RequireFields<MutationInitDroneArgs, 'start' | 'stop'>
   >
 }
 
@@ -273,7 +297,6 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
-  dummy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   allDestinations?: Resolver<
     Array<ResolversTypes['Destination']>,
     ParentType,
@@ -303,6 +326,7 @@ export type Resolvers<ContextType = any> = {
   Coordinates?: CoordinatesResolvers<ContextType>
   Destination?: DestinationResolvers<ContextType>
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>
+  InitDroneReponse?: InitDroneReponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>

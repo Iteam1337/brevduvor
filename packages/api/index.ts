@@ -16,7 +16,7 @@ setTimeout(() => {
     },
     stop: {
       lat: 33,
-      ln: 34,
+      lon: 34,
     },
     batteryStatus: 1000,
     currentPos: {
