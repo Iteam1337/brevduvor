@@ -1,1 +1,2 @@
-export * from './drone'
+export * from './initDrone'
+export * from './startDrone'
