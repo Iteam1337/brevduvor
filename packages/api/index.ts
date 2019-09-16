@@ -7,38 +7,36 @@ import { createServer } from 'http'
 import pubsub from './lib/adapters/pubsub'
 import OsrmAPI from './lib/datasources/osrm'
 
-setTimeout(() => {
-  const dronePosition = {
-    departure: '13',
-    eta: 'tja',
-    start: {
-      lat: 3,
-      lon: 4,
-    },
-    stop: {
-      lat: 33,
-      lon: 34,
-    },
-    batteryStatus: 1000,
-    currentPos: {
-      lat: 1,
-      lon: 2,
-    },
-    bearing: 3,
-  } as DronePositionResponse
+// setTimeout(() => {
+//   const dronePosition = {
+//     departure: '13',
+//     eta: 'tja',
+//     start: {
+//       lat: 3,
+//       lon: 4,
+//     },
+//     stop: {
+//       lat: 33,
+//       lon: 34,
+//     },
+//     batteryStatus: 1000,
+//     currentPos: {
+//       lat: 1,
+//       lon: 2,
+//     },
+//     bearing: 3,
+//   } as DronePositionResponse
 
-  pubsub.publish('dronePosition', { dronePosition })
-}, 10000)
+//   pubsub.publish('dronePosition', { dronePosition })
+// }, 10000)
 
 const app = express()
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
-  dataSources: () => {
-    return {
-      osrm: new OsrmAPI()
-    }
-  }
+  dataSources: () => ({
+    osrm: new OsrmAPI(),
+  }),
 })
 
 server.applyMiddleware({ app })

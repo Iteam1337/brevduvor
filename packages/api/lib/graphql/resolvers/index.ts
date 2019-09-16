@@ -7,12 +7,14 @@ export default {
   Subscription,
   Query,
   Route: {
+    distance: route => {
+      return route.trips[0].distance
+    },
     geoJson: route => {
-      console.log(route.trips[0].geometry)
       const geo = route.trips[0].geometry
       return {
         type: geo.type,
-        coordinates: JSON.stringify(geo.coordinates),
+        coordinates: JSON.stringify(geo.coordinates) || '[]',
       }
     },
   },

@@ -55,6 +55,12 @@ export type DronePositionResponse = {
   eta?: Maybe<Scalars['String']>
 }
 
+export type Geometry = {
+  __typename?: 'Geometry'
+  type: Scalars['String']
+  coordinates: Scalars['String']
+}
+
 export type InitDroneReponse = {
   __typename?: 'InitDroneReponse'
   waypoints?: Maybe<Array<Maybe<Coordinates>>>
@@ -79,6 +85,18 @@ export type MutationStartDroneArgs = {
 export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
+  getRoute: Route
+}
+
+export type QueryGetRouteArgs = {
+  start: DestinationInput
+  stop: DestinationInput
+}
+
+export type Route = {
+  __typename?: 'Route'
+  geoJson?: Maybe<Geometry>
+  distance?: Maybe<Scalars['Float']>
 }
 
 export type StartDroneResponse = {
@@ -201,8 +219,10 @@ export type ResolversTypes = {
   Destination: ResolverTypeWrapper<Destination>
   String: ResolverTypeWrapper<Scalars['String']>
   Float: ResolverTypeWrapper<Scalars['Float']>
-  Mutation: ResolverTypeWrapper<{}>
   DestinationInput: DestinationInput
+  Route: ResolverTypeWrapper<Route>
+  Geometry: ResolverTypeWrapper<Geometry>
+  Mutation: ResolverTypeWrapper<{}>
   InitDroneReponse: ResolverTypeWrapper<InitDroneReponse>
   Coordinates: ResolverTypeWrapper<Coordinates>
   startDroneResponse: ResolverTypeWrapper<StartDroneResponse>
@@ -220,8 +240,10 @@ export type ResolversParentTypes = {
   Destination: Destination
   String: Scalars['String']
   Float: Scalars['Float']
-  Mutation: {}
   DestinationInput: DestinationInput
+  Route: Route
+  Geometry: Geometry
+  Mutation: {}
   InitDroneReponse: InitDroneReponse
   Coordinates: Coordinates
   startDroneResponse: StartDroneResponse
@@ -282,6 +304,14 @@ export type DronePositionResponseResolvers<
   eta?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
 }
 
+export type GeometryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Geometry'] = ResolversParentTypes['Geometry']
+> = {
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  coordinates?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
 export type InitDroneReponseResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['InitDroneReponse'] = ResolversParentTypes['InitDroneReponse']
@@ -321,6 +351,20 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >
+  getRoute?: Resolver<
+    ResolversTypes['Route'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
+  >
+}
+
+export type RouteResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Route'] = ResolversParentTypes['Route']
+> = {
+  geoJson?: Resolver<Maybe<ResolversTypes['Geometry']>, ParentType, ContextType>
+  distance?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
 }
 
 export type StartDroneResponseResolvers<
@@ -353,9 +397,11 @@ export type Resolvers<ContextType = any> = {
   Coordinates?: CoordinatesResolvers<ContextType>
   Destination?: DestinationResolvers<ContextType>
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>
+  Geometry?: GeometryResolvers<ContextType>
   InitDroneReponse?: InitDroneReponseResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  Route?: RouteResolvers<ContextType>
   startDroneResponse?: StartDroneResponseResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>
   Upload?: GraphQLScalarType

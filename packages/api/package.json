@@ -20,7 +20,7 @@
   "scripts": {
     "start": "tsc && node ./build/index.js",
     "generate": "graphql-codegen --config codegen.yml",
-    "dev": "./node_modules/ts-node-dev/bin/ts-node-dev --no-notify index.ts",
+    "dev": "ts-node-dev --no-notify index.ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "jest",
     "test:watch": "jest --watchAll"

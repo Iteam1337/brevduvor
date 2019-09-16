@@ -12,6 +12,7 @@ const typeDefs = gql`
 
   type Route {
     geoJson: Geometry
+    distance: Float
   }
 
   type Mutation {
