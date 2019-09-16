@@ -46,38 +46,12 @@ module GetRouteConfig = [%graphql
 
 module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRouteConfig);
 
-let start = {
-  alias: "Storuman",
-  lat: 65.090833,
-  lon: 17.1075,
-};
-let stop = {
-  alias: "Slussfors",
-  lat: 65.4308046,
-  lon: 16.2481741,
-};
-
-let params: Shared.GeoPosition.t = {
-  start: start->Destination.toRecord,
-  stop: stop->Destination.toRecord
-}
-
-/*
- let toRecord = destination => {
-   Shared.GeoPosition.alias: destination##alias,
-   lat: destination##lat,
-   lon: destination##lon,
- };
-
-
-  getRoute(start: {alias: "Storuman", lat: 65.090833, lon: 17.1075}, stop: {alias: "Slussfors", lat: 65.4308046, lon: 16.2481741})
-  */
+let stop = {"alias": "Slussfors", "lat": 65.4308046, "lon": 16.2481741};
 
 [@react.component]
 let make = () => {
-  let (simple, _full) = GetRouteQuery.use(~start=0, ~stop=0, ());
+  let getRoute = GetRouteConfig.make(~start, ~stop, ());
 
-  Js.log(simple);
   let ({currentDestination, currentPosition, _}, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -102,12 +76,31 @@ let make = () => {
       initialState,
     );
 
+  let (simple, _full) =
+    GetRouteQuery.use(
+      ~variables=getRoute##variables,
+      ~notifyOnNetworkStatusChange=true,
+      (),
+    );
+
+  React.useEffect1(
+    () => {
+      Js.log(simple);
+      None;
+    },
+    [|simple|],
+  );
+
   let handleDestinationSelect = destination => {
     dispatch(ChangeDestination(destination));
   };
 
   let handleStationSelect = station => {
     dispatch(SetCurrentPosition(station));
+  };
+
+  let handleGetRouteClick = _ => {
+    ();
   };
 
   <div className="flex">
@@ -122,7 +115,7 @@ let make = () => {
         <GeoSelectBox selectOptions=stations onChange=handleStationSelect />
         <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
-        <Button.Primary className="mt-5">
+        <Button.Primary className="mt-5" onClick=handleGetRouteClick>
           "Hämta rutt"->React.string
         </Button.Primary>
         <Button.Primary className="mt-auto">
