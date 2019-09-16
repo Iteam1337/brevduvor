@@ -4,6 +4,15 @@ import * as initDrone from './initiateDrone'
 import * as destinations from './destinations'
 
 const typeDefs = gql`
+  type Geometry {
+    type: String!
+    coordinates: String!
+  }
+
+  type Route {
+    geoJson: Geometry
+  }
+
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -13,6 +22,7 @@ const typeDefs = gql`
 
   type Query {
     allDestinations: [Destination!]!
+    getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
   }
 
   type Subscription {

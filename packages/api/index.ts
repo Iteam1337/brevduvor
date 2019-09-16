@@ -5,6 +5,7 @@ import schema from './lib/graphql/schema'
 import config from './lib/config'
 import { createServer } from 'http'
 import pubsub from './lib/adapters/pubsub'
+import OsrmAPI from './lib/datasources/osrm'
 
 setTimeout(() => {
   const dronePosition = {
@@ -33,7 +34,13 @@ const app = express()
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
+  dataSources: () => {
+    return {
+      osrm: new OsrmAPI()
+    }
+  }
 })
+
 server.applyMiddleware({ app })
 
 const httpServer = createServer(app)
