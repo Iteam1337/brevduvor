@@ -46,12 +46,11 @@ module GetRouteConfig = [%graphql
 
 module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRouteConfig);
 
+let start = {"alias": "Storuman", "lat": 65.090833, "lon": 17.1075};
 let stop = {"alias": "Slussfors", "lat": 65.4308046, "lon": 16.2481741};
 
 [@react.component]
 let make = () => {
-  let getRoute = GetRouteConfig.make(~start, ~stop, ());
-
   let ({currentDestination, currentPosition, _}, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -75,21 +74,29 @@ let make = () => {
         },
       initialState,
     );
+  let getRouteParams = GetRouteConfig.make(~start, ~stop, ());
 
-  let (simple, _full) =
+  let (_simple, _full) =
     GetRouteQuery.use(
-      ~variables=getRoute##variables,
+      ~variables=getRouteParams##variables,
       ~notifyOnNetworkStatusChange=true,
+      ~skip=
+        switch (currentDestination) {
+        | None => true
+        | _ => false
+        },
       (),
     );
 
-  React.useEffect1(
-    () => {
-      Js.log(simple);
-      None;
-    },
-    [|simple|],
-  );
+  let (simple, _full) =
+    UserQuery.use(
+      ~skip=
+        switch (currentDestination) {
+        | None => true
+        | _ => false
+        },
+      (),
+    );
 
   let handleDestinationSelect = destination => {
     dispatch(ChangeDestination(destination));
