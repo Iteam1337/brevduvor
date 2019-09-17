@@ -19,7 +19,8 @@
     "got": "^9.6.0",
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@iteam/config": "^12.1.0",

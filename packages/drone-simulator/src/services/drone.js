@@ -2,6 +2,7 @@ const osrm = require('./osrm')
 const moment = require('moment')
 const directions = require('../utils/directions')
 const got = require('got')
+const uuid = require('uuid/v4')
 
 const DRONE_SPEED = 100
 
@@ -47,6 +48,7 @@ const interpolateCoords = async options => {
     } else {
       sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
+        id: options.id,
         status: 'Arrived',
         vehicle: 'Drone',
         batteryStatus,
@@ -63,6 +65,7 @@ const interpolateCoords = async options => {
 
       sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
+        id: options.id,
         status: 'in progress',
         vehicle: 'Drone',
         batteryStatus,
@@ -79,8 +82,8 @@ const interpolateCoords = async options => {
 
 async function init({ body: { start, stop, webhookUrl } }, res) {
   try {
+    const id = uuid()
     const batteryStatus = 1000
-    console.log({ start, stop })
     const osrmTrip = await osrm.generate(start, stop)
 
     const coords = [
@@ -92,7 +95,13 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
       lat: cords[1],
     }))
 
-    interpolateCoords({ coords, speed: DRONE_SPEED, batteryStatus, webhookUrl })
+    interpolateCoords({
+      coords,
+      speed: DRONE_SPEED,
+      batteryStatus,
+      webhookUrl,
+      id,
+    })
 
     res.send({ status: 200 })
   } catch (err) {}
