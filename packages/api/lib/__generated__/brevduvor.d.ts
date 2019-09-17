@@ -15,6 +15,10 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSONObject: any
   /** The `Upload` scalar type represents a file upload. */
   Upload: any
 }
@@ -45,6 +49,7 @@ export type DestinationInput = {
 
 export type DronePositionResponse = {
   __typename?: 'DronePositionResponse'
+  id?: Maybe<Scalars['String']>
   start?: Maybe<Coordinates>
   stop?: Maybe<Coordinates>
   currentPos: Coordinates
@@ -58,7 +63,7 @@ export type DronePositionResponse = {
 export type Geometry = {
   __typename?: 'Geometry'
   type: Scalars['String']
-  coordinates: Scalars['String']
+  coordinates?: Maybe<Scalars['JSON']>
 }
 
 export type InitDroneReponse = {
@@ -112,6 +117,11 @@ export type Subscription = {
 
 export type SubscriptionDronePositionArgs = {
   id: Scalars['String']
+}
+
+export type Trip = {
+  __typename?: 'Trip'
+  data?: Maybe<Scalars['String']>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -222,6 +232,7 @@ export type ResolversTypes = {
   DestinationInput: DestinationInput
   Route: ResolverTypeWrapper<Route>
   Geometry: ResolverTypeWrapper<Geometry>
+  JSON: ResolverTypeWrapper<Scalars['JSON']>
   Mutation: ResolverTypeWrapper<{}>
   InitDroneReponse: ResolverTypeWrapper<InitDroneReponse>
   Coordinates: ResolverTypeWrapper<Coordinates>
@@ -231,6 +242,8 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
+  JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
+  Trip: ResolverTypeWrapper<Trip>
   Upload: ResolverTypeWrapper<Scalars['Upload']>
 }
 
@@ -243,6 +256,7 @@ export type ResolversParentTypes = {
   DestinationInput: DestinationInput
   Route: Route
   Geometry: Geometry
+  JSON: Scalars['JSON']
   Mutation: {}
   InitDroneReponse: InitDroneReponse
   Coordinates: Coordinates
@@ -252,6 +266,8 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']
   Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
+  JSONObject: Scalars['JSONObject']
+  Trip: Trip
   Upload: Scalars['Upload']
 }
 
@@ -286,6 +302,7 @@ export type DronePositionResponseResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['DronePositionResponse'] = ResolversParentTypes['DronePositionResponse']
 > = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   start?: Resolver<
     Maybe<ResolversTypes['Coordinates']>,
     ParentType,
@@ -309,7 +326,7 @@ export type GeometryResolvers<
   ParentType extends ResolversParentTypes['Geometry'] = ResolversParentTypes['Geometry']
 > = {
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  coordinates?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  coordinates?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>
 }
 
 export type InitDroneReponseResolvers<
@@ -322,6 +339,16 @@ export type InitDroneReponseResolvers<
     ContextType
   >
   id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
+
+export interface JsonScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+  name: 'JSON'
+}
+
+export interface JsonObjectScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JSONObject'], any> {
+  name: 'JSONObject'
 }
 
 export type MutationResolvers<
@@ -388,6 +415,13 @@ export type SubscriptionResolvers<
   >
 }
 
+export type TripResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Trip'] = ResolversParentTypes['Trip']
+> = {
+  data?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+}
+
 export interface UploadScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
   name: 'Upload'
@@ -399,11 +433,14 @@ export type Resolvers<ContextType = any> = {
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>
   Geometry?: GeometryResolvers<ContextType>
   InitDroneReponse?: InitDroneReponseResolvers<ContextType>
+  JSON?: GraphQLScalarType
+  JSONObject?: GraphQLScalarType
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Route?: RouteResolvers<ContextType>
   startDroneResponse?: StartDroneResponseResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>
+  Trip?: TripResolvers<ContextType>
   Upload?: GraphQLScalarType
 }
 

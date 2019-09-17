@@ -7,6 +7,7 @@ export const typeDefs = gql`
   }
 
   type DronePositionResponse {
+    id: String
     start: Coordinates
     stop: Coordinates
     currentPos: Coordinates!

@@ -10,7 +10,7 @@ const interpolateCoords = async options => {
   let batteryStatus = options.batteryStatus
   const KM_IN_DEGREE = 110.562
   const SECONDS_IN_HOUR = 3600
-  const UPDATE_INTERVAL = 500
+  const UPDATE_INTERVAL = 3000
   let coords = options.coords,
     speed = (options.speed || 40) / SECONDS_IN_HOUR,
     current = {
