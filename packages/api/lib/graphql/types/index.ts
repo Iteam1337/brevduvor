@@ -1,13 +1,17 @@
 import { gql } from 'apollo-server-express'
+import GraphQLJSON, { GraphQLJSONObject } from 'graphql-type-json'
 import * as dronePosition from './dronePosition'
 import * as initDrone from './initiateDrone'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 
 const typeDefs = gql`
+  scalar JSON
+  scalar JSONObject
+
   type Geometry {
     type: String!
-    coordinates: String!
+    coordinates: JSON
   }
 
   type Route {
