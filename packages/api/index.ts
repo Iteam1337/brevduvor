@@ -6,7 +6,6 @@ import { createServer } from 'http'
 import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
-import ElasticAPI from './lib/datasources/elastic'
 
 const app = express()
 const server = new ApolloServer({
@@ -14,7 +13,6 @@ const server = new ApolloServer({
   resolvers: schema.resolvers,
   dataSources: () => ({
     osrm: new OsrmAPI(),
-    elastic: new ElasticAPI(),
   }),
 })
 
