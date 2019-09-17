@@ -80,11 +80,6 @@ let make = () => {
     GetRouteQuery.use(
       ~variables=getRouteParams##variables,
       ~notifyOnNetworkStatusChange=true,
-      ~skip=
-        switch (currentDestination) {
-        | None => true
-        | _ => false
-        },
       (),
     );
 
