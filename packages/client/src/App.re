@@ -88,16 +88,6 @@ let make = () => {
       (),
     );
 
-  let (simple, _full) =
-    UserQuery.use(
-      ~skip=
-        switch (currentDestination) {
-        | None => true
-        | _ => false
-        },
-      (),
-    );
-
   let handleDestinationSelect = destination => {
     dispatch(ChangeDestination(destination));
   };
