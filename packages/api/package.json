@@ -21,7 +21,7 @@
     "start": "tsc && node ./build/index.js",
     "generate": "graphql-codegen --config codegen.yml",
     "dev": "ts-node-dev --no-notify index.ts",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "lint": "eslint 'lib/**/*.{ts,tsx}'",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
@@ -41,14 +41,17 @@
     "nodemon": "^1.19.2",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.3.0",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.3",
-    "ts-node-dev": "^1.0.0-pre.42"
+    "ts-node-dev": "^1.0.0-pre.42",
+    "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@iteam/eslint-config-iteam-node": "^0.1.0",
     "@types/graphql-type-json": "^0.3.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
     "apollo-datasource-rest": "^0.6.4",
     "apollo-server-express": "^2.9.3",
+    "eslint": "^6.4.0",
     "graphql-type-json": "^0.3.0"
   }
 }
