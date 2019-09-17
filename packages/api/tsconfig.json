@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "lib": ["es6", "dom", "esnext"],
-    "outDir": "build",
-    "rootDir": "./",
-    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es6",
-    "baseUrl": "."
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "outDir": "build",
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "esnext"
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/**/*.ts"]
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

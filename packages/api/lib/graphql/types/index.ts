@@ -5,14 +5,21 @@ import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 
 const typeDefs = gql`
+  scalar JSON # Catch all type
+  scalar JSONObject
+
   type Geometry {
     type: String!
-    coordinates: String!
+    coordinates: JSON
   }
 
   type Route {
     geoJson: Geometry
     distance: Float
+  }
+
+  type Trip {
+    data: String
   }
 
   type Mutation {
