@@ -9,20 +9,20 @@ export default {
   Subscription,
   Query,
   Route: {
-    distance: route => {
-      return route.trips[0].distance
+    trips: route => {
+      return route.trips
     },
-    geoJson: route => {
-      const geo = route.trips[0].geometry
+  },
+  Trip: {
+    distance: trip => {
+      return trip.distance
+    },
+    geoJson: trip => {
+      const geo = trip.geometry
       return {
         type: geo.type,
         coordinates: geo.coordinates || [],
       }
-    },
-  },
-  Trip: {
-    data: () => {
-      return 'some data'
     },
   },
 }
