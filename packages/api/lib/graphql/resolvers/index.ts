@@ -1,8 +1,10 @@
+import Scalars from './scalars'
 import * as Mutation from './mutations'
 import * as Subscription from './subscriptions'
 import * as Query from './queries'
 
 export default {
+  ...Scalars,
   Mutation,
   Subscription,
   Query,
@@ -16,6 +18,11 @@ export default {
         type: geo.type,
         coordinates: geo.coordinates || [],
       }
+    },
+  },
+  Trip: {
+    data: () => {
+      return 'some data'
     },
   },
 }
