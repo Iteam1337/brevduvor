@@ -6,6 +6,7 @@ import { createServer } from 'http'
 import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
+import ElasticAPI from './lib/datasources/elastic'
 
 const app = express()
 const server = new ApolloServer({
@@ -13,6 +14,7 @@ const server = new ApolloServer({
   resolvers: schema.resolvers,
   dataSources: () => ({
     osrm: new OsrmAPI(),
+    elastic: new ElasticAPI(),
   }),
 })
 
@@ -32,6 +34,6 @@ server.installSubscriptionHandlers(httpServer)
 httpServer.listen({ port: config.PORT || 4000 }, () =>
   console.log(
     `🚀 Server ready at http://localhost:${config.PORT}${server.graphqlPath}`,
-    `📥 Subscriptions ready at ws://localhost:${config.PORT}${server.subscriptionsPath}`
+    `\n📥 Subscriptions ready at ws://localhost:${config.PORT}${server.subscriptionsPath}`
   )
 )

@@ -5,6 +5,10 @@ export const getRoute: QueryResolvers['getRoute'] = async (
   { start, stop },
   { dataSources: { osrm } }
 ) => {
-  const route = await osrm.getRoute(start, stop)
-  return route
+  try {
+    const route = await osrm.getRoute(start, stop)
+    return route
+  } catch (error) {
+    return error
+  }
 }
