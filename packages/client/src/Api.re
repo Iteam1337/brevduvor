@@ -10,4 +10,39 @@ let saveDestination = (dest: Shared.GeoPosition.t) => {
   );
 };
 
-/* saveDestination(Destination.kvikkjokk); */
+module Route = {
+  type waypoint = {location: array(float)};
+  type geometry = {
+    coordinates: array(array(float)),
+    _type: string,
+  };
+
+  type routeDetails = {
+    id: string,
+    geometry,
+    waypoints: array(waypoint),
+  };
+
+  open Json.Decode;
+
+  let geometry = json => {
+    coordinates:
+      json |> field("coordinates", array(array(Json.Decode.float))),
+    _type: json |> field("type", string),
+  };
+  let waypoint = json => {
+    location: json |> field("location", array(Json.Decode.float)),
+  };
+
+  let routeDetailFromJson = json => {
+    id: json |> field("id", Json.Decode.string),
+    geometry:
+      json
+      |> withDefault(
+           {coordinates: [||], _type: "LineString"},
+           field("geometry", geometry),
+         ),
+    waypoints:
+      json |> withDefault([||], field("waypoints", array(waypoint))),
+  };
+};
