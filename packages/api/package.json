@@ -45,6 +45,7 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^7.3.0",
     "@iteam/eslint-config-iteam-node": "^0.1.0",
     "@types/graphql-type-json": "^0.3.2",
     "@typescript-eslint/eslint-plugin": "^2.3.0",

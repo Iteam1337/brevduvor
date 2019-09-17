@@ -7,10 +7,10 @@ import Route from './routeResolver'
 import Trip from './tripResolver'
 
 export default {
-  ...Scalars,
   Mutation,
   Subscription,
   Query,
   Route,
   Trip,
+  ...Scalars,
 }
