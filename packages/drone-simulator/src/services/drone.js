@@ -47,7 +47,7 @@ const interpolateCoords = async options => {
 
       setTimeout(step, UPDATE_INTERVAL)
     } else {
-      sendDroneStatus(options.webhookUrl, {
+      await sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         id: options.id,
         status: 'Arrived',
@@ -55,16 +55,17 @@ const interpolateCoords = async options => {
         batteryStatus,
         bearing: 0,
       })
+      cache.clear(options.id)
     }
   }
 
-  const step = () => {
+  const step = async () => {
     currentStep++
     if (currentStep < numSteps) {
       current.coords.lat += rate.lat
       current.coords.lon += rate.lon
 
-      sendDroneStatus(options.webhookUrl, {
+      await sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         id: options.id,
         status: 'in progress',
@@ -84,7 +85,6 @@ const interpolateCoords = async options => {
 async function start({ body: { webhookUrl, id } }, res) {
   try {
     const { start, stop } = cache.get(id)
-
     const batteryStatus = 1000
     const osrmTrip = await osrm.generate(start, stop)
 
@@ -126,9 +126,6 @@ async function init({ body: { start, stop } }, res) {
     const batteryStatus = 1000
     const totalDistance = directions.calculateTotalDistance(coords)
 
-    // Don't forget to clear the cache for this drone
-    // when it arrives at its destination
-
     const droneData = {
       id: droneId,
       start,
@@ -153,9 +150,8 @@ async function init({ body: { start, stop } }, res) {
   }
 }
 
-function sendDroneStatus(webhookUrl, postBody) {
-  console.log({ webhookUrl, postBody })
-  return got(webhookUrl, { body: postBody, json: true })
+async function sendDroneStatus(webhookUrl, postBody) {
+  await got(webhookUrl, { body: postBody, json: true })
 }
 
 module.exports = {
