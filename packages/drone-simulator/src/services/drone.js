@@ -80,9 +80,8 @@ const interpolateCoords = async options => {
   nextCoord()
 }
 
-async function init({ body: { start, stop, webhookUrl } }, res) {
+async function start({ body: { start, stop, webhookUrl, id } }, res) {
   try {
-    const id = uuid()
     const batteryStatus = 1000
     const osrmTrip = await osrm.generate(start, stop)
 
@@ -107,7 +106,7 @@ async function init({ body: { start, stop, webhookUrl } }, res) {
   } catch (err) {}
 }
 
-async function setup({ body: { start, stop, webhookUrl } }, res) {
+async function init({ body: { start, stop } }, res) {
   try {
     const osrmTrip = await osrm.generate(start, stop)
 
@@ -124,12 +123,13 @@ async function setup({ body: { start, stop, webhookUrl } }, res) {
     const totalDistance = directions.calculateTotalDistance(coords)
 
     const droneData = {
+      id: uuid(),
       start,
       stop,
       currentPos: start,
       distance: totalDistance,
       bearing: 0,
-      status: 'initiating',
+      status: 'Initiating',
       vehicle: 'Drone',
       batteryStatus,
       departure: moment().format(),
@@ -138,9 +138,7 @@ async function setup({ body: { start, stop, webhookUrl } }, res) {
         .format(),
     }
 
-    console.log('setup droneData -->', droneData)
-
-    await sendInitStatus(webhookUrl, droneData)
+    res.send(droneData)
   } catch (err) {
     console.log(err)
   }
@@ -151,11 +149,7 @@ function sendDroneStatus(webhookUrl, postBody) {
   return got(webhookUrl, { body: postBody, json: true })
 }
 
-function sendInitStatus(webhookUrl, postBody) {
-  return got(webhookUrl, { body: postBody, json: true })
-}
-
 module.exports = {
+  start,
   init,
-  setup,
 }
