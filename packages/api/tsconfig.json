@@ -12,7 +12,8 @@
     "outDir": "build",
     "rootDir": ".",
     "sourceMap": true,
-    "target": "esnext"
+    "target": "esnext",
+    "strict": true
   },
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

@@ -1,7 +1,8 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
 import config from '../config'
+import { Coordinates } from '../__generated__/brevduvor'
 
-const latLon = ({ lat, lon }) => `${lon},${lat}`
+const latLon = ({ lat, lon }: Coordinates): string => `${lon},${lat}`
 
 export default class OsrmAPI extends RESTDataSource {
   constructor() {
@@ -9,7 +10,7 @@ export default class OsrmAPI extends RESTDataSource {
     this.baseURL = config.OSRM_URL
   }
 
-  async getRoute(start, stop, extras = []) {
+  async getRoute(start: Coordinates, stop: Coordinates, extras = []) {
     const destinations = this.toOSRMFormat(start, stop, extras)
 
     return this.get(`trip/v1/car/${destinations}`, {
@@ -18,7 +19,11 @@ export default class OsrmAPI extends RESTDataSource {
     })
   }
 
-  toOSRMFormat(startPosition, endPosition, extras = []) {
+  toOSRMFormat(
+    startPosition: Coordinates,
+    endPosition: Coordinates,
+    extras = []
+  ) {
     return [startPosition, ...extras, endPosition]
       .filter(x => x)
       .map(latLon)

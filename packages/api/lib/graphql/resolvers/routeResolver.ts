@@ -1,5 +1,5 @@
 export default {
-  trips: route => {
+  trips: (route: any) => {
     return route.trips
   },
 }

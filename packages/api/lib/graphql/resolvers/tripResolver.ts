@@ -1,8 +1,8 @@
 export default {
-  distance: trip => {
+  distance: (trip: any) => {
     return trip.distance
   },
-  geoJson: trip => {
+  geoJson: (trip: any) => {
     const geo = trip.geometry
     return {
       type: geo.type,
