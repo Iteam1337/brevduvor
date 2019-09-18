@@ -1,15 +1,11 @@
-import {
-  MutationResolvers,
-  InitDroneReponse,
-} from '../../../__generated__/brevduvor'
+import { MutationResolvers } from '../../../__generated__/brevduvor'
+import { dronePost } from '../../../adapters/drone'
 
-export const initDrone: MutationResolvers['initDrone'] = async _ =>
-  ({
-    id: '1337',
-    waypoints: [
-      {
-        lat: 1,
-        lon: 2,
-      },
-    ],
-  } as InitDroneReponse)
+export const initDrone: MutationResolvers['initDrone'] = async (
+  _,
+  { start, stop }
+) => {
+  const { body } = await dronePost('/init', { start, stop })
+
+  return body
+}

@@ -1,6 +1,5 @@
 import { gql } from 'apollo-server-express'
 import * as dronePosition from './dronePosition'
-import * as initDrone from './initiateDrone'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 
@@ -26,7 +25,7 @@ const typeDefs = gql`
     initDrone(
       start: DestinationInput!
       stop: DestinationInput!
-    ): InitDroneReponse!
+    ): DronePositionResponse!
     startDrone(id: String!): startDroneResponse!
   }
 
@@ -43,7 +42,6 @@ const typeDefs = gql`
 export default [
   typeDefs,
   dronePosition.typeDefs,
-  initDrone.typeDefs,
   destinations.typeDefs,
   startDrone.typeDefs,
 ]
