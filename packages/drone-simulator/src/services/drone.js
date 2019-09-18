@@ -3,6 +3,7 @@ const moment = require('moment')
 const directions = require('../utils/directions')
 const got = require('got')
 const uuid = require('uuid/v4')
+const cache = require('memory-cache')
 
 const DRONE_SPEED = 100
 
@@ -80,8 +81,10 @@ const interpolateCoords = async options => {
   nextCoord()
 }
 
-async function start({ body: { start, stop, webhookUrl, id } }, res) {
+async function start({ body: { webhookUrl, id } }, res) {
   try {
+    const { start, stop } = cache.get(id)
+
     const batteryStatus = 1000
     const osrmTrip = await osrm.generate(start, stop)
 
@@ -119,11 +122,15 @@ async function init({ body: { start, stop } }, res) {
       lat: cords[1],
     }))
 
+    const droneId = uuid()
     const batteryStatus = 1000
     const totalDistance = directions.calculateTotalDistance(coords)
 
+    // Don't forget to clear the cache for this drone
+    // when it arrives at its destination
+
     const droneData = {
-      id: uuid(),
+      id: droneId,
       start,
       stop,
       currentPos: start,
@@ -137,6 +144,8 @@ async function init({ body: { start, stop } }, res) {
         .add(directions.etaInMinutes(200, totalDistance), 'minutes')
         .format(),
     }
+
+    cache.put(droneId, { start, stop })
 
     res.send(droneData)
   } catch (err) {
