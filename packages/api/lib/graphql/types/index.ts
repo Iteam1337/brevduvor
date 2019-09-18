@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express'
 import * as dronePosition from './dronePosition'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
+import * as initDrone from './initDrone'
 
 const typeDefs = gql`
   scalar JSON
@@ -25,8 +26,9 @@ const typeDefs = gql`
     initDrone(
       start: DestinationInput!
       stop: DestinationInput!
-    ): DronePositionResponse!
-    startDrone(id: String!): startDroneResponse!
+    ): InitDroneResponse!
+
+    startDrone(id: String!): StartDroneResponse!
   }
 
   type Query {
@@ -35,7 +37,7 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    dronePosition(id: String!): DronePositionResponse
+    dronePosition(id: String!): InitDroneResponse
   }
 `
 
@@ -44,4 +46,5 @@ export default [
   dronePosition.typeDefs,
   destinations.typeDefs,
   startDrone.typeDefs,
+  initDrone.typeDefs,
 ]
