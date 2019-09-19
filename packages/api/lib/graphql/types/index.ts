@@ -10,16 +10,16 @@ const typeDefs = gql`
 
   type Geometry {
     type: String!
-    coordinates: JSON
+    coordinates: JSON!
   }
 
   type Route {
-    trips: [Trip]
+    trips: [Trip!]!
   }
 
   type Trip {
-    geoJson: Geometry
-    distance: Int
+    geoJson: Geometry!
+    distance: Int!
   }
 
   type Mutation {

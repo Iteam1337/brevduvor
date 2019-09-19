@@ -10,7 +10,11 @@ export default class OsrmAPI extends RESTDataSource {
     this.baseURL = config.OSRM_URL
   }
 
-  async getRoute(start: Coordinates, stop: Coordinates, extras = []) {
+  async getTrip(
+    start: Coordinates,
+    stop: Coordinates,
+    extras = []
+  ): Promise<OSRMTripResponse> {
     const destinations = this.toOSRMFormat(start, stop, extras)
 
     return this.get(`trip/v1/car/${destinations}`, {
@@ -29,4 +33,22 @@ export default class OsrmAPI extends RESTDataSource {
       .map(latLon)
       .join(';')
   }
+}
+
+export type OSRMTripResponse = {
+  code: string
+  trips: [OSRMTrip]
+  waypoints: any
+}
+
+export type OSRMTrip = {
+  geometry: {
+    coordinates: [[string, string]]
+    type: string
+  }
+  legs: any
+  distance: number
+  duration: number
+  weight_name: string
+  weight: number
 }

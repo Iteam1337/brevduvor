@@ -1,4 +1,5 @@
 import { QueryResolvers } from '../../../__generated__/brevduvor'
+import { OSRMTripResponse } from '../../../datasources/osrm'
 
 export const getRoute: QueryResolvers['getRoute'] = async (
   _,
@@ -6,7 +7,7 @@ export const getRoute: QueryResolvers['getRoute'] = async (
   { dataSources: { osrm } }
 ) => {
   try {
-    const route = await osrm.getRoute(start, stop)
+    const route: OSRMTripResponse = await osrm.getTrip(start, stop)
     return route
   } catch (error) {
     return error
