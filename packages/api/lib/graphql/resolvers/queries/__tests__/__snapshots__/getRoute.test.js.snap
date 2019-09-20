@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getRoute returns a Route 1`] = `
+exports[`getRoute fetches a Route with list of coordinates 1`] = `
 Object {
   "getRoute": Object {
     "trips": Array [
@@ -300,7 +300,6 @@ Object {
               65.090853,
             ],
           ],
-          "type": "LineString",
         },
       },
     ],

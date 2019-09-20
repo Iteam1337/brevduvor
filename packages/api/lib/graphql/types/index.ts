@@ -19,7 +19,7 @@ const typeDefs = gql`
 
   type Trip {
     geoJson: Geometry!
-    distance: Int!
+    distance: Float!
   }
 
   type Mutation {
