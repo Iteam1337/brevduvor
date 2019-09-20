@@ -7,14 +7,17 @@ import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
 
-const app = express()
-const server = new ApolloServer({
+export const osrmInstance = new OsrmAPI()
+export const serverConfig = {
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
   dataSources: () => ({
-    osrm: new OsrmAPI(),
+    osrm: osrmInstance,
   }),
-})
+}
+
+const app = express()
+const server = new ApolloServer(serverConfig)
 
 server.applyMiddleware({ app })
 
@@ -29,9 +32,11 @@ app.post('/status', droneStatus)
 const httpServer = createServer(app)
 server.installSubscriptionHandlers(httpServer)
 
-httpServer.listen({ port: config.PORT || 4000 }, () =>
-  console.log(
-    `🚀 Server ready at http://localhost:${config.PORT}${server.graphqlPath}`,
-    `\n📥 Subscriptions ready at ws://localhost:${config.PORT}${server.subscriptionsPath}`
+if (process.env.NODE_ENV !== 'test') {
+  httpServer.listen({ port: config.PORT || 4000 }, () =>
+    console.log(
+      `🚀 Server ready at http://localhost:${config.PORT}${server.graphqlPath}`,
+      `\n📥 Subscriptions ready at ws://localhost:${config.PORT}${server.subscriptionsPath}`
+    )
   )
-)
+}
