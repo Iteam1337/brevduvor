@@ -3,6 +3,7 @@ type appState = {
   availableDestinations: list(Shared.GeoPosition.t),
   currentDestination: option(Shared.GeoPosition.t),
   currentRoute: option(ReactMapGl.Waypoints.t),
+  droneId: option(string),
 };
 
 type appActions =
@@ -10,13 +11,15 @@ type appActions =
   | AvailableDestinations(list(Shared.GeoPosition.t))
   | ChangeDestination(Shared.GeoPosition.t)
   | SaveDestination(Shared.GeoPosition.t)
-  | SetCurrentRoute(ReactMapGl.Waypoints.t);
+  | SetCurrentRoute(ReactMapGl.Waypoints.t)
+  | DroneId(string);
 
 let initialState = {
   currentPosition: None,
   availableDestinations: [],
   currentDestination: None,
   currentRoute: None,
+  droneId: None,
 };
 
 let storuman: Shared.GeoPosition.t = {
@@ -34,7 +37,7 @@ let stations = [storuman, slussfors];
 
 [@react.component]
 let make = () => {
-  let ({currentDestination, currentPosition, _}, dispatch) =
+  let ({currentDestination, currentPosition, droneId, _}, dispatch) =
     React.useReducer(
       (state, action) =>
         switch (action) {
@@ -55,6 +58,7 @@ let make = () => {
             ...state,
             currentDestination: Some(dest),
           }
+        | DroneId(droneId) => {...state, droneId: Some(droneId)}
         },
       initialState,
     );
@@ -64,6 +68,16 @@ let make = () => {
 
   let handlePositionSelect = station =>
     dispatch(SetCurrentPosition(station));
+
+  let handleDroneResponse = data =>
+    switch (data) {
+    | Belt.Result.Ok(droneId) =>
+      switch (droneId) {
+      | Some(id) => dispatch(DroneId(id))
+      | _ => ()
+      }
+    | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
+    };
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -77,8 +91,11 @@ let make = () => {
         <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
         <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
-        {switch (currentPosition, currentDestination) {
-         | (Some(start), Some(stop)) => <InitDrone start stop />
+        {switch (currentPosition, currentDestination, droneId) {
+         | (Some(start), Some(stop), None) =>
+           <InitDrone start stop handleDroneResponse />
+         | (Some(_), Some(_), Some(droneId)) =>
+           <p> droneId->React.string </p>
          | _ => React.null
          }}
       </div>

@@ -123,7 +123,7 @@ export type SubscriptionDronePositionArgs = {
 export type Trip = {
    __typename?: 'Trip',
   geoJson: Geometry,
-  distance: Scalars['Int'],
+  distance: Scalars['Float'],
 };
 
 
@@ -198,10 +198,10 @@ export type ResolversTypes = {
   Trip: ResolverTypeWrapper<Trip>,
   Geometry: ResolverTypeWrapper<Geometry>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
-  Int: ResolverTypeWrapper<Scalars['Int']>,
   Mutation: ResolverTypeWrapper<{}>,
   InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>,
   Coordinates: ResolverTypeWrapper<Coordinates>,
+  Int: ResolverTypeWrapper<Scalars['Int']>,
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>,
   Subscription: ResolverTypeWrapper<{}>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
@@ -222,10 +222,10 @@ export type ResolversParentTypes = {
   Trip: Trip,
   Geometry: Geometry,
   JSON: Scalars['JSON'],
-  Int: Scalars['Int'],
   Mutation: {},
   InitDroneResponse: InitDroneResponse,
   Coordinates: Coordinates,
+  Int: Scalars['Int'],
   StartDroneResponse: StartDroneResponse,
   Subscription: {},
   Boolean: Scalars['Boolean'],
@@ -306,7 +306,7 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 
 export type TripResolvers<ContextType = any, ParentType extends ResolversParentTypes['Trip'] = ResolversParentTypes['Trip']> = {
   geoJson?: Resolver<ResolversTypes['Geometry'], ParentType, ContextType>,
-  distance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  distance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
 };
 
 export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {

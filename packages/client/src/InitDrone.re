@@ -3,36 +3,32 @@ module InitDroneMutationConfig = [%graphql
   mutation InitDroneMutation($start: DestinationInput!, $stop: DestinationInput!) {
     initDrone(start: $start, stop: $stop) {
       id
-      start {
-        lat
-        lon
-      }
-      stop {
-        lat
-        lon
-      }
-      currentPos {
-        lat
-        lon
-      }
-      bearing
-      status
-      batteryStatus
-      departure
-      eta
     }
   }
 |}
 ];
 
+type event =
+  | Id(string)
+  | NoId;
+
 module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
-
 [@react.component]
-let make = (~start, ~stop) => {
+let make = (~start, ~stop, ~handleDroneResponse) => {
+  let (state, dispatch) =
+    React.useReducer(
+      (_state, action) =>
+        switch (action) {
+        | Id(id) => `Id(id)
+        | NoId => `NoId
+        },
+      `NoId,
+    );
+
   let (initDroneMutation, _simple, _full) = InitDroneMutation.use();
 
-  let initDrone = _ => {
+  let initDrone = () => {
     initDroneMutation(
       ~variables=
         InitDroneMutationConfig.make(
@@ -50,11 +46,20 @@ let make = (~start, ~stop) => {
              ),
          ) => {
          switch (result) {
-         | Data(data) => Js.log(data)
+         | Data(data) =>
+           /* Belt.Result.Ok(data##initDrone##id)->handleDroneResponse; */
+           switch (data##initDrone##id) {
+           | Some(id) => dispatch(Id(id))
+           | None => dispatch(NoId)
+           }
          | Loading
          | Called
-         | NoData => ()
-         | Error(error) => Js.log(error)
+         | NoData =>
+           ();
+           Belt.Result.Error({js|Fick ingen data|js})->handleDroneResponse;
+         | Error(error) =>
+           ();
+           Belt.Result.Error(error##message)->handleDroneResponse;
          };
          Js.Promise.resolve();
        })
@@ -62,8 +67,12 @@ let make = (~start, ~stop) => {
   };
 
   <div>
-    <Button.Primary onClick=initDrone>
-      {React.string("Starta resa")}
-    </Button.Primary>
+    {switch (state) {
+     | `NoId =>
+       <Button.Primary onClick={_ => initDrone()}>
+         {React.string("Starta resa")}
+       </Button.Primary>
+     | `Id(id) => <StartDrone id handleDroneResponse />
+     }}
   </div>;
 };
