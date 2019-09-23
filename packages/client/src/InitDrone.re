@@ -28,7 +28,7 @@ let make = (~start, ~stop, ~handleDroneResponse) => {
 
   let (initDroneMutation, _simple, _full) = InitDroneMutation.use();
 
-  let initDrone = () => {
+  let initDrone = _ => {
     initDroneMutation(
       ~variables=
         InitDroneMutationConfig.make(
@@ -69,7 +69,7 @@ let make = (~start, ~stop, ~handleDroneResponse) => {
   <div>
     {switch (state) {
      | `NoId =>
-       <Button.Primary onClick={_ => initDrone()}>
+       <Button.Primary onClick=initDrone className="mt-4">
          {React.string("Starta resa")}
        </Button.Primary>
      | `Id(id) => <StartDrone id handleDroneResponse />
