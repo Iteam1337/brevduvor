@@ -2,7 +2,7 @@ type appState = {
   currentPosition: option(Shared.GeoPosition.t),
   availableDestinations: list(Shared.GeoPosition.t),
   currentDestination: option(Shared.GeoPosition.t),
-  currentRoute: option(array(ReactMapGl.Waypoints.t)),
+  currentRoute: option(ReactMapGl.Waypoints.t),
 };
 
 type appActions =
@@ -10,7 +10,7 @@ type appActions =
   | AvailableDestinations(list(Shared.GeoPosition.t))
   | ChangeDestination(Shared.GeoPosition.t)
   | SaveDestination(Shared.GeoPosition.t)
-  | SetCurrentRoute(array(ReactMapGl.Waypoints.t));
+  | SetCurrentRoute(ReactMapGl.Waypoints.t);
 
 let initialState = {
   currentPosition: None,
@@ -64,17 +64,6 @@ let make = () => {
 
   let handleStationSelect = station => dispatch(SetCurrentPosition(station));
 
-  /* let handleGetRouteClick = data => {
-       Js.log(data);
-       ();
-     }; */
-
-  let handleRouteData = data => {
-    data->Js.log;
-    "In route data handler"->Js.log;
-    dispatch(SetCurrentRoute(data));
-  };
-
   <div className="flex">
     /* // Dont know how to do this better at time of writing
 
@@ -109,66 +98,22 @@ let make = () => {
           <GeoSelectBox selectOptions=stations onChange=handleStationSelect />
           <label> "Till:"->React.string </label>
           <Destination handleDestinationSelect />
-          <GetRoute
-            start={Some(storuman)}
-            stop={Some(slussfors)}
-            onData=handleRouteData
-          />
+          // <GetRoute
+          //   start={Some(storuman)}
+          //   stop={Some(slussfors)}
+          //   onData=handleRouteData
+          // />
           <Button.Primary className="mt-auto">
             "Starta"->React.string
           </Button.Primary>
         </div>
       </div>
       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
-        {
-          switch (currentDestination) {
-          | Some({lat, lon}) =>
-            <Map
-              flyTo={
-                ReactMapGl.DeckGL.viewState(
-                  ~longitude=lon,
-                  ~latitude=lat,
-                  ~zoom=10,
-                  ~transitionDuration=2000,
-                  ~transitionInterpolator=ReactMapGl.Interpolator.FlyTo.make(),
-                  (),
-                )
-              }>
-              {
-                switch (currentPosition) {
-                | Some({lat, lon}) =>
-                  <Marker.Position latitude=lat longitude=lon />
-                | None => React.null
-                }
-              }
-              <Marker.Destination latitude=lat longitude=lon />
-            </Map>
-          | None =>
-            switch (currentPosition) {
-            | Some({lat, lon}) =>
-              <Map
-                flyTo={
-                  ReactMapGl.DeckGL.viewState(
-                    ~longitude=lon,
-                    ~latitude=lat,
-                    ~zoom=12,
-                    (),
-                  )
-                }
-                initialViewState={
-                  ReactMapGl.DeckGL.viewState(
-                    ~longitude=lon,
-                    ~latitude=lat,
-                    ~zoom=12,
-                    (),
-                  )
-                }>
-                <Marker.Position latitude=lat longitude=lon />
-              </Map>
-            | None => React.null
-            }
-          }
-        }
-      </div>
-    </div>;
+        <Map
+          ?currentPosition
+          ?currentDestination
+        >
+        <div />
+        </Map>
+        </div></div>
 };
