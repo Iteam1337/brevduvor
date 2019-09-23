@@ -1,40 +1,34 @@
-module GetRouteConfig = [%graphql
-  {|
-  query GetRouteQuery($start: DestinationInput!, $stop: DestinationInput!) {
-    getRoute(start: $start, stop: $stop) {
-      geoJson {
-        type
-        coordinates
+/*  module GetRouteConfig = [%graphql
+      {|
+      query GetRouteQuery($start: DestinationInput!, $stop: DestinationInput!) {
+        getRoute(start: $start, stop: $stop) {
+          geoJson {
+            type
+            coordinates
+          }
+          distance
+        }
       }
-      distance
-    }
-  }
-|}
-];
+    |}
+    ];
 
-module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRouteConfig);
+    module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRouteConfig);
 
-[@react.component]
-let make = (~position, ~destination, ~callback) => {
-  let getRouteParams =
-    GetRouteConfig.make(~start=position, ~stop=destination, ());
+    [@react.component]
+    let make = (~position, ~destination, ~callback) => {
+      let [shouldSkip, setSkip] = React.useState(() => false);
 
-  let (simple, _full) =
-    GetRouteQuery.use(
-      ~variables=getRouteParams##variables,
-      ~notifyOnNetworkStatusChange=true,
-      (),
-    );
-  ();
+      let getRouteParams =
+        GetRouteConfig.make(~start=position, ~stop=destination, ());
 
-  React.useEffect1(
-    () => {
-      Js.log("running effect");
-      callback(simple);
-      None;
-    },
-    [|simple|],
-  );
+      let (simple, _full) =
+        GetRouteQuery.use(
+          ~skip=shouldRun,
+          ~variables=getRouteParams##variables,
+          ~notifyOnNetworkStatusChange=true,
+          (),
+        );
+      ();
 
-  React.null;
-};
+      [simple, setSkip]
+    } */
