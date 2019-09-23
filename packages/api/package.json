@@ -22,8 +22,8 @@
     "generate": "graphql-codegen --config codegen.yml",
     "dev": "ts-node-dev --no-notify index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watchAll"
   },
   "bugs": {
     "url": "https://github.com/Iteam1337/brevduvor/issues"
@@ -54,6 +54,7 @@
     "@typescript-eslint/parser": "^2.3.0",
     "apollo-datasource-rest": "^0.6.4",
     "apollo-server-express": "^2.9.3",
+    "apollo-server-testing": "^2.9.3",
     "body-parser": "^1.19.0",
     "eslint": "^6.4.0",
     "got": "^9.6.0",
