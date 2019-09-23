@@ -130,7 +130,6 @@ let make =
         data##getRoute##trips
         ->Belt.Array.map(trip => trip)
         ->GeoJsonLayer.make(~data=_, ());
-
       [|trips|];
     | NoData
     | Loading

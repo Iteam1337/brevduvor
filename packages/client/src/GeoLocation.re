@@ -3,7 +3,6 @@ module Navigator = {
   type geoOptions = {enableHighAccuracy: bool};
 
   [@bs.deriving {jsConverter: newType}]
-  [@decco]
   type coordinates = {
     latitude: float,
     longitude: float,

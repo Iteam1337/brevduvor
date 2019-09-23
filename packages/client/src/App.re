@@ -62,7 +62,8 @@ let make = () => {
   let handleDestinationSelect = destination =>
     dispatch(ChangeDestination(destination));
 
-  let handlePositionSelect = station => dispatch(SetCurrentPosition(station));
+  let handlePositionSelect = station =>
+    dispatch(SetCurrentPosition(station));
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -76,9 +77,10 @@ let make = () => {
         <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
         <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
-        <Button.Primary className="mt-auto">
-          "Starta"->React.string
-        </Button.Primary>
+        {switch (currentPosition, currentDestination) {
+         | (Some(start), Some(stop)) => <InitDrone start stop />
+         | _ => React.null
+         }}
       </div>
     </div>
     <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
