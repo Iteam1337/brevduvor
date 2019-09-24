@@ -80,7 +80,7 @@ let make =
       )
     );
 
-  let handleFlyTo = (~zoom=12, ~lat, ~lon, ()) =>
+  let handleFlyTo = (~zoom=8, ~lat, ~lon, ()) =>
     dispatch(
       UpdateViewState(
         ReactMapGl.DeckGL.viewState(

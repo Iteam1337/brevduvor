@@ -69,15 +69,22 @@ let make = () => {
   let handlePositionSelect = station =>
     dispatch(SetCurrentPosition(station));
 
-  let handleDroneResponse = data =>
+  let handleDroneInitResponse = data =>
     switch (data) {
     | Belt.Result.Ok(droneId) =>
       switch (droneId) {
-      | Some(id) => dispatch(DroneId(id))
+      | Some(id) =>
+        Js.log2("i app: ", id);
+        dispatch(DroneId(id));
       | _ => ()
       }
     | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
     };
+
+  let handleDroneStatusSubscriptionData = data => {
+    Js.log2("Drone subscription data:", data);
+    ();
+  };
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -91,11 +98,14 @@ let make = () => {
         <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
         <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
-        {switch (currentPosition, currentDestination, droneId) {
-         | (Some(start), Some(stop), None) =>
-           <InitDrone start stop handleDroneResponse />
-         | (Some(_), Some(_), Some(droneId)) =>
-           <p> droneId->React.string </p>
+        {switch (currentPosition, currentDestination) {
+         | (Some(start), Some(stop)) =>
+           <InitDrone start stop handleDroneInitResponse />
+
+         | _ => React.null
+         }}
+        {switch (droneId) {
+         | Some(id) => <DronePosition id handleDroneStatusSubscriptionData />
          | _ => React.null
          }}
       </div>

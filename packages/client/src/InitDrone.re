@@ -14,8 +14,9 @@ type event =
 
 module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
+
 [@react.component]
-let make = (~start, ~stop, ~handleDroneResponse) => {
+let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let (state, dispatch) =
     React.useReducer(
       (_state, action) =>
@@ -47,7 +48,7 @@ let make = (~start, ~stop, ~handleDroneResponse) => {
          ) => {
          switch (result) {
          | Data(data) =>
-           /* Belt.Result.Ok(data##initDrone##id)->handleDroneResponse; */
+           //  Belt.Result.Ok(data##initDrone##id)->handleDroneInitResponse;
            switch (data##initDrone##id) {
            | Some(id) => dispatch(Id(id))
            | None => dispatch(NoId)
@@ -56,10 +57,11 @@ let make = (~start, ~stop, ~handleDroneResponse) => {
          | Called
          | NoData =>
            ();
-           Belt.Result.Error({js|Fick ingen data|js})->handleDroneResponse;
+           Belt.Result.Error({js|Fick ingen data|js})
+           ->handleDroneInitResponse;
          | Error(error) =>
            ();
-           Belt.Result.Error(error##message)->handleDroneResponse;
+           Belt.Result.Error(error##message)->handleDroneInitResponse;
          };
          Js.Promise.resolve();
        })
@@ -70,9 +72,9 @@ let make = (~start, ~stop, ~handleDroneResponse) => {
     {switch (state) {
      | `NoId =>
        <Button.Primary onClick=initDrone className="mt-4">
-         {React.string("Starta resa")}
+         {React.string({js| Förbered bokning |js})}
        </Button.Primary>
-     | `Id(id) => <StartDrone id handleDroneResponse />
+     | `Id(id) => <StartDrone id handleDroneInitResponse />
      }}
   </div>;
 };

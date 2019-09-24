@@ -1,13 +1,26 @@
 [%bs.raw {| require("mapbox-gl/dist/mapbox-gl.css") |}];
 
-/* Create an InMemoryCache */
+let httpLink = ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ());
+let wsLink = ApolloLinks.webSocketLink(~uri=Config.graphqlWsUri, ());
 let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
 
-/* Create an HTTP Link */
-let httpLink = ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ());
-
 let client =
-  ReasonApollo.createApolloClient(~link=httpLink, ~cache=inMemoryCache, ());
+  ReasonApollo.createApolloClient(
+    ~link=
+      ApolloLinks.split(
+        operation => {
+          let operationDefition =
+            ApolloUtilities.getMainDefinition(operation##query);
+          operationDefition##kind == "OperationDefinition"
+          &&
+          operationDefition##operation == "subscription";
+        },
+        wsLink,
+        httpLink,
+      ),
+    ~cache=inMemoryCache,
+    (),
+  );
 
 ReactDOMRe.renderToElementWithId(
   <ReasonApollo.Provider client>
