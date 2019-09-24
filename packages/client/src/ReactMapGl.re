@@ -11,7 +11,7 @@ module StaticMap = {
   [@bs.module "react-map-gl"] [@react.component]
   external make:
     (
-      ~children: React.element,
+      ~children: React.element=?,
       ~reuseMaps: bool,
       ~mapStyle: string,
       ~preventStyleDiffing: bool,
@@ -69,7 +69,7 @@ module IconLayer = {
         ~onHover,
         ~id,
         (),
-      ) => {
+      ) =>
     createLayer(
       layer(
         ~id,
@@ -93,7 +93,6 @@ module IconLayer = {
         ~data,
       ),
     );
-  };
 };
 
 module GeoJsonLayer = {
@@ -136,7 +135,8 @@ module GeoJsonLayer = {
     createLayer(
       layer(
         ~filled,
-        ~getLineColor=d => d##properties##color,
+        // ~getLineColor=d as _data => d##properties##color,
+        ~getLineColor=_data => [|255, 0, 0, 255|],
         ~getFillColor,
         ~highlightColor,
         ~autoHighlight,
@@ -150,12 +150,12 @@ module GeoJsonLayer = {
         ~data=
           data->Belt.Array.map(d =>
             {
-              "properties": {
-                "color": d##properties##color,
-              },
+              // "properties": {
+              //   "color": d##properties##color,
+              // },
               "geometry": {
-                "coordinates": d##geometry##coordinates,
-                "type": d##geometry##_type,
+                "coordinates": d##geoJson##coordinates,
+                "type": d##geoJson##_type,
               },
             }
           ),
@@ -214,7 +214,7 @@ module GeoCenter = {
 
   let median = ((x, y, z), total) => (x /. total, y /. total, z /. total);
 
-  let make = coords => {
+  let make = coords =>
     switch (coords->Belt.Array.length) {
     | 0
     | 1 => (0.0, 0.0)
@@ -242,7 +242,6 @@ module GeoCenter = {
 
       (radianToDegree(centralLongitude), radianToDegree(centralLatitude));
     };
-  };
 };
 
 module Viewport = {
@@ -278,9 +277,8 @@ module Viewport = {
   [@bs.val] [@bs.scope "window"] external innerWidth: int = "innerWidth";
   [@bs.val] [@bs.scope "window"] external innerHeight: int = "innerHeight";
 
-  let make = coords => {
+  let make = coords =>
     create(createOptions(~height=innerHeight, ~width=innerWidth - 384))
     ->fit(coords, fitOptions(~padding=100, ()))
     ->viewportFromJs;
-  };
 };
