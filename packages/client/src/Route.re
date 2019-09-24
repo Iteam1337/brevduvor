@@ -14,7 +14,6 @@
 
     module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRouteConfig);
 
-    [@react.component]
     let make = (~position, ~destination, ~callback) => {
       let [shouldSkip, setSkip] = React.useState(() => false);
 
@@ -30,5 +29,5 @@
         );
       ();
 
-      [simple, setSkip]
+      (simple, setSkip)
     } */

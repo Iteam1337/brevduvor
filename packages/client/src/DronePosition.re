@@ -29,7 +29,19 @@ let make = (~id, ~handleDroneStatusSubscriptionData as cb) => {
         )
     )
   ) {
-  | Data(data) => data->cb
+  | Data(data) =>
+    switch (data##dronePosition) {
+    | Some(d) =>
+      let dronePos: Shared.GeoPosition.t = {
+        alias: "Drone",
+        lat: d##currentPos##lat,
+        lon: d##currentPos##lon,
+      };
+
+      dronePos->cb;
+    | _ => Js.log("nodata")
+    }
+
   | NoData => Js.log("ingen data")
   | Loading => Js.log("Loading")
   | Error(e) => Js.log(e)

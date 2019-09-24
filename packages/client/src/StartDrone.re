@@ -45,15 +45,6 @@ let make = (~id, ~handleDroneInitResponse) => {
     |> ignore;
   };
 
-  /* when we have the Data, propagate sub-id to App as a Belt.Result.Ok */
-  // switch (simple) {
-  // | Data(dronePosition) =>
-  //   Js.log2("DronePosition", dronePosition);
-  //   <p> {js|Drönare kontaktad.|js}->React.string </p>;
-  // | Loading => <p> {js|Får kontakt med drönare|js}->React.string </p>
-  // | NoData => <p> {js|Ingen kontakt med drönaren ännu.|js}->React.string </p>
-  // | Error(_) => <p> {js|Någonting gick fel.|js}->React.string </p>
-  // };
   <div>
     <Button.Primary onClick=startDrone className="mt-4">
       {React.string({js| Boka |js})}

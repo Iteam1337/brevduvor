@@ -1,23 +1,8 @@
-type appState = {
-  currentPosition: option(Shared.GeoPosition.t),
-  availableDestinations: list(Shared.GeoPosition.t),
-  currentDestination: option(Shared.GeoPosition.t),
-  currentRoute: option(ReactMapGl.Waypoints.t),
-  droneId: option(string),
-};
-
-type appActions =
-  | SetCurrentPosition(Shared.GeoPosition.t)
-  | AvailableDestinations(list(Shared.GeoPosition.t))
-  | ChangeDestination(Shared.GeoPosition.t)
-  | SaveDestination(Shared.GeoPosition.t)
-  | SetCurrentRoute(ReactMapGl.Waypoints.t)
-  | DroneId(string);
-
-let initialState = {
+let initialState: UseAppReducer.appState = {
   currentPosition: None,
-  availableDestinations: [],
   currentDestination: None,
+  currentDroneStatus: None,
+  availableDestinations: [],
   currentRoute: None,
   droneId: None,
 };
@@ -27,6 +12,7 @@ let storuman: Shared.GeoPosition.t = {
   lat: 65.090833,
   lon: 17.1075,
 };
+
 let slussfors: Shared.GeoPosition.t = {
   alias: "Slussfors",
   lat: 65.4308046,
@@ -37,31 +23,11 @@ let stations = [storuman, slussfors];
 
 [@react.component]
 let make = () => {
-  let ({currentDestination, currentPosition, droneId, _}, dispatch) =
-    React.useReducer(
-      (state, action) =>
-        switch (action) {
-        | SetCurrentPosition(station) => {
-            ...state,
-            currentPosition: Some(station),
-          }
-        | AvailableDestinations(availableDestinations) => {
-            ...state,
-            availableDestinations,
-          }
-        | ChangeDestination(dest) => {
-            ...state,
-            currentDestination: Some(dest),
-          }
-        | SetCurrentRoute(route) => {...state, currentRoute: Some(route)}
-        | SaveDestination(dest) => {
-            ...state,
-            currentDestination: Some(dest),
-          }
-        | DroneId(droneId) => {...state, droneId: Some(droneId)}
-        },
-      initialState,
-    );
+  let (
+    {currentDestination, currentPosition, droneId, currentDroneStatus, _}: UseAppReducer.appState,
+    dispatch,
+  ) =
+    UseAppReducer.make(~initialState);
 
   let handleDestinationSelect = destination =>
     dispatch(ChangeDestination(destination));
@@ -73,18 +39,18 @@ let make = () => {
     switch (data) {
     | Belt.Result.Ok(droneId) =>
       switch (droneId) {
-      | Some(id) =>
-        Js.log2("i app: ", id);
-        dispatch(DroneId(id));
+      | Some(id) => dispatch(DroneId(id))
       | _ => ()
       }
     | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
     };
 
-  let handleDroneStatusSubscriptionData = data => {
-    Js.log2("Drone subscription data:", data);
-    ();
+  let handleDroneStatusSubscriptionData = (data: Shared.GeoPosition.t) => {
+    Js.log2("handleDroneData: ", data);
+    dispatch(UpdateDrone(data));
   };
+
+  Js.log2("current Drone Status: ", currentDroneStatus);
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -101,7 +67,6 @@ let make = () => {
         {switch (currentPosition, currentDestination) {
          | (Some(start), Some(stop)) =>
            <InitDrone start stop handleDroneInitResponse />
-
          | _ => React.null
          }}
         {switch (droneId) {

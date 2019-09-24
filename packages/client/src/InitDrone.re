@@ -48,7 +48,6 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
          ) => {
          switch (result) {
          | Data(data) =>
-           //  Belt.Result.Ok(data##initDrone##id)->handleDroneInitResponse;
            switch (data##initDrone##id) {
            | Some(id) => dispatch(Id(id))
            | None => dispatch(NoId)
