@@ -40,7 +40,7 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    dronePosition(id: String!): InitDroneResponse!
+    dronePosition(id: String!): InitDroneResponse! @isAuthenticated
   }
 `
 
