@@ -9,8 +9,8 @@ import bodyParser from 'body-parser'
 
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
-import { sign } from 'jsonwebtoken'
+// import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt'
+import { sign, verify } from 'jsonwebtoken'
 
 const JWT_SECRET = 'MY SUPER SECRET KEY'
 
@@ -85,18 +85,49 @@ passport.use(
   })
 )
 
-passport.use(
-  new JWTStrategy(
-    {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: JWT_SECRET,
-    },
-    (payload, cb) => {
-      console.log(payload)
-      cb(/* error */ null, /* user */ null, /* info */ null)
+const verifyTokenAgainstUserRecords = (token: string) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const payload = verify(token, JWT_SECRET) as User
+
+      usersDb.findById(payload.id, (err: any, user: any) => {
+        if (err) {
+          reject(err)
+        }
+        if (!user || user.password !== payload.password) {
+          reject(err)
+        }
+
+        resolve(user)
+      })
+    } catch (error) {
+      reject(error)
     }
-  )
-)
+  })
+}
+
+// passport.use(
+//   new JWTStrategy(
+//     {
+//       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+//       secretOrKey: JWT_SECRET,
+//     },
+//     (payload, cb) => {
+//       console.log('-->', payload)
+
+//       usersDb.findById(payload.id, (err: any, user: any) => {
+//         if (err) {
+//           return cb(err)
+//         }
+//         if (!user || user.password !== payload.password) {
+//           return cb(null, false, { message: 'Invalid token' })
+//         }
+
+//         return cb(null, user, { message: 'Authorised' })
+//       })
+//     }
+//   )
+// )
 
 passport.serializeUser((user: User, cb: (_: any, userId: number) => void) => {
   cb(null, user.id)
@@ -116,6 +147,20 @@ passport.deserializeUser(
 
 export const osrmInstance = new OsrmAPI()
 export const serverConfig = {
+  context: async ({ req }: any) => {
+    console.log(req.headers)
+    try {
+      const token = req.headers.authorization || ''
+
+      if (token) {
+        const user = await verifyTokenAgainstUserRecords(token)
+
+        return { user }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
   dataSources: () => ({
@@ -142,10 +187,6 @@ app.post('/status', droneStatus)
 
 app.post('/login', (req: any, res: any, next: any) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
-    console.log('err -->', err)
-    console.log('user -->', user)
-    console.log('user -->', info)
-
     if (err || !user) {
       return res.status(400).json({ ...info })
     }
@@ -159,6 +200,13 @@ app.post('/login', (req: any, res: any, next: any) => {
       return res.json({ ...info, token, username: user.name, id: user.id })
     })
   })(req, res, next)
+})
+
+app.use('/test', passport.authenticate('jwt', { session: false }), () => {
+  app.get('/test', (req: any, res: any) => {
+    console.log('/test req -->', req)
+    res.json({ message: 'ok' })
+  })
 })
 
 const httpServer = createServer(app)
