@@ -68,7 +68,7 @@ const interpolateCoords = async options => {
       await sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         id: options.id,
-        status: 'in progress',
+        status: 'InProgress',
         vehicle: 'Drone',
         batteryStatus,
         bearing: 0,
