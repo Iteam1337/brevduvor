@@ -5,6 +5,8 @@ import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 
 const typeDefs = gql`
+  directive @isAuthenticated on FIELD_DEFINITION
+
   scalar JSON
   scalar JSONObject
 
@@ -26,14 +28,15 @@ const typeDefs = gql`
     initDrone(
       start: DestinationInput!
       stop: DestinationInput!
-    ): InitDroneResponse!
+    ): InitDroneResponse! @isAuthenticated
 
-    startDrone(id: String!): StartDroneResponse!
+    startDrone(id: String!): StartDroneResponse! @isAuthenticated
   }
 
   type Query {
     allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
+      @isAuthenticated
   }
 
   type Subscription {
