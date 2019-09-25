@@ -9,7 +9,6 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
     const { resolve = defaultFieldResolver } = field
 
     field.resolve = async (...args: any[]) => {
-      // tslint:disable-next-line
       const { user } = args[2]
 
       if (user) {
