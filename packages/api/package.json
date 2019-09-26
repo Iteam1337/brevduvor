@@ -2,7 +2,6 @@
   "name": "api",
   "version": "0.0.0",
   "description": "Drone communication interface",
-  "author": "momentiris <momentiris@gmail.com>",
   "homepage": "https://github.com/Iteam1337/brevduvor#readme",
   "license": "ISC",
   "main": "./build/index.js",
@@ -19,6 +18,7 @@
   },
   "scripts": {
     "start": "tsc && node ./build/index.js",
+    "migrate": "DATABASE_URL=\"postgres://iteamadmin:;Sp1dermanKare0ke!1789@localhost:5432/brevduvor\" && node-pg-migrate",
     "generate": "graphql-codegen --config codegen.yml",
     "dev": "ts-node-dev --no-notify index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
@@ -67,6 +67,7 @@
     "got": "^9.6.0",
     "graphql-type-json": "^0.3.0",
     "jsonwebtoken": "^8.5.1",
+    "node-pg-migrate": "^3.23.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
