@@ -6,6 +6,15 @@ const config = require('@iteam/config')({
     OSRM_URL: 'http://localhost:5000',
     ELASTIC_URL: 'http://localhost:9200',
     WEBHOOK_URL: 'http://localhost:4000/status',
+    DB: {
+      USER: '',
+      PASSWORD: '',
+      DATABASE: '',
+      PORT: 5432,
+      HOST: 'localhost',
+      MAX: 20,
+      IDLE_TIMEOUT_MILLIS: 30000,
+    },
   },
 })
 
@@ -15,4 +24,5 @@ export default {
   OSRM_URL: config.get('OSRM_URL'),
   ELASTIC_URL: config.get('ELASTIC_URL'),
   WEBHOOK_URL: config.get('WEBHOOK_URL'),
+  DB: config.get('DB'),
 }
