@@ -1,6 +1,5 @@
-import passport from 'passport'
 import { sign, verify } from 'jsonwebtoken'
-import { Strategy as LocalStrategy } from 'passport-local'
+import { AuthPayload } from '../__generated__/brevduvor'
 
 const JWT_SECRET = 'MY SUPER SECRET KEY'
 
@@ -61,23 +60,6 @@ const usersDb = new Users()
 
 /* END DUMMY IMPLEMENTATION OF USERS*/
 
-export const login = (req: any, res: any, next: any) => {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({ ...info })
-    }
-
-    req.login(user, { session: false }, (err: any) => {
-      if (err) {
-        return res.status(500).json(err)
-      }
-
-      const token = sign(user, JWT_SECRET)
-      return res.json({ ...info, token, username: user.name, id: user.id })
-    })
-  })(req, res, next)
-}
-
 export const verifyTokenAgainstUserRecords = (token: string) =>
   new Promise((resolve, reject) => {
     try {
@@ -100,37 +82,49 @@ export const verifyTokenAgainstUserRecords = (token: string) =>
     }
   })
 
-export const registerPassport = () => {
-  // Configure passport
-  passport.use(
-    new LocalStrategy({}, (username: string, password: string, cb: any) => {
-      usersDb.find(username, (err: any, user: any) => {
+const authenticate = (username: string, password: string) => {
+  return new Promise<User>((resolve, reject) => {
+    try {
+      usersDb.find(username, (err, user) => {
         if (err) {
-          return cb(err)
+          reject({ message: 'Something went wrong' })
         }
 
-        if (!user || user.password !== password) {
-          return cb(null, false, { message: 'Incorrect username or password' })
+        if (!user) {
+          reject({ message: 'Could not find user' })
         }
 
-        return cb(null, user, { message: 'Logged in successfully' })
+        if (user.password !== password) {
+          reject({ message: 'Password or username is incorrect' })
+        }
+
+        resolve(user as User)
       })
-    })
-  )
-
-  passport.serializeUser((user: User, cb: (_: any, userId: number) => void) => {
-    cb(null, user.id)
-  })
-
-  passport.deserializeUser(
-    (id: number, cb: (error: any, user: User | null) => void) => {
-      usersDb.findById(id, (err, user) => {
-        if (err) {
-          return cb(err, null)
-        }
-
-        cb(null, user)
-      })
+    } catch (error) {
+      reject(error)
     }
-  )
+  })
+}
+
+export const login = (
+  username: string,
+  password: string
+): Promise<AuthPayload> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user: User = await authenticate(username, password)
+      console.log('Login user -->', user)
+      if (user) {
+        const token = sign(user, JWT_SECRET)
+        resolve({
+          token,
+          username: user.name,
+          id: String(user.id),
+        } as AuthPayload)
+      }
+    } catch (error) {
+      console.log('Login error -->', error)
+      reject(error)
+    }
+  })
 }
