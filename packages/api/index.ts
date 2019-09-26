@@ -9,8 +9,6 @@ import bodyParser from 'body-parser'
 
 import passport from 'passport'
 
-console.log(config)
-
 import {
   login,
   verifyTokenAgainstUserRecords,
