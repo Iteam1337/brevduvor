@@ -79,11 +79,19 @@ export type InitDroneResponse = {
 
 
 
+export type LogoutResponse = {
+   __typename?: 'LogoutResponse',
+  status: Scalars['String'],
+  message: Scalars['String'],
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   initDrone: InitDroneResponse,
   startDrone: StartDroneResponse,
   login: AuthPayload,
+  register: AuthPayload,
+  logout: LogoutResponse,
 };
 
 
@@ -101,6 +109,13 @@ export type MutationStartDroneArgs = {
 export type MutationLoginArgs = {
   username: Scalars['String'],
   password: Scalars['String']
+};
+
+
+export type MutationRegisterArgs = {
+  username: Scalars['String'],
+  password: Scalars['String'],
+  confirmPassword: Scalars['String']
 };
 
 export type Query = {
@@ -220,6 +235,7 @@ export type ResolversTypes = {
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>,
   AuthPayload: ResolverTypeWrapper<AuthPayload>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
+  LogoutResponse: ResolverTypeWrapper<LogoutResponse>,
   Subscription: ResolverTypeWrapper<{}>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   CacheControlScope: CacheControlScope,
@@ -246,6 +262,7 @@ export type ResolversParentTypes = {
   StartDroneResponse: StartDroneResponse,
   AuthPayload: AuthPayload,
   ID: Scalars['ID'],
+  LogoutResponse: LogoutResponse,
   Subscription: {},
   Boolean: Scalars['Boolean'],
   CacheControlScope: CacheControlScope,
@@ -309,10 +326,17 @@ export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<Resolver
   name: 'JSONObject'
 }
 
+export type LogoutResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LogoutResponse'] = ResolversParentTypes['LogoutResponse']> = {
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   initDrone?: Resolver<ResolversTypes['InitDroneResponse'], ParentType, ContextType, RequireFields<MutationInitDroneArgs, 'start' | 'stop'>>,
   startDrone?: Resolver<ResolversTypes['StartDroneResponse'], ParentType, ContextType, RequireFields<MutationStartDroneArgs, 'id'>>,
   login?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'username' | 'password'>>,
+  register?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'username' | 'password' | 'confirmPassword'>>,
+  logout?: Resolver<ResolversTypes['LogoutResponse'], ParentType, ContextType>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -350,6 +374,7 @@ export type Resolvers<ContextType = any> = {
   InitDroneResponse?: InitDroneResponseResolvers<ContextType>,
   JSON?: GraphQLScalarType,
   JSONObject?: GraphQLScalarType,
+  LogoutResponse?: LogoutResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Route?: RouteResolvers<ContextType>,

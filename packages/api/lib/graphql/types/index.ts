@@ -30,6 +30,11 @@ const typeDefs = gql`
     username: String
   }
 
+  type LogoutResponse {
+    status: String!
+    message: String!
+  }
+
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -39,6 +44,14 @@ const typeDefs = gql`
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
     login(username: String!, password: String!): AuthPayload!
+
+    register(
+      username: String!
+      password: String!
+      confirmPassword: String!
+    ): AuthPayload!
+
+    logout: LogoutResponse!
   }
 
   type Query {

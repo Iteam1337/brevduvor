@@ -1,3 +1,3 @@
 export * from './initDrone'
 export * from './startDrone'
-export * from './login'
+export * from './auth'
