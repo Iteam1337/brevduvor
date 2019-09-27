@@ -17,6 +17,14 @@ export type Scalars = {
 };
 
 
+
+export type AuthPayload = {
+   __typename?: 'AuthPayload',
+  id: Scalars['ID'],
+  token?: Maybe<Scalars['String']>,
+  username?: Maybe<Scalars['String']>,
+};
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE'
@@ -58,9 +66,9 @@ export type Geometry = {
 
 export type InitDroneResponse = {
    __typename?: 'InitDroneResponse',
-  id?: Maybe<Scalars['String']>,
-  start?: Maybe<Coordinates>,
-  stop?: Maybe<Coordinates>,
+  id: Scalars['String'],
+  start: Coordinates,
+  stop: Coordinates,
   currentPos: Coordinates,
   bearing?: Maybe<Scalars['Int']>,
   status?: Maybe<Scalars['String']>,
@@ -71,10 +79,19 @@ export type InitDroneResponse = {
 
 
 
+export type LogoutResponse = {
+   __typename?: 'LogoutResponse',
+  status: Scalars['String'],
+  message: Scalars['String'],
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   initDrone: InitDroneResponse,
   startDrone: StartDroneResponse,
+  login: AuthPayload,
+  register: AuthPayload,
+  logout: LogoutResponse,
 };
 
 
@@ -86,6 +103,19 @@ export type MutationInitDroneArgs = {
 
 export type MutationStartDroneArgs = {
   id: Scalars['String']
+};
+
+
+export type MutationLoginArgs = {
+  username: Scalars['String'],
+  password: Scalars['String']
+};
+
+
+export type MutationRegisterArgs = {
+  username: Scalars['String'],
+  password: Scalars['String'],
+  confirmPassword: Scalars['String']
 };
 
 export type Query = {
@@ -112,7 +142,7 @@ export type StartDroneResponse = {
 
 export type Subscription = {
    __typename?: 'Subscription',
-  dronePosition?: Maybe<InitDroneResponse>,
+  dronePosition: InitDroneResponse,
 };
 
 
@@ -203,6 +233,9 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>,
+  AuthPayload: ResolverTypeWrapper<AuthPayload>,
+  ID: ResolverTypeWrapper<Scalars['ID']>,
+  LogoutResponse: ResolverTypeWrapper<LogoutResponse>,
   Subscription: ResolverTypeWrapper<{}>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   CacheControlScope: CacheControlScope,
@@ -227,6 +260,9 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates,
   Int: Scalars['Int'],
   StartDroneResponse: StartDroneResponse,
+  AuthPayload: AuthPayload,
+  ID: Scalars['ID'],
+  LogoutResponse: LogoutResponse,
   Subscription: {},
   Boolean: Scalars['Boolean'],
   CacheControlScope: CacheControlScope,
@@ -235,8 +271,16 @@ export type ResolversParentTypes = {
   Upload: Scalars['Upload'],
 };
 
+export type IsAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = {   maxAge?: Maybe<Maybe<Scalars['Int']>>,
   scope?: Maybe<Maybe<CacheControlScope>> }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+};
 
 export type CoordinatesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']> = {
   lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
@@ -263,9 +307,9 @@ export type GeometryResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type InitDroneResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['InitDroneResponse'] = ResolversParentTypes['InitDroneResponse']> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  start?: Resolver<Maybe<ResolversTypes['Coordinates']>, ParentType, ContextType>,
-  stop?: Resolver<Maybe<ResolversTypes['Coordinates']>, ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  start?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>,
+  stop?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>,
   currentPos?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>,
   bearing?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -282,9 +326,17 @@ export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<Resolver
   name: 'JSONObject'
 }
 
+export type LogoutResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['LogoutResponse'] = ResolversParentTypes['LogoutResponse']> = {
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   initDrone?: Resolver<ResolversTypes['InitDroneResponse'], ParentType, ContextType, RequireFields<MutationInitDroneArgs, 'start' | 'stop'>>,
   startDrone?: Resolver<ResolversTypes['StartDroneResponse'], ParentType, ContextType, RequireFields<MutationStartDroneArgs, 'id'>>,
+  login?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'username' | 'password'>>,
+  register?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'username' | 'password' | 'confirmPassword'>>,
+  logout?: Resolver<ResolversTypes['LogoutResponse'], ParentType, ContextType>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -301,7 +353,7 @@ export type StartDroneResponseResolvers<ContextType = any, ParentType extends Re
 };
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  dronePosition?: SubscriptionResolver<Maybe<ResolversTypes['InitDroneResponse']>, "dronePosition", ParentType, ContextType, RequireFields<SubscriptionDronePositionArgs, 'id'>>,
+  dronePosition?: SubscriptionResolver<ResolversTypes['InitDroneResponse'], "dronePosition", ParentType, ContextType, RequireFields<SubscriptionDronePositionArgs, 'id'>>,
 };
 
 export type TripResolvers<ContextType = any, ParentType extends ResolversParentTypes['Trip'] = ResolversParentTypes['Trip']> = {
@@ -314,6 +366,7 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
 }
 
 export type Resolvers<ContextType = any> = {
+  AuthPayload?: AuthPayloadResolvers<ContextType>,
   Coordinates?: CoordinatesResolvers<ContextType>,
   Destination?: DestinationResolvers<ContextType>,
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>,
@@ -321,6 +374,7 @@ export type Resolvers<ContextType = any> = {
   InitDroneResponse?: InitDroneResponseResolvers<ContextType>,
   JSON?: GraphQLScalarType,
   JSONObject?: GraphQLScalarType,
+  LogoutResponse?: LogoutResponseResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Route?: RouteResolvers<ContextType>,
@@ -337,6 +391,7 @@ export type Resolvers<ContextType = any> = {
 */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
+  isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>,
   cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>,
 };
 

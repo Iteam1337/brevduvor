@@ -7,15 +7,10 @@ import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
 
-import passport from 'passport'
-
-import {
-  login,
-  verifyTokenAgainstUserRecords,
-  registerPassport,
-} from './lib/services/auth'
+import { verifyTokenAgainstUserRecords } from './lib/services/auth'
 
 export const osrmInstance = new OsrmAPI()
+
 export const serverConfig = {
   context: async ({ req }: any) => {
     try {
@@ -40,10 +35,6 @@ export const serverConfig = {
 
 const app = express()
 
-registerPassport()
-app.use(passport.initialize())
-app.use(passport.session())
-
 const server = new ApolloServer(serverConfig)
 
 server.applyMiddleware({ app })
@@ -55,8 +46,6 @@ app.use(bodyParser.json()).use(
 )
 
 app.post('/status', droneStatus)
-
-app.post('/login', login)
 
 const httpServer = createServer(app)
 server.installSubscriptionHandlers(httpServer)
