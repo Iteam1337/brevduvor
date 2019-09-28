@@ -1,8 +1,4 @@
-import {
-  SchemaDirectiveVisitor /*, ValidationError*/,
-  ValidationError,
-  // ValidationError,
-} from 'apollo-server-express'
+import { SchemaDirectiveVisitor, ValidationError } from 'apollo-server-express'
 import {
   GraphQLInputField,
   GraphQLField,
@@ -12,6 +8,17 @@ import {
   GraphQLString,
   GraphQLScalarType,
 } from 'graphql'
+
+// const minLength = (
+//   value: string,
+//   args: number,
+//   cb: (err: string | null) => void
+// ) => {
+//   if (value.length >= Number(args)) {
+//     return true
+//   }
+//   return false
+// }
 
 const validations = {
   minLength: {
@@ -26,17 +33,14 @@ const validations = {
     },
   },
 
-  format: {
-    func(value: string, args: any) {
-      if (args === 'EMAIL') {
-        return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-          value
-        )
-      }
-      return false
+  isEmail: {
+    func(value: string, _: any) {
+      return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        value
+      )
     },
-    error(value: any, args: any) {
-      return `Format of ${value} does not meet criteria of ${args}`
+    error(value: any, _: any) {
+      return `${value} is not an email`
     },
   },
 }
@@ -117,13 +121,24 @@ const run = (
   }[],
   label: string
 ) => {
-  const isValid: boolean[] = constraints.map(constraint => {
-    return validations[constraint.name].func(value, constraint.value)
+  label
+  const errors: string[] = []
+
+  const isValid: boolean = constraints.every(constraint => {
+    const curr = validations[constraint.name]
+
+    const result = curr.func(value, constraint.value)
+
+    if (!result) {
+      errors.push(curr.error(value, constraint.value))
+    }
+
+    return result
   })
 
-  if (isValid.every(s => s)) {
-    return value
-  } else {
-    throw new ValidationError(label + ' validation failed ')
+  if (!isValid && errors.length > 0) {
+    throw new ValidationError(errors.join('; '))
   }
+
+  return value
 }

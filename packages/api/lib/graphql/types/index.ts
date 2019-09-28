@@ -8,13 +8,8 @@ const typeDefs = gql`
   directive @isAuthenticated on FIELD_DEFINITION
   directive @validation(
     minLength: Int
-    format: Formats
+    isEmail: Boolean
   ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
-
-  enum Formats {
-    EMAIL
-    DATE
-  }
 
   scalar JSON
   scalar JSONObject
@@ -45,7 +40,7 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @validation(minLength: 5, format: EMAIL)
+    username: String! @validation(minLength: 5, isEmail: true)
     password: String!
     confirmPassword: String!
   }
