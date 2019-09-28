@@ -6,6 +6,15 @@ import * as initDrone from './initDrone'
 
 const typeDefs = gql`
   directive @isAuthenticated on FIELD_DEFINITION
+  directive @validation(
+    minLength: Int
+    format: Formats
+  ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+  enum Formats {
+    EMAIL
+    DATE
+  }
 
   scalar JSON
   scalar JSONObject
@@ -35,6 +44,12 @@ const typeDefs = gql`
     message: String!
   }
 
+  input RegisterInput {
+    username: String! @validation(minLength: 5, format: EMAIL)
+    password: String!
+    confirmPassword: String!
+  }
+
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -45,11 +60,7 @@ const typeDefs = gql`
 
     login(username: String!, password: String!): AuthPayload!
 
-    register(
-      username: String!
-      password: String!
-      confirmPassword: String!
-    ): AuthPayload!
+    register(input: RegisterInput!): AuthPayload!
 
     logout: LogoutResponse!
   }
