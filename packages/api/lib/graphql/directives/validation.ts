@@ -7,29 +7,43 @@ import {
   GraphQLNonNull,
   GraphQLString,
   GraphQLScalarType,
+  isWrappingType,
+  isNamedType,
 } from 'graphql'
-
-// const minLength = (
-//   value: string,
-//   args: number,
-//   cb: (err: string | null) => void
-// ) => {
-//   if (value.length >= Number(args)) {
-//     return true
-//   }
-//   return false
-// }
 
 const validations = {
   minLength: {
-    func(value: string, args: number) {
+    func(value: string, args: any) {
       if (value.length >= Number(args)) {
         return true
       }
       return false
     },
-    error(value: any, args: any) {
-      return `Minimum length is ${args}, got ${value.length}`
+    error(label: any, value: any, args: any) {
+      return `${label}: Minimum length is ${args}, got ${value.length}`
+    },
+  },
+
+  maxLength: {
+    func(value: string, args: any) {
+      if (value.length <= Number(args)) {
+        return true
+      }
+      return false
+    },
+    error(label: any, value: any, args: any) {
+      return `${label}: Maximum length is ${args}, got ${value.length}`
+    },
+  },
+
+  isStrong: {
+    func(value: string, _args: any) {
+      const strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
+
+      return strong.test(value)
+    },
+    error(label: any, value: any, _: any) {
+      return `${label}: The following criteria must be met; one number, one special character, one uppercase letter, one lowercase letter and at least 8 characters long. Got ${value}`
     },
   },
 
@@ -39,21 +53,21 @@ const validations = {
         value
       )
     },
-    error(value: any, _: any) {
-      return `${value} is not an email`
+    error(label: any, value: any, _: any) {
+      return `${label}: ${value} is not an email`
     },
   },
 }
 
-export class ValidationDirective extends SchemaDirectiveVisitor {
-  visitFieldDefinition(field: any) {
-    field
-  }
+// Enforcing value restrictions
+// https://www.apollographql.com/docs/apollo-server/schema/creating-directives/#enforcing-value-restrictions
 
+export class ValidationDirective extends SchemaDirectiveVisitor {
   visitInputFieldDefinition(field: GraphQLInputField) {
     const constraints = this.getDirectiveArgs(field)
     const label = field.astNode && field.astNode.name.value
 
+    // Overwrite the scalar type with our validatable implementation
     switch (field.type.toString()) {
       case 'String!': {
         field.type = new GraphQLNonNull(
@@ -66,6 +80,22 @@ export class ValidationDirective extends SchemaDirectiveVisitor {
         field.type = new ValidatableString(label, constraints)
         break
       }
+    }
+
+    this.patchIntrospection(field)
+  }
+
+  // Hack to make introspection work
+  patchIntrospection(field: GraphQLInputField) {
+    const typeMap = this.schema.getTypeMap()
+    let type = field.type
+
+    if (isWrappingType(type)) {
+      type = type.ofType
+    }
+
+    if (isNamedType(type) && !typeMap[type.name]) {
+      typeMap[type.name] = type
     }
   }
 
@@ -124,18 +154,25 @@ const run = (
   label
   const errors: string[] = []
 
-  const isValid: boolean = constraints.every(constraint => {
-    const curr = validations[constraint.name]
+  const isValid: boolean = constraints
+    .map(constraint => {
+      const curr = validations[constraint.name]
 
-    const result = curr.func(value, constraint.value)
+      const result = curr.func(value, constraint.value)
 
-    if (!result) {
-      errors.push(curr.error(value, constraint.value))
-    }
+      if (!result) {
+        errors.push(curr.error(label, value, constraint.value))
+      }
 
-    return result
-  })
+      return result
+    })
+    .map(r => {
+      console.log(' r -->', r)
+      return r
+    })
+    .every(result => result)
 
+  console.log(' errors -->', errors)
   if (!isValid && errors.length > 0) {
     throw new ValidationError(errors.join('; '))
   }

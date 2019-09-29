@@ -8,8 +8,10 @@ const typeDefs = gql`
   directive @isAuthenticated on FIELD_DEFINITION
   directive @validation(
     minLength: Int
+    maxLength: Int
     isEmail: Boolean
-  ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+    isStrong: Boolean
+  ) on INPUT_FIELD_DEFINITION
 
   scalar JSON
   scalar JSONObject
@@ -40,9 +42,10 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @validation(minLength: 5, isEmail: true)
-    password: String!
+    username: String! @validation(minLength: 5, maxLength: 255, isEmail: true)
+    password: String! @validation(minLength: 6, maxLength: 255, isStrong: true)
     confirmPassword: String!
+      @validation(minLength: 6, maxLength: 255, isStrong: true)
   }
 
   type Mutation {

@@ -17,7 +17,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
         return result
       } else {
         throw new AuthenticationError(
-          'Invalid Token. You must be logged in to view this resource'
+          'You must be logged in to access this resource'
         )
       }
     }

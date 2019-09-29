@@ -13,10 +13,8 @@ export const login: MutationResolvers['login'] = async (
   }
 }
 
-export const register: MutationResolvers['register'] = async (
-  _,
-  { username, password, confirmPassword }
-) => {
+export const register: MutationResolvers['register'] = async (_, { input }) => {
+  const { username, password, confirmPassword } = input
   try {
     return await auth.register(username, password, confirmPassword)
   } catch (error) {
