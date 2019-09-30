@@ -24,16 +24,17 @@ let stations = [storuman, slussfors];
 [@react.component]
 let make = () => {
   let (
-    {currentDestination, currentPosition, droneId, _}: UseAppReducer.appState,
+    {currentDestination, currentPosition, droneId, droneStatus, _}: UseAppReducer.appState,
     dispatch,
   ) =
-    UseAppReducer.make(~initialState);
+    UseAppReducer.use(~initialState);
+
+  Js.log2("droneStatus: ", droneStatus);
 
   let handleDestinationSelect = destination =>
-    dispatch(ChangeDestination(destination));
+    ChangeDestination(destination)->dispatch;
 
-  let handlePositionSelect = station =>
-    dispatch(SetCurrentPosition(station));
+  let handlePositionSelect = station => SetCurrentPosition(station)->dispatch;
 
   let handleDroneInitResponse = data =>
     switch (data) {
@@ -41,11 +42,8 @@ let make = () => {
     | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
     };
 
-  let _handleDroneStatusSubscriptionData = data => {
-    Js.log2("handleDroneData: ", data);
-    dispatch(UpdateDrone(data));
-    None;
-  };
+  let handleDroneStatusResponse = data =>
+    UpdateDrone(data->Shared.Drone.make)->dispatch;
 
   let dronePos:
     ReasonApolloHooks.Subscription.variant(
@@ -58,7 +56,7 @@ let make = () => {
       switch (dronePos) {
       | Data(data) =>
         switch (data##dronePosition) {
-        | Some(d) => UpdateDrone(d->Shared.Drone.make)->dispatch
+        | Some(d) => d->handleDroneStatusResponse
         | _ => ()
         }
 

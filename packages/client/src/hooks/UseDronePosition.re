@@ -3,9 +3,6 @@ module DronePositionSubscriptionConfig = [%graphql
   subscription DronePositionSubscription($id: String!) {
     dronePosition(id: $id) {
       id
-      bearing
-      departure
-      eta
       status
       batteryStatus
       currentPos {
@@ -23,6 +20,16 @@ module DronePositionSubscription =
 type droneState = Shared.GeoPosition.t;
 
 let initialState: droneState = {alias: "", lat: 0.0, lon: 0.0};
+
+let state: Shared.Drone.t = {
+  batteryStatus: 100,
+  id: "",
+  status: Shared.Drone.Status.InProgress,
+  currentPos: {
+    lat: 0.0,
+    lon: 0.0,
+  },
+};
 
 let use = (~id=?, ()) => {
   let (simple, _full) =

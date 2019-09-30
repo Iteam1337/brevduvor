@@ -16,7 +16,7 @@ type appActions =
   | UpdateDrone(Shared.Drone.t)
   | DroneId(string);
 
-let make = (~initialState) => {
+let use = (~initialState) => {
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>

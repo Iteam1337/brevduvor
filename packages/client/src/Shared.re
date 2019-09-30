@@ -5,6 +5,7 @@ module GeoPosition = {
     lat: float,
     lon: float,
   };
+
   [@bs.deriving jsConverter]
   type coords = {
     lat: float,
@@ -32,9 +33,6 @@ module Drone = {
 
   type t = {
     batteryStatus: int,
-    bearing: int,
-    departure: string,
-    eta: string,
     id: string,
     status: Status.t,
     currentPos: GeoPosition.coords,
@@ -43,9 +41,6 @@ module Drone = {
   let make = data => {
     batteryStatus: data##batteryStatus,
     currentPos: data##currentPos->GeoPosition.coordsFromJs,
-    bearing: data##bearing,
-    departure: data##departure,
-    eta: data##eta,
     id: data##id,
     status: data##status->Status.ofString,
   };
