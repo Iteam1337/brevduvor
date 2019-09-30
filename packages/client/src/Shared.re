@@ -38,10 +38,25 @@ module Drone = {
     currentPos: GeoPosition.coords,
   };
 
+  let empty = {
+    batteryStatus: 0,
+    id: "none",
+    status: Other("Empty"),
+    currentPos: {
+      lat: 0.0,
+      lon: 0.0,
+    },
+  };
+
   let make = data => {
-    batteryStatus: data##batteryStatus,
-    currentPos: data##currentPos->GeoPosition.coordsFromJs,
-    id: data##id,
-    status: data##status->Status.ofString,
+    switch (data) {
+    | Some(data) => {
+        batteryStatus: data##batteryStatus,
+        currentPos: data##currentPos->GeoPosition.coordsFromJs,
+        id: data##id,
+        status: data##status->Status.ofString,
+      }
+    | None => empty
+    };
   };
 };

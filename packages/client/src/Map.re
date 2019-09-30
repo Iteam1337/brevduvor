@@ -38,8 +38,9 @@ let make =
     (
       ~initialViewState=?,
       ~children as _c=?,
-      ~currentPosition=?,
+      ~departingPosition=?,
       ~currentDestination=?,
+      ~currentPosition=?,
     ) => {
   let (state, dispatch) =
     React.useReducer(
@@ -68,7 +69,7 @@ let make =
           GetRoute.make(
             ~start=
               Shared.GeoPosition.tToJs(
-                currentPosition->getWithDefault(Shared.GeoPosition.empty),
+                departingPosition->getWithDefault(Shared.GeoPosition.empty),
               ),
             ~stop=
               Shared.GeoPosition.tToJs(
@@ -107,7 +108,7 @@ let make =
 
   React.useEffect1(
     () => {
-      switch (currentPosition, currentDestination) {
+      switch (departingPosition, currentDestination) {
       | (Some({Shared.GeoPosition.lon, lat}), None) =>
         handleFlyTo(~lat, ~lon, ())
       | (None, Some({Shared.GeoPosition.lon, lat})) =>
@@ -120,7 +121,7 @@ let make =
 
       None;
     },
-    [|currentPosition, currentDestination|],
+    [|departingPosition, currentDestination|],
   );
 
   let layers =
@@ -146,7 +147,7 @@ let make =
       reuseMaps=true
       preventStyleDiffing=true
       mapboxApiAccessToken=Config.mapboxToken>
-      <MarkerLayer currentPosition currentDestination />
+      <MarkerLayer departingPosition currentDestination currentPosition />
     </StaticMap>
   </DeckGL>;
 };

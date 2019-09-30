@@ -1,7 +1,6 @@
 let initialState: UseAppReducer.appState = {
-  currentPosition: None,
+  departingPosition: None,
   currentDestination: None,
-  droneStatus: None,
   availableDestinations: [],
   currentRoute: None,
   droneId: None,
@@ -24,12 +23,10 @@ let stations = [storuman, slussfors];
 [@react.component]
 let make = () => {
   let (
-    {currentDestination, currentPosition, droneId, droneStatus, _}: UseAppReducer.appState,
+    {currentDestination, departingPosition, droneId, _}: UseAppReducer.appState,
     dispatch,
   ) =
     UseAppReducer.use(~initialState);
-
-  Js.log2("droneStatus: ", droneStatus);
 
   let handleDestinationSelect = destination =>
     ChangeDestination(destination)->dispatch;
@@ -42,33 +39,11 @@ let make = () => {
     | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
     };
 
-  let handleDroneStatusResponse = data =>
-    UpdateDrone(data->Shared.Drone.make)->dispatch;
-
   let dronePos:
     ReasonApolloHooks.Subscription.variant(
       UseDronePosition.DronePositionSubscriptionConfig.t,
     ) =
     UseDronePosition.use(~id=?droneId, ());
-
-  React.useEffect1(
-    () => {
-      switch (dronePos) {
-      | Data(data) =>
-        switch (data##dronePosition) {
-        | Some(d) => d->handleDroneStatusResponse
-        | _ => ()
-        }
-
-      | NoData
-      | Loading
-      | Error(_) => ()
-      };
-
-      None;
-    },
-    [|dronePos|],
-  );
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -82,15 +57,32 @@ let make = () => {
         <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
         <label> "Till:"->React.string </label>
         <Destination handleDestinationSelect />
-        {switch (currentPosition, currentDestination) {
+        {switch (departingPosition, currentDestination) {
          | (Some(start), Some(stop)) =>
            <InitDrone start stop handleDroneInitResponse />
          | _ => React.null
          }}
       </div>
     </div>
-    <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
-      <Map ?currentPosition ?currentDestination> <div /> </Map>
-    </div>
+    {switch (dronePos) {
+     | Data(data) when data##dronePosition->Belt.Option.isSome =>
+       let {Shared.Drone.currentPos, _} =
+         data##dronePosition->Shared.Drone.make;
+
+       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+         <Map
+           ?departingPosition
+           ?currentDestination
+           currentPosition=currentPos
+         />
+       </div>;
+     | Data(_)
+     | NoData
+     | Loading
+     | Error(_) =>
+       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+         <Map ?currentDestination ?departingPosition />
+       </div>
+     }}
   </div>;
 };

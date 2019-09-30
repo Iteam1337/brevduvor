@@ -1,7 +1,6 @@
 type appState = {
-  currentPosition: option(Shared.GeoPosition.t),
+  departingPosition: option(Shared.GeoPosition.t),
   currentDestination: option(Shared.GeoPosition.t),
-  droneStatus: option(Shared.Drone.t),
   availableDestinations: list(Shared.GeoPosition.t),
   currentRoute: option(ReactMapGl.Waypoints.t),
   droneId: option(string),
@@ -13,7 +12,6 @@ type appActions =
   | ChangeDestination(Shared.GeoPosition.t)
   | SaveDestination(Shared.GeoPosition.t)
   | SetCurrentRoute(ReactMapGl.Waypoints.t)
-  | UpdateDrone(Shared.Drone.t)
   | DroneId(string);
 
 let use = (~initialState) => {
@@ -23,7 +21,7 @@ let use = (~initialState) => {
         switch (action) {
         | SetCurrentPosition(station) => {
             ...state,
-            currentPosition: Some(station),
+            departingPosition: Some(station),
           }
         | AvailableDestinations(availableDestinations) => {
             ...state,
@@ -39,7 +37,6 @@ let use = (~initialState) => {
             currentDestination: Some(dest),
           }
         | DroneId(droneId) => {...state, droneId: Some(droneId)}
-        | UpdateDrone(droneData) => {...state, droneStatus: Some(droneData)}
         },
       initialState,
     );
