@@ -82,6 +82,14 @@ const interpolateCoords = async options => {
   nextCoord()
 }
 
+function getDrones(_, res) {
+  const keys = cache.keys()
+
+  const drones = keys.map(key => cache.get(key))
+
+  res.json(drones)
+}
+
 async function start({ body: { webhookUrl, id } }, res) {
   try {
     const { start, stop } = cache.get(id)
@@ -104,7 +112,6 @@ async function start({ body: { webhookUrl, id } }, res) {
       webhookUrl,
       id,
     })
-
     res.send({ status: 200 })
   } catch (err) {}
 }
@@ -142,7 +149,7 @@ async function init({ body: { start, stop } }, res) {
         .format(),
     }
 
-    cache.put(droneId, { start, stop })
+    cache.put(droneId, { id: droneId, start, stop })
 
     res.send(droneData)
   } catch (err) {
@@ -157,4 +164,5 @@ async function sendDroneStatus(webhookUrl, postBody) {
 module.exports = {
   start,
   init,
+  getDrones,
 }

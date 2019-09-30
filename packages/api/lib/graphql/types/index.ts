@@ -3,6 +3,7 @@ import * as dronePosition from './dronePosition'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
+import * as drones from './drones'
 
 const typeDefs = gql`
   scalar JSON
@@ -34,10 +35,11 @@ const typeDefs = gql`
   type Query {
     allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
+    drones: [DroneStatusResponse]!
   }
 
   type Subscription {
-    dronePosition(id: String!): InitDroneResponse
+    dronePosition(id: String!): DroneStatusResponse
   }
 `
 
@@ -47,4 +49,5 @@ export default [
   destinations.typeDefs,
   startDrone.typeDefs,
   initDrone.typeDefs,
+  drones.typeDefs,
 ]

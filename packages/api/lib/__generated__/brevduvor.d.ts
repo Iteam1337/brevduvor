@@ -56,6 +56,19 @@ export type DronePositionResponse = {
   batteryStatus?: Maybe<Scalars['Int']>
 }
 
+export type DroneStatusResponse = {
+  __typename?: 'DroneStatusResponse'
+  id: Scalars['String']
+  start: Coordinates
+  stop: Coordinates
+  currentPos: Coordinates
+  bearing: Scalars['Int']
+  status: Scalars['String']
+  batteryStatus: Scalars['Int']
+  departure: Scalars['String']
+  eta: Scalars['String']
+}
+
 export type Geometry = {
   __typename?: 'Geometry'
   type: Scalars['String']
@@ -94,6 +107,7 @@ export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
   getRoute: Route
+  drones: Array<Maybe<DroneStatusResponse>>
 }
 
 export type QueryGetRouteArgs = {
@@ -113,7 +127,7 @@ export type StartDroneResponse = {
 
 export type Subscription = {
   __typename?: 'Subscription'
-  dronePosition?: Maybe<InitDroneResponse>
+  dronePosition?: Maybe<DroneStatusResponse>
 }
 
 export type SubscriptionDronePositionArgs = {
@@ -236,10 +250,11 @@ export type ResolversTypes = {
   Trip: ResolverTypeWrapper<Trip>
   Geometry: ResolverTypeWrapper<Geometry>
   JSON: ResolverTypeWrapper<Scalars['JSON']>
-  Mutation: ResolverTypeWrapper<{}>
-  InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
+  DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
+  Mutation: ResolverTypeWrapper<{}>
+  InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   Subscription: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
@@ -260,10 +275,11 @@ export type ResolversParentTypes = {
   Trip: Trip
   Geometry: Geometry
   JSON: Scalars['JSON']
-  Mutation: {}
-  InitDroneResponse: InitDroneResponse
+  DroneStatusResponse: DroneStatusResponse
   Coordinates: Coordinates
   Int: Scalars['Int']
+  Mutation: {}
+  InitDroneResponse: InitDroneResponse
   StartDroneResponse: StartDroneResponse
   Subscription: {}
   Boolean: Scalars['Boolean']
@@ -313,6 +329,21 @@ export type DronePositionResponseResolvers<
     ParentType,
     ContextType
   >
+}
+
+export type DroneStatusResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['DroneStatusResponse'] = ResolversParentTypes['DroneStatusResponse']
+> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  start?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
+  stop?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
+  currentPos?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
+  bearing?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  batteryStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  departure?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  eta?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type GeometryResolvers<
@@ -381,6 +412,11 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
   >
+  drones?: Resolver<
+    Array<Maybe<ResolversTypes['DroneStatusResponse']>>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type RouteResolvers<
@@ -402,7 +438,7 @@ export type SubscriptionResolvers<
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = {
   dronePosition?: SubscriptionResolver<
-    Maybe<ResolversTypes['InitDroneResponse']>,
+    Maybe<ResolversTypes['DroneStatusResponse']>,
     'dronePosition',
     ParentType,
     ContextType,
@@ -427,6 +463,7 @@ export type Resolvers<ContextType = any> = {
   Coordinates?: CoordinatesResolvers<ContextType>
   Destination?: DestinationResolvers<ContextType>
   DronePositionResponse?: DronePositionResponseResolvers<ContextType>
+  DroneStatusResponse?: DroneStatusResponseResolvers<ContextType>
   Geometry?: GeometryResolvers<ContextType>
   InitDroneResponse?: InitDroneResponseResolvers<ContextType>
   JSON?: GraphQLScalarType
