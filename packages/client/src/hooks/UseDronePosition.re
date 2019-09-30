@@ -5,6 +5,16 @@ module DronePositionSubscriptionConfig = [%graphql
       id
       status
       batteryStatus
+      start {
+        alias
+        lat
+        lon
+      }
+      stop {
+        alias
+        lat
+        lon
+      }
       currentPos {
         lat
         lon
@@ -16,20 +26,6 @@ module DronePositionSubscriptionConfig = [%graphql
 
 module DronePositionSubscription =
   ReasonApolloHooks.Subscription.Make(DronePositionSubscriptionConfig);
-
-type droneState = Shared.GeoPosition.t;
-
-let initialState: droneState = {alias: "", lat: 0.0, lon: 0.0};
-
-let state: Shared.Drone.t = {
-  batteryStatus: 100,
-  id: "",
-  status: Shared.Drone.Status.InProgress,
-  currentPos: {
-    lat: 0.0,
-    lon: 0.0,
-  },
-};
 
 let use = (~id=?, ()) => {
   let (simple, _full) =

@@ -10,10 +10,12 @@ module DronePositionSubscriptionConfig = [%graphql
         lon
       }
       start {
+        alias
         lat
         lon
       }
       stop {
+        alias
         lat
         lon
       }
@@ -37,21 +39,22 @@ let make = (~id) => {
 
   switch (simple) {
   | Data(data) =>
-    data##dronePosition
-    ->Belt.Option.map(drone => {
-        let {Shared.Drone.currentPos, start, stop} = drone->Shared.Drone.make;
-        <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
-          <Map
-            departingPosition=start
-            currentDestination=stop
-            currentPosition=currentPos
-          />
-        </div>;
-      })
-    ->Belt.Option.getWithDefault(React.null)
+    let {Shared.Drone.currentPos, start, stop} =
+      data##dronePosition->Shared.Drone.make;
+
+    <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+      <Map
+        departingPosition=start
+        currentDestination=stop
+        currentPosition=currentPos
+      />
+    </div>;
+
   | Loading => <p> {j|Laddar drönares position|j}->React.string </p>
   | NoData =>
-    <p> {j|Det verkar inte finnas någon drönare med detta id.|j} </p>
+    <p>
+      {j|Det verkar inte finnas någon drönare med detta id.|j}->React.string
+    </p>
   | Error(_) =>
     <p>
       {j|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|j}
