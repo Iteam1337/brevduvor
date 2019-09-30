@@ -345,7 +345,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Coordinates",
+                "name": "Destination",
                 "ofType": null
               }
             },
@@ -361,7 +361,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Coordinates",
+                "name": "Destination",
                 "ofType": null
               }
             },

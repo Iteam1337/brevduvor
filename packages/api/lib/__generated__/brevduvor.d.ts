@@ -59,8 +59,8 @@ export type DronePositionResponse = {
 export type DroneStatusResponse = {
   __typename?: 'DroneStatusResponse'
   id: Scalars['String']
-  start: Coordinates
-  stop: Coordinates
+  start: Destination
+  stop: Destination
   currentPos: Coordinates
   bearing: Scalars['Int']
   status: Scalars['String']
@@ -336,8 +336,8 @@ export type DroneStatusResponseResolvers<
   ParentType extends ResolversParentTypes['DroneStatusResponse'] = ResolversParentTypes['DroneStatusResponse']
 > = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  start?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
-  stop?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
+  start?: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
+  stop?: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
   currentPos?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
   bearing?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   status?: Resolver<ResolversTypes['String'], ParentType, ContextType>
