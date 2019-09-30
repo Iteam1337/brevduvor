@@ -30,7 +30,7 @@ let make = (~id, ~handleDroneInitResponse) => {
          ) => {
          switch (result) {
          | Data(data) =>
-           Belt.Result.Ok(data##startDrone##id->Some)->handleDroneInitResponse
+           Belt.Result.Ok(data##startDrone##id)->handleDroneInitResponse
          | Loading
          | Called
          | NoData =>

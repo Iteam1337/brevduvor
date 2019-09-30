@@ -1,7 +1,7 @@
 let initialState: UseAppReducer.appState = {
   currentPosition: None,
   currentDestination: None,
-  currentDroneStatus: None,
+  droneStatus: None,
   availableDestinations: [],
   currentRoute: None,
   droneId: None,
@@ -24,7 +24,7 @@ let stations = [storuman, slussfors];
 [@react.component]
 let make = () => {
   let (
-    {currentDestination, currentPosition, droneId, currentDroneStatus, _}: UseAppReducer.appState,
+    {currentDestination, currentPosition, droneId, _}: UseAppReducer.appState,
     dispatch,
   ) =
     UseAppReducer.make(~initialState);
@@ -37,20 +37,40 @@ let make = () => {
 
   let handleDroneInitResponse = data =>
     switch (data) {
-    | Belt.Result.Ok(droneId) =>
-      switch (droneId) {
-      | Some(id) => dispatch(DroneId(id))
-      | _ => ()
-      }
+    | Belt.Result.Ok(droneId) => dispatch(DroneId(droneId))
     | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
     };
 
-  let handleDroneStatusSubscriptionData = (data: Shared.GeoPosition.t) => {
+  let _handleDroneStatusSubscriptionData = data => {
     Js.log2("handleDroneData: ", data);
     dispatch(UpdateDrone(data));
+    None;
   };
 
-  Js.log2("current Drone Status: ", currentDroneStatus);
+  let dronePos:
+    ReasonApolloHooks.Subscription.variant(
+      UseDronePosition.DronePositionSubscriptionConfig.t,
+    ) =
+    UseDronePosition.use(~id=?droneId, ());
+
+  React.useEffect1(
+    () => {
+      switch (dronePos) {
+      | Data(data) =>
+        switch (data##dronePosition) {
+        | Some(d) => UpdateDrone(d->Shared.Drone.make)->dispatch
+        | _ => ()
+        }
+
+      | NoData
+      | Loading
+      | Error(_) => ()
+      };
+
+      None;
+    },
+    [|dronePos|],
+  );
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -67,10 +87,6 @@ let make = () => {
         {switch (currentPosition, currentDestination) {
          | (Some(start), Some(stop)) =>
            <InitDrone start stop handleDroneInitResponse />
-         | _ => React.null
-         }}
-        {switch (droneId) {
-         | Some(id) => <DronePosition id handleDroneStatusSubscriptionData />
          | _ => React.null
          }}
       </div>

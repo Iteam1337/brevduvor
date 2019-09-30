@@ -48,10 +48,7 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
          ) => {
          switch (result) {
          | Data(data) =>
-           switch (data##initDrone##id) {
-           | Some(id) => dispatch(Id(id))
-           | None => dispatch(NoId)
-           }
+           dispatch(Id(data##initDrone##id))
          | Loading
          | Called
          | NoData =>

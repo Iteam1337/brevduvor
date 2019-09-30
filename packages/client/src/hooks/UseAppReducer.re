@@ -1,7 +1,7 @@
 type appState = {
   currentPosition: option(Shared.GeoPosition.t),
   currentDestination: option(Shared.GeoPosition.t),
-  currentDroneStatus: option(Shared.GeoPosition.t),
+  droneStatus: option(Shared.Drone.t),
   availableDestinations: list(Shared.GeoPosition.t),
   currentRoute: option(ReactMapGl.Waypoints.t),
   droneId: option(string),
@@ -13,7 +13,7 @@ type appActions =
   | ChangeDestination(Shared.GeoPosition.t)
   | SaveDestination(Shared.GeoPosition.t)
   | SetCurrentRoute(ReactMapGl.Waypoints.t)
-  | UpdateDrone(Shared.GeoPosition.t)
+  | UpdateDrone(Shared.Drone.t)
   | DroneId(string);
 
 let make = (~initialState) => {
@@ -39,10 +39,7 @@ let make = (~initialState) => {
             currentDestination: Some(dest),
           }
         | DroneId(droneId) => {...state, droneId: Some(droneId)}
-        | UpdateDrone(droneData) => {
-            ...state,
-            currentDroneStatus: Some(droneData),
-          }
+        | UpdateDrone(droneData) => {...state, droneStatus: Some(droneData)}
         },
       initialState,
     );
