@@ -13,6 +13,7 @@ module DroneStatusSubscriptionConfig = [%graphql
   }
 |}
 ];
+w;
 
 module DroneStatusSubscription =
   ReasonApolloHooks.Subscription.Make(DroneStatusSubscriptionConfig);
@@ -24,8 +25,6 @@ let make = (~id) => {
       ~variables=DroneStatusSubscriptionConfig.make(~id, ())##variables,
       (),
     );
-
-  Js.log2("data: ", simple);
 
   switch (simple) {
   | Data(data) =>
