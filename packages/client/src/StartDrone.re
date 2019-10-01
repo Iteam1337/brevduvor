@@ -46,7 +46,8 @@ let make = (~id, ~handleDroneInitResponse) => {
   };
 
   <div>
-    <Button.Primary onClick=startDrone className="mt-4">
+    <Button.Primary
+      onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500">
       {React.string({js| Boka |js})}
     </Button.Primary>
   </div>;

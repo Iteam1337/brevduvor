@@ -5,6 +5,16 @@ module DroneStatusSubscriptionConfig = [%graphql
       id
       status
       batteryStatus
+      start {
+        alias
+        lat
+        lon
+      }
+      stop {
+        alias
+        lat
+        lon
+      }
       currentPos {
         lat
         lon
@@ -13,7 +23,6 @@ module DroneStatusSubscriptionConfig = [%graphql
   }
 |}
 ];
-w;
 
 module DroneStatusSubscription =
   ReasonApolloHooks.Subscription.Make(DroneStatusSubscriptionConfig);
@@ -28,12 +37,13 @@ let make = (~id) => {
 
   switch (simple) {
   | Data(data) =>
-    let {Shared.Drone.currentPos} = data##droneStatus->Shared.Drone.make;
+    let {Shared.Drone.currentPos, start, stop} =
+      data##droneStatus->Shared.Drone.make;
 
-    <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+    <div className="w-full bg-gray-400 h-12 relative min-h-screen">
       <Map
-        // departingPosition=start
-        // currentDestination=stop
+        departingPosition=start
+        currentDestination=stop
         currentPosition=currentPos
       />
     </div>;

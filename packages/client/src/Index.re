@@ -25,7 +25,6 @@ let client =
 ReactDOMRe.renderToElementWithId(
   <ReasonApollo.Provider client>
     <ReasonApolloHooks.ApolloProvider client>
-      <App />
       <Main />
     </ReasonApolloHooks.ApolloProvider>
   </ReasonApollo.Provider>,

@@ -36,13 +36,24 @@ module Drone = {
     currentPos: GeoPosition.coords,
     batteryStatus: int,
     status: Status.t,
+    start: GeoPosition.t,
+    stop: GeoPosition.t,
   };
 
   let empty = {
     batteryStatus: 0,
     id: "none",
     status: Other("Empty"),
-
+    start: {
+      alias: "",
+      lat: 0.0,
+      lon: 0.0,
+    },
+    stop: {
+      alias: "",
+      lat: 0.0,
+      lon: 0.0,
+    },
     currentPos: {
       lat: 0.0,
       lon: 0.0,
@@ -56,6 +67,8 @@ module Drone = {
         currentPos: data##currentPos->GeoPosition.coordsFromJs,
         batteryStatus: data##batteryStatus,
         status: data##status->Status.ofString,
+        start: data##start->GeoPosition.tFromJs,
+        stop: data##stop->GeoPosition.tFromJs,
       }
     | None => empty
     };

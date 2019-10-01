@@ -69,7 +69,7 @@ let make =
 
       None;
     },
-    [|departingPosition, currentDestination|],
+    [||],
   );
 
   let layers =
