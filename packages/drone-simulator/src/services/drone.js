@@ -64,7 +64,7 @@ const interpolateCoords = async options => {
     if (currentStep < numSteps) {
       current.coords.lat += rate.lat
       current.coords.lon += rate.lon
-
+      const { start, stop } = cache.get(options.id)
       await sendDroneStatus(options.webhookUrl, {
         currentPos: current.coords,
         id: options.id,
@@ -72,6 +72,8 @@ const interpolateCoords = async options => {
         vehicle: 'Drone',
         batteryStatus,
         bearing: 0,
+        start,
+        stop,
       })
 
       setTimeout(step, UPDATE_INTERVAL)
