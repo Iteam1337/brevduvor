@@ -67,6 +67,12 @@ export class ValidationDirective extends SchemaDirectiveVisitor {
     const constraints = this.getDirectiveArgs(field)
     const label = field.astNode && field.astNode.name.value
 
+    console.log(' field -->', field)
+    console.log(
+      ' field.astNode.directives -->',
+      field.astNode && field.astNode.directives
+    )
+
     // Overwrite the scalar type with our validatable implementation
     switch (field.type.toString()) {
       case 'String!': {
@@ -167,7 +173,7 @@ const run = (
       return result
     })
     .map(r => {
-      console.log(' r -->', r)
+      console.log(label + ' r -->', r)
       return r
     })
     .every(result => result)
