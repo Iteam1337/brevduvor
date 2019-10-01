@@ -66,12 +66,23 @@ let make = () => {
     </div>
     {switch (dronePos) {
      | Data(data) when data##droneStatus->Belt.Option.isSome =>
-       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen" />
+       let {Shared.Drone.currentPos, _} =
+         data##droneStatus->Shared.Drone.make;
+
+       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+         <Map
+           ?departingPosition
+           ?currentDestination
+           currentPosition=currentPos
+         />
+       </div>;
      | Data(_)
      | NoData
      | Loading
      | Error(_) =>
-       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen" />
+       <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+         <Map ?currentDestination ?departingPosition />
+       </div>
      }}
   </div>;
 };
