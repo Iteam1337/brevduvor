@@ -41,9 +41,9 @@ let make = () => {
 
   let dronePos:
     ReasonApolloHooks.Subscription.variant(
-      UseDronePosition.DronePositionSubscriptionConfig.t,
+      UseDroneStatus.DroneStatusSubscriptionConfig.t,
     ) =
-    UseDronePosition.use(~id=?droneId, ());
+    UseDroneStatus.use(~id=?droneId, ());
 
   <div className="flex">
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
@@ -65,9 +65,9 @@ let make = () => {
       </div>
     </div>
     {switch (dronePos) {
-     | Data(data) when data##dronePosition->Belt.Option.isSome =>
+     | Data(data) when data##droneStatus->Belt.Option.isSome =>
        let {Shared.Drone.currentPos, _} =
-         data##dronePosition->Shared.Drone.make;
+         data##droneStatus->Shared.Drone.make;
 
        <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
          <Map

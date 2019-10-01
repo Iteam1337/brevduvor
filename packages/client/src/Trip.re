@@ -1,21 +1,11 @@
-module DronePositionSubscriptionConfig = [%graphql
+module DroneStatusSubscriptionConfig = [%graphql
   {|
-  subscription DronePositionSubscription($id: String!) {
-    dronePosition(id: $id) {
+  subscription DroneStatusSubscription($id: String!) {
+    droneStatus(id: $id) {
       id
       status
       batteryStatus
       currentPos {
-        lat
-        lon
-      }
-      start {
-        alias
-        lat
-        lon
-      }
-      stop {
-        alias
         lat
         lon
       }
@@ -24,14 +14,14 @@ module DronePositionSubscriptionConfig = [%graphql
 |}
 ];
 
-module DronePositionSubscription =
-  ReasonApolloHooks.Subscription.Make(DronePositionSubscriptionConfig);
+module DroneStatusSubscription =
+  ReasonApolloHooks.Subscription.Make(DroneStatusSubscriptionConfig);
 
 [@react.component]
 let make = (~id) => {
   let (simple, _full) =
-    DronePositionSubscription.use(
-      ~variables=DronePositionSubscriptionConfig.make(~id, ())##variables,
+    DroneStatusSubscription.use(
+      ~variables=DroneStatusSubscriptionConfig.make(~id, ())##variables,
       (),
     );
 
@@ -39,13 +29,12 @@ let make = (~id) => {
 
   switch (simple) {
   | Data(data) =>
-    let {Shared.Drone.currentPos, start, stop} =
-      data##dronePosition->Shared.Drone.make;
+    let {Shared.Drone.currentPos} = data##droneStatus->Shared.Drone.make;
 
     <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
       <Map
-        departingPosition=start
-        currentDestination=stop
+        // departingPosition=start
+        // currentDestination=stop
         currentPosition=currentPos
       />
     </div>;
