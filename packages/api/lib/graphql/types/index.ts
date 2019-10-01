@@ -1,9 +1,8 @@
 import { gql } from 'apollo-server-express'
-import * as dronePosition from './dronePosition'
+import * as droneStatus from './droneStatus'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
-import * as drones from './drones'
 
 const typeDefs = gql`
   scalar JSON
@@ -12,6 +11,11 @@ const typeDefs = gql`
   type Geometry {
     type: String!
     coordinates: JSON!
+  }
+
+  type Coordinates {
+    lat: Float!
+    lon: Float!
   }
 
   type Route {
@@ -39,15 +43,14 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    dronePosition(id: String!): DroneStatusResponse
+    droneStatus(id: String!): DroneStatusResponse
   }
 `
 
 export default [
   typeDefs,
-  dronePosition.typeDefs,
+  droneStatus.typeDefs,
   destinations.typeDefs,
   startDrone.typeDefs,
   initDrone.typeDefs,
-  drones.typeDefs,
 ]

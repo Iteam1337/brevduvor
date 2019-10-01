@@ -47,15 +47,6 @@ export type DestinationInput = {
   lon: Scalars['Float']
 }
 
-export type DronePositionResponse = {
-  __typename?: 'DronePositionResponse'
-  id?: Maybe<Scalars['String']>
-  currentPos: Coordinates
-  bearing?: Maybe<Scalars['Int']>
-  status?: Maybe<Scalars['String']>
-  batteryStatus?: Maybe<Scalars['Int']>
-}
-
 export type DroneStatusResponse = {
   __typename?: 'DroneStatusResponse'
   id: Scalars['String']
@@ -127,10 +118,10 @@ export type StartDroneResponse = {
 
 export type Subscription = {
   __typename?: 'Subscription'
-  dronePosition?: Maybe<DroneStatusResponse>
+  droneStatus?: Maybe<DroneStatusResponse>
 }
 
-export type SubscriptionDronePositionArgs = {
+export type SubscriptionDroneStatusArgs = {
   id: Scalars['String']
 }
 
@@ -259,7 +250,6 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
-  DronePositionResponse: ResolverTypeWrapper<DronePositionResponse>
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
   Upload: ResolverTypeWrapper<Scalars['Upload']>
 }
@@ -284,7 +274,6 @@ export type ResolversParentTypes = {
   Subscription: {}
   Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
-  DronePositionResponse: DronePositionResponse
   JSONObject: Scalars['JSONObject']
   Upload: Scalars['Upload']
 }
@@ -314,21 +303,6 @@ export type DestinationResolvers<
   alias?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   lon?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
-}
-
-export type DronePositionResponseResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['DronePositionResponse'] = ResolversParentTypes['DronePositionResponse']
-> = {
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  currentPos?: Resolver<ResolversTypes['Coordinates'], ParentType, ContextType>
-  bearing?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
-  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  batteryStatus?: Resolver<
-    Maybe<ResolversTypes['Int']>,
-    ParentType,
-    ContextType
-  >
 }
 
 export type DroneStatusResponseResolvers<
@@ -437,12 +411,12 @@ export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = {
-  dronePosition?: SubscriptionResolver<
+  droneStatus?: SubscriptionResolver<
     Maybe<ResolversTypes['DroneStatusResponse']>,
-    'dronePosition',
+    'droneStatus',
     ParentType,
     ContextType,
-    RequireFields<SubscriptionDronePositionArgs, 'id'>
+    RequireFields<SubscriptionDroneStatusArgs, 'id'>
   >
 }
 
@@ -462,7 +436,6 @@ export interface UploadScalarConfig
 export type Resolvers<ContextType = any> = {
   Coordinates?: CoordinatesResolvers<ContextType>
   Destination?: DestinationResolvers<ContextType>
-  DronePositionResponse?: DronePositionResponseResolvers<ContextType>
   DroneStatusResponse?: DroneStatusResponseResolvers<ContextType>
   Geometry?: GeometryResolvers<ContextType>
   InitDroneResponse?: InitDroneResponseResolvers<ContextType>
