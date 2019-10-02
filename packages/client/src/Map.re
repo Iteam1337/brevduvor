@@ -1,89 +1,35 @@
 open ReactMapGl;
 
 type event =
-  | UpdateViewState(Client.ReactMapGl.DeckGL.viewState)
-  | ShouldSkipRouteQuery(bool);
+  | UpdateViewState(DeckGL.viewState);
 
-type state = {
-  viewState: DeckGL.viewState,
-  shouldSkipRouteQuery: bool,
-};
+type state = {viewState: DeckGL.viewState};
 
-let initialState = {
-  viewState:
-    DeckGL.viewState(~longitude=19.837932, ~latitude=66.605854, ~zoom=10, ()),
-  shouldSkipRouteQuery: true,
-};
-
-module GetRoute = [%graphql
-  {|
-  query GetRoute($start: DestinationInput!, $stop: DestinationInput!) {
-    getRoute(start: $start, stop: $stop) {
-      trips {
-        geoJson {
-          coordinates
-          _type: type
-        }
-
-      }
-    }
-  }
-|}
-];
-
-module GetRouteQuery = ReasonApolloHooks.Query.Make(GetRoute);
+let initialState =
+  DeckGL.viewState(~longitude=19.837932, ~latitude=66.605854, ~zoom=10, ());
 
 [@react.component]
 let make =
     (
       ~initialViewState=?,
       ~children as _c=?,
-      ~currentPosition=?,
+      ~departingPosition=?,
       ~currentDestination=?,
+      ~currentPosition=?,
     ) => {
   let (state, dispatch) =
     React.useReducer(
-      (state, action) =>
+      (_state, action) =>
         switch (action) {
-        | UpdateViewState(viewState) => {...state, viewState}
-        | ShouldSkipRouteQuery(value) => {
-            ...state,
-            shouldSkipRouteQuery: value,
-          }
+        | UpdateViewState(viewState) => viewState
         },
-      {
-        ...initialState,
-        viewState:
-          initialViewState->Belt.Option.getWithDefault(
-            initialState.viewState,
-          ),
-      },
-    );
-
-  let (simple, _full) =
-    Belt.Option.(
-      GetRouteQuery.use(
-        ~skip=state.shouldSkipRouteQuery,
-        ~variables=
-          GetRoute.make(
-            ~start=
-              Shared.GeoPosition.tToJs(
-                currentPosition->getWithDefault(Shared.GeoPosition.empty),
-              ),
-            ~stop=
-              Shared.GeoPosition.tToJs(
-                currentDestination->getWithDefault(Shared.GeoPosition.empty),
-              ),
-            (),
-          )##variables,
-        (),
-      )
+      initialViewState->Belt.Option.getWithDefault(initialState),
     );
 
   let handleFlyTo = (~zoom=8, ~lat, ~lon, ()) =>
     dispatch(
       UpdateViewState(
-        ReactMapGl.DeckGL.viewState(
+        DeckGL.viewState(
           ~longitude=lon,
           ~latitude=lat,
           ~zoom,
@@ -105,26 +51,29 @@ let make =
     );
   };
 
+  let (routes, setSkipRouteQuery) =
+    UseGetRoute.use(~departingPosition, ~destination=currentDestination);
+
   React.useEffect1(
     () => {
-      switch (currentPosition, currentDestination) {
+      switch (departingPosition, currentDestination) {
       | (Some({Shared.GeoPosition.lon, lat}), None) =>
         handleFlyTo(~lat, ~lon, ())
       | (None, Some({Shared.GeoPosition.lon, lat})) =>
         handleFlyTo(~lat, ~lon, ())
       | (Some(pos), Some(dest)) =>
         flyToRoute([|pos.lon, pos.lat|], [|dest.lon, dest.lat|]);
-        dispatch(ShouldSkipRouteQuery(false));
+        setSkipRouteQuery(_ => false);
       | _ => ()
       };
 
       None;
     },
-    [|currentPosition, currentDestination|],
+    [||],
   );
 
   let layers =
-    switch (simple) {
+    switch (routes) {
     | Data(data) =>
       let trips =
         data##getRoute##trips
@@ -139,14 +88,14 @@ let make =
   <DeckGL
     controller=true
     onViewStateChange={vp => dispatch(UpdateViewState(vp##viewState))}
-    viewState={state.viewState}
+    viewState=state
     layers>
     <StaticMap
       mapStyle="mapbox://styles/mapbox/light-v10"
       reuseMaps=true
       preventStyleDiffing=true
       mapboxApiAccessToken=Config.mapboxToken>
-      <MarkerLayer currentPosition currentDestination />
+      <MarkerLayer departingPosition currentDestination currentPosition />
     </StaticMap>
   </DeckGL>;
 };

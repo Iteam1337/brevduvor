@@ -136,7 +136,7 @@ module GeoJsonLayer = {
       layer(
         ~filled,
         // ~getLineColor=d as _data => d##properties##color,
-        ~getLineColor=_data => [|255, 0, 0, 255|],
+        ~getLineColor=_data => [|0, 0, 255, 180|],
         ~getFillColor,
         ~highlightColor,
         ~autoHighlight,
@@ -150,9 +150,6 @@ module GeoJsonLayer = {
         ~data=
           data->Belt.Array.map(d =>
             {
-              // "properties": {
-              //   "color": d##properties##color,
-              // },
               "geometry": {
                 "coordinates": d##geoJson##coordinates,
                 "type": d##geoJson##_type,
