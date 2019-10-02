@@ -10,12 +10,12 @@ export type Scalars = {
   Float: number,
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any,
-  ValidatableString: any,
   /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any,
   /** The `Upload` scalar type represents a file upload. */
   Upload: any,
 };
+
 
 
 
@@ -131,9 +131,9 @@ export type QueryGetRouteArgs = {
 };
 
 export type RegisterInput = {
-  username: Scalars['ValidatableString'],
-  password: Scalars['ValidatableString'],
-  confirmPassword: Scalars['ValidatableString'],
+  username?: Maybe<Scalars['String']>,
+  password: Scalars['String'],
+  confirmPassword: Scalars['String'],
 };
 
 export type Route = {
@@ -161,7 +161,6 @@ export type Trip = {
   geoJson: Geometry,
   distance: Scalars['Float'],
 };
-
 
 
 
@@ -243,7 +242,6 @@ export type ResolversTypes = {
   AuthPayload: ResolverTypeWrapper<AuthPayload>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   RegisterInput: RegisterInput,
-  ValidatableString: ResolverTypeWrapper<Scalars['ValidatableString']>,
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>,
   Subscription: ResolverTypeWrapper<{}>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
@@ -272,7 +270,6 @@ export type ResolversParentTypes = {
   AuthPayload: AuthPayload,
   ID: Scalars['ID'],
   RegisterInput: RegisterInput,
-  ValidatableString: Scalars['ValidatableString'],
   LogoutResponse: LogoutResponse,
   Subscription: {},
   Boolean: Scalars['Boolean'],
@@ -288,6 +285,8 @@ export type ValidationDirectiveResolver<Result, Parent, ContextType = any, Args 
   maxLength?: Maybe<Maybe<Scalars['Int']>>,
   isEmail?: Maybe<Maybe<Scalars['Boolean']>>,
   isStrong?: Maybe<Maybe<Scalars['Boolean']>> }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type MaxLengthDirectiveResolver<Result, Parent, ContextType = any, Args = {   length?: Maybe<Maybe<Scalars['Int']>> }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CacheControlDirectiveResolver<Result, Parent, ContextType = any, Args = {   maxAge?: Maybe<Maybe<Scalars['Int']>>,
   scope?: Maybe<Maybe<CacheControlScope>> }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
@@ -381,10 +380,6 @@ export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
   name: 'Upload'
 }
 
-export interface ValidatableStringScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ValidatableString'], any> {
-  name: 'ValidatableString'
-}
-
 export type Resolvers<ContextType = any> = {
   AuthPayload?: AuthPayloadResolvers<ContextType>,
   Coordinates?: CoordinatesResolvers<ContextType>,
@@ -402,7 +397,6 @@ export type Resolvers<ContextType = any> = {
   Subscription?: SubscriptionResolvers<ContextType>,
   Trip?: TripResolvers<ContextType>,
   Upload?: GraphQLScalarType,
-  ValidatableString?: GraphQLScalarType,
 };
 
 
@@ -414,6 +408,7 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 export type DirectiveResolvers<ContextType = any> = {
   isAuthenticated?: IsAuthenticatedDirectiveResolver<any, any, ContextType>,
   validation?: ValidationDirectiveResolver<any, any, ContextType>,
+  maxLength?: MaxLengthDirectiveResolver<any, any, ContextType>,
   cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>,
 };
 

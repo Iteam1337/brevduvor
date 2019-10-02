@@ -11,6 +11,15 @@ import {
   isNamedType,
 } from 'graphql'
 
+// class ConstraintDirective extends GraphQLDirective {
+//   constructor() {
+//     super({
+//       name: 'Constraint',
+//       locations: [DirectiveLocation.INPUT_FIELD_DEFINITION],
+//     })
+//   }
+// }
+
 const validations = {
   minLength: {
     func(value: string, args: any) {
@@ -66,12 +75,6 @@ export class ValidationDirective extends SchemaDirectiveVisitor {
   visitInputFieldDefinition(field: GraphQLInputField) {
     const constraints = this.getDirectiveArgs(field)
     const label = field.astNode && field.astNode.name.value
-
-    console.log(' field -->', field)
-    console.log(
-      ' field.astNode.directives -->',
-      field.astNode && field.astNode.directives
-    )
 
     // Overwrite the scalar type with our validatable implementation
     switch (field.type.toString()) {
@@ -173,12 +176,10 @@ const run = (
       return result
     })
     .map(r => {
-      console.log(label + ' r -->', r)
       return r
     })
     .every(result => result)
 
-  console.log(' errors -->', errors)
   if (!isValid && errors.length > 0) {
     throw new ValidationError(errors.join('; '))
   }

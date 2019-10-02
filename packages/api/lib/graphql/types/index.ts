@@ -4,7 +4,10 @@ import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 
+import { directivesSDL } from './../directives/index'
+
 const typeDefs = gql`
+  ${directivesSDL}
   directive @isAuthenticated on FIELD_DEFINITION
   directive @validation(
     minLength: Int
@@ -42,10 +45,9 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @validation(minLength: 5, maxLength: 255, isEmail: true)
-    password: String! @validation(minLength: 6, maxLength: 255, isStrong: true)
+    username: String! @maxLength(length: 10) @minLength(length: 5)
+    password: String!
     confirmPassword: String!
-      @validation(minLength: 6, maxLength: 255, isStrong: true)
   }
 
   type Mutation {
@@ -56,7 +58,10 @@ const typeDefs = gql`
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
-    login(username: String!, password: String!): AuthPayload!
+    login(
+      username: String! @maxLength(length: 10) @minLength(length: 5)
+      password: String!
+    ): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
 
