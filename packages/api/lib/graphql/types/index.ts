@@ -40,7 +40,7 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @maxLength(length: 255) @minLength(length: 5)
+    username: String! @maxLength(length: 255) @isEmail
     password: String!
     confirmPassword: String!
   }

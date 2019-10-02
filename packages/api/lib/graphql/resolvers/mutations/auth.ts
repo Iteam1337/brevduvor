@@ -15,9 +15,12 @@ export const login: MutationResolvers['login'] = async (
 
 export const register: MutationResolvers['register'] = async (_, { input }) => {
   const { username, password, confirmPassword } = input
-  try {
-    return await auth.register(username, password, confirmPassword)
-  } catch (error) {
-    throw new ValidationError(error.message)
+  if (username) {
+    try {
+      return await auth.register(username, password, confirmPassword)
+    } catch (error) {
+      throw new ValidationError(error.message)
+    }
   }
+  throw new ValidationError('Something went wrong')
 }
