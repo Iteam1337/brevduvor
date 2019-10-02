@@ -4,17 +4,12 @@ import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 
-import { directivesSDL } from './../directives/index'
+import { directiveTypeDefs } from './../directives/rules'
 
 const typeDefs = gql`
-  ${directivesSDL}
+  ${directiveTypeDefs}
+
   directive @isAuthenticated on FIELD_DEFINITION
-  directive @validation(
-    minLength: Int
-    maxLength: Int
-    isEmail: Boolean
-    isStrong: Boolean
-  ) on INPUT_FIELD_DEFINITION
 
   scalar JSON
   scalar JSONObject
@@ -45,7 +40,7 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @maxLength(length: 10) @minLength(length: 5)
+    username: String! @maxLength(length: 255) @minLength(length: 5)
     password: String!
     confirmPassword: String!
   }
@@ -59,7 +54,7 @@ const typeDefs = gql`
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
     login(
-      username: String! @maxLength(length: 10) @minLength(length: 5)
+      username: String! @maxLength(length: 255) @isEmail
       password: String!
     ): AuthPayload!
 
