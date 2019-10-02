@@ -63,6 +63,15 @@ let make = () => {
       initialState,
     );
 
+  React.useEffect0(() => {
+    Js.log("here");
+
+    let token = Auth.Storage.setLoginToken("My value");
+    Js.log(token);
+
+    Some(() => Auth.Storage.unsetLoginToken());
+  });
+
   let handleDestinationSelect = destination =>
     dispatch(ChangeDestination(destination));
 
@@ -87,31 +96,52 @@ let make = () => {
   };
 
   <div className="flex">
-    <div className="py-6 px-4 bg-blue-400 min-h-screen">
-      <div className="w-full flex flex-col justify-center">
-        <Icon name=`Dashboard className="text-gray-100 w-6 h-6 mb-6" />
-      </div>
-    </div>
-    <div className="w-3/12 min-h-screen flex">
-      <div className="w-full p-4 bg-white h-full flex flex-col">
-        <label> {js|Från:|js}->React.string </label>
-        <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
-        <label> "Till:"->React.string </label>
-        <Destination handleDestinationSelect />
-        {switch (currentPosition, currentDestination) {
-         | (Some(start), Some(stop)) =>
-           <InitDrone start stop handleDroneInitResponse />
+    /* login form */
 
-         | _ => React.null
-         }}
-        {switch (droneId) {
-         | Some(id) => <DronePosition id handleDroneStatusSubscriptionData />
-         | _ => React.null
-         }}
+      <div
+        className="flex fixed bg-white w-full min-h-screen z-50 items-center justify-center">
+        <div className="w-full max-w-xs">
+          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                "Username"->React.string
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="username"
+                type_="text"
+                placeholder="Username"
+              />
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-    <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
-      <Map ?currentPosition ?currentDestination> <div /> </Map>
-    </div>
-  </div>;
+      /* end login form */
+      <div className="py-6 px-4 bg-blue-400 min-h-screen">
+        <div className="w-full flex flex-col justify-center">
+          <Icon name=`Dashboard className="text-gray-100 w-6 h-6 mb-6" />
+        </div>
+      </div>
+      <div className="w-3/12 min-h-screen flex">
+        <div className="w-full p-4 bg-white h-full flex flex-col">
+          <label> {js|Från:|js}->React.string </label>
+          <GeoSelectBox selectOptions=stations onChange=handlePositionSelect />
+          <label> "Till:"->React.string </label>
+          <Destination handleDestinationSelect />
+          {switch (currentPosition, currentDestination) {
+           | (Some(start), Some(stop)) =>
+             <InitDrone start stop handleDroneInitResponse />
+
+           | _ => React.null
+           }}
+          {switch (droneId) {
+           | Some(id) => <DronePosition id handleDroneStatusSubscriptionData />
+           | _ => React.null
+           }}
+        </div>
+      </div>
+      <div className="w-9/12 bg-gray-400 h-12 relative min-h-screen">
+        <Map ?currentPosition ?currentDestination> <div /> </Map>
+      </div>
+    </div>;
 };
