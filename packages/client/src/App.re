@@ -63,15 +63,6 @@ let make = () => {
       initialState,
     );
 
-  React.useEffect0(() => {
-    Js.log("here");
-
-    let token = Auth.Storage.setLoginToken("My value");
-    Js.log(token);
-
-    Some(() => Auth.Storage.unsetLoginToken());
-  });
-
   let handleDestinationSelect = destination =>
     dispatch(ChangeDestination(destination));
 

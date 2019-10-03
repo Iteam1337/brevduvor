@@ -14,33 +14,66 @@ module LoginMutationConfig = [%graphql
 
 module LoginMutation = ReasonApolloHooks.Mutation.Make(LoginMutationConfig);
 
+type loginFormState = {
+  hasError: bool,
+  errorMessage: string,
+  isLoading: bool,
+};
+
+type loginFormActions =
+  | SetError(string)
+  | UnsetError
+  | ToggleLoading(bool);
+
+let initialState: loginFormState = {
+  hasError: false,
+  errorMessage: "",
+  isLoading: false,
+};
+
 [@react.component]
 let make = () => {
-  let (loginMutation, _simple, _full) = LoginMutation.use();
+  let (state, dispatch) =
+    React.useReducer(
+      (state, action) =>
+        switch (action) {
+        | SetError(errorMessage) => {...state, hasError: true, errorMessage}
+        | UnsetError => {...state, hasError: false, errorMessage: ""}
+        | ToggleLoading(isLoading) => {...state, isLoading}
+        },
+      initialState,
+    );
+
+  let (loginMutation, loginResponse, _f) = LoginMutation.use();
+
+  React.useEffect1(
+    () =>
+      switch (loginResponse) {
+      | Data(payload) =>
+        payload->Js.log;
+        dispatch(ToggleLoading(false));
+        None;
+      | Error(error) =>
+        error->Js.log;
+        dispatch(ToggleLoading(false));
+        None;
+      | Loading =>
+        dispatch(ToggleLoading(true));
+        None;
+      | Called => None
+      | NoData =>
+        dispatch(ToggleLoading(false));
+        None;
+      },
+    [|loginResponse|],
+  );
 
   let login = (username, password) => {
     loginMutation(
       ~variables=
         LoginMutationConfig.make(~username, ~password, ())##variables,
       (),
-    )
-    |> Js.Promise.then_(
-         (
-           result:
-             ReasonApolloHooks.Mutation.controledVariantResult(
-               LoginMutationConfig.t,
-             ),
-         ) => {
-         switch (result) {
-         | Data(data) => Js.log(data)
-         | Called => Js.log("Mutation login called")
-         | Loading => Js.log("Loading")
-         | NoData => Js.log("No data")
-         | Error(error) => Js.log(error)
-         };
-
-         Js.Promise.resolve(result);
-       });
+    );
   };
 
   let _handleSubmit = event => {
@@ -54,9 +87,12 @@ let make = () => {
     ();
   };
 
+  state->Js.log;
+
   <div
-    className="flex fixed bg-white w-full min-h-screen z-50 items-center justify-center">
+    className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
+      <Loader.Inline isLoading={state.isLoading} />
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=_handleSubmit>
