@@ -8,7 +8,7 @@ const config = require('@iteam/config')({
     WEBHOOK_URL: 'http://localhost:4000/status',
     POSTGRES: {
       USER: 'iteamadmin',
-      PASSWORD: ';Sp1dermanKare0ke!1789',
+      PASSWORD: 'adminadmin1337',
       DATABASE: 'brevduvor',
       PORT: 5432,
       HOST: 'localhost',
