@@ -36,3 +36,9 @@ export async function getActiveDrones(): Promise<any[]> {
     SELECT * FROM drone_trips WHERE status = 'in progress'
   `)
 }
+
+export async function getAllDrones(): Promise<any[]> {
+  return db.manyOrNone(dedent`
+    SELECT * FROM drone_trips
+  `)
+}

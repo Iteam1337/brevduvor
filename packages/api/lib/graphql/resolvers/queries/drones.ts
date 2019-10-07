@@ -1,8 +1,8 @@
 import { QueryResolvers } from '../../../__generated__/brevduvor'
-import { getActiveDrones } from '../../../services/drones'
+import { getAllDrones } from '../../../services/drones'
 
 export const drones: QueryResolvers['drones'] = async () => {
-  const drones = await getActiveDrones()
+  const drones = await getAllDrones()
 
   return drones.map(({ id }) => id)
 }

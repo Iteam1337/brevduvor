@@ -98,7 +98,7 @@ export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
   getRoute: Route
-  drones: Array<Maybe<Scalars['String']>>
+  drones: Array<Scalars['String']>
 }
 
 export type QueryGetRouteArgs = {
@@ -386,11 +386,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
   >
-  drones?: Resolver<
-    Array<Maybe<ResolversTypes['String']>>,
-    ParentType,
-    ContextType
-  >
+  drones?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
 }
 
 export type RouteResolvers<

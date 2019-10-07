@@ -39,7 +39,7 @@ const typeDefs = gql`
   type Query {
     allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
-    drones: [String]!
+    drones: [String!]!
   }
 
   type Subscription {
