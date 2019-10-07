@@ -98,7 +98,7 @@ export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
   getRoute: Route
-  drones: Array<Maybe<DroneStatusResponse>>
+  drones: Array<Maybe<Scalars['String']>>
 }
 
 export type QueryGetRouteArgs = {
@@ -241,13 +241,13 @@ export type ResolversTypes = {
   Trip: ResolverTypeWrapper<Trip>
   Geometry: ResolverTypeWrapper<Geometry>
   JSON: ResolverTypeWrapper<Scalars['JSON']>
-  DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
-  Coordinates: ResolverTypeWrapper<Coordinates>
-  Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
+  Coordinates: ResolverTypeWrapper<Coordinates>
+  Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   Subscription: ResolverTypeWrapper<{}>
+  DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
@@ -265,13 +265,13 @@ export type ResolversParentTypes = {
   Trip: Trip
   Geometry: Geometry
   JSON: Scalars['JSON']
-  DroneStatusResponse: DroneStatusResponse
-  Coordinates: Coordinates
-  Int: Scalars['Int']
   Mutation: {}
   InitDroneResponse: InitDroneResponse
+  Coordinates: Coordinates
+  Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
   Subscription: {}
+  DroneStatusResponse: DroneStatusResponse
   Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
   JSONObject: Scalars['JSONObject']
@@ -387,7 +387,7 @@ export type QueryResolvers<
     RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
   >
   drones?: Resolver<
-    Array<Maybe<ResolversTypes['DroneStatusResponse']>>,
+    Array<Maybe<ResolversTypes['String']>>,
     ParentType,
     ContextType
   >
