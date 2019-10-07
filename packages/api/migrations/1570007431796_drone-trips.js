@@ -1,5 +1,4 @@
 exports.up = pgm => {
-  pgm.dropType('status')
   pgm.createExtension('uuid-ossp', { ifNotExists: true })
   pgm.createType('status', ['initating', 'starting', 'in progress', 'done'], {
     ifNotExists: true,

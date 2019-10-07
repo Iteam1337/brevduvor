@@ -20,7 +20,7 @@
   "scripts": {
     "start": "tsc && node ./build/index.js",
     "generate": "graphql-codegen --config codegen.yml",
-    "migrate": "DATABASE_URL=\"postgres://iteamadmin:;Sp1dermanKare0ke!1789@localhost:5432/brevduvor\" && node-pg-migrate",
+    "migrate": "DATABASE_URL=\"postgres://iteamadmin:admin@localhost:5432/brevduvor\" node-pg-migrate",
     "dev": "ts-node-dev --no-notify index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
     "test": "NODE_ENV=test jest",
