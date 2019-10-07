@@ -107,13 +107,14 @@ async function start({ body: { webhookUrl, id } }, res) {
       id,
     })
     res.send({ status: 200 })
-  } catch (err) {}
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 async function init({ body: { start, stop } }, res) {
   try {
     const osrmTrip = await osrm.generate(start, stop)
-
     const coords = [
       [start.lon, start.lat],
       ...osrmTrip.data.trips[0].geometry.coordinates,
