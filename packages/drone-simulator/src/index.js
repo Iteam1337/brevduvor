@@ -19,6 +19,5 @@ app
 app.post('/init', drone.init)
 app.post('/start', drone.start)
 app.post('/status', status.receiveStatus)
-app.get('/drones', drone.getDrones)
 
 app.listen(port, () => console.log(`Service running on ${port}!🚀`))
