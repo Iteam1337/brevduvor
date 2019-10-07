@@ -57,16 +57,9 @@ let make = () => {
   let handleDepartingPositionSelect = pos =>
     SetDepartingPosition(pos)->dispatch;
 
-  let handleDroneInitResponse = data => {
-    switch (data) {
-    | Belt.Result.Ok(droneId) => dispatch(SetDroneId(droneId))
-    | Belt.Result.Error(e) => Js.log2("InitDroneError", e)
-    };
-  };
-
   let (availablePositionsResponse, _) = AllDestinationsQuery.use();
 
-  let {departingPosition, destination, droneId} = state;
+  let {departingPosition, destination} = state;
 
   <div className="w-3/12 min-h-screen flex">
     <div className="w-full p-4 bg-white h-full flex flex-col">
@@ -93,17 +86,7 @@ let make = () => {
          </p>
        }}
       {switch (departingPosition, destination) {
-       | (Some(start), Some(stop)) =>
-         <InitDrone start stop handleDroneInitResponse />
-       | _ => React.null
-       }}
-      {switch (droneId) {
-       | Some(id) =>
-         <Button.Primary
-           onClick={_ => ReasonReactRouter.push("/leverans/" ++ id)}
-           className="mt-4 bg-green-400">
-           {React.string({js| Gå till bokning |js})}
-         </Button.Primary>
+       | (Some(start), Some(stop)) => <InitDrone start stop />
        | _ => React.null
        }}
     </div>
