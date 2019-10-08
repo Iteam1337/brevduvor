@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.0",
+    "@apollo/react-hooks": "^3.1.2",
     "@deck.gl/core": "^7.2.3",
     "@deck.gl/geo-layers": "^7.2.3",
     "@deck.gl/layers": "^7.2.3",
@@ -38,7 +38,7 @@
     "reason-react": "0.7.0"
   },
   "devDependencies": {
-    "@apollo/react-testing": "^3.1.0",
+    "@apollo/react-testing": "^3.1.2",
     "@fullhuman/postcss-purgecss": "1.2.0",
     "@glennsl/bs-jest": "0.4.9",
     "@semantic-release/changelog": "3.0.4",

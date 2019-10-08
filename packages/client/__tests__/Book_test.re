@@ -9,7 +9,7 @@ let mocks = [|
     },
     "result": {
       "data": {
-        "destination": {
+        "allDestinations": {
           "alias": "Storuman",
           "lat": 13.333337,
           "lon": 16.666666,
@@ -21,9 +21,7 @@ let mocks = [|
 
 describe("Book", () =>
   test("renders", () =>
-    <TestUtils.ApolloReactTesting.MockedProvider mocks>
-      <Book />
-    </TestUtils.ApolloReactTesting.MockedProvider>
+    <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
     |> render
     |> expect
     |> toMatchSnapshot
