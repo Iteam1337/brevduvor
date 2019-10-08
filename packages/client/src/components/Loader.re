@@ -11,7 +11,6 @@
      "Some data"->React.string
    </Loader.Container>
 
-
  */
 module Inline = {
   [@react.component]

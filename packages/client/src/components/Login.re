@@ -60,10 +60,10 @@ let make = () => {
       | Loading =>
         dispatch(ToggleLoading(true));
         None;
-      | Called => None
       | NoData =>
         dispatch(ToggleLoading(false));
         None;
+      | Called => None
       },
     [|loginResponse|],
   );
