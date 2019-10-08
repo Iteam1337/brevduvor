@@ -1,19 +1,34 @@
 [@react.component]
 let make =
     (
+      ~departingPosition: option(Shared.GeoPosition.t),
       ~currentDestination: option(Shared.GeoPosition.t),
-      ~currentPosition: option(Shared.GeoPosition.t),
+      ~currentPosition: option(Shared.GeoPosition.coords),
     ) => {
-  switch (currentPosition, currentDestination) {
-  | (Some({lat: pLat, lon: pLon}), Some({lat: dLat, lon: dLon})) =>
+  switch (departingPosition, currentDestination, currentPosition) {
+  | (
+      Some(departingPosition),
+      Some(currentDestination),
+      Some(currentPosition),
+    ) =>
     <>
-      <MarkerIcon.Position latitude=pLat longitude=pLon />
-      <MarkerIcon.Destination latitude=dLat longitude=dLon />
+      <MarkerIcon.Position
+        latitude={departingPosition.lat}
+        longitude={departingPosition.lon}
+      />
+      <MarkerIcon.Destination
+        latitude={currentDestination.lat}
+        longitude={currentDestination.lon}
+      />
+      <MarkerIcon.Drone
+        latitude={currentPosition.lat}
+        longitude={currentPosition.lon}
+      />
     </>
-  | (Some({lat, lon}), None) =>
+  | (Some({lat, lon}), None, _) =>
     <MarkerIcon.Position latitude=lat longitude=lon />
-  | (None, Some({lat, lon})) =>
+  | (None, Some({lat, lon}), _) =>
     <MarkerIcon.Position latitude=lat longitude=lon />
-  | (None, None) => React.null
+  | _ => React.null
   };
 };

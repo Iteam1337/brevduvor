@@ -1,10 +1,10 @@
 import { gql } from 'apollo-server-express'
 
 export const typeDefs = gql`
-  type InitDroneResponse {
+  type DroneStatusResponse {
     id: String!
-    start: Coordinates!
-    stop: Coordinates!
+    start: Destination!
+    stop: Destination!
     currentPos: Coordinates!
     bearing: Int!
     status: String!

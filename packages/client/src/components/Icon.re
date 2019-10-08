@@ -1,7 +1,6 @@
 [@react.component]
 let make = (~className=?, ~name) => {
-  let className =
-    Utils.mergeClassNames(["fill-current", className->Utils.orEmptyStr]);
+  let className = Cn.make(["fill-current", className->Cn.unpack]);
 
   switch (name) {
   | `Calendar =>
