@@ -30,6 +30,7 @@ module Route = {
       json |> field("coordinates", array(array(Json.Decode.float))),
     _type: json |> field("type", string),
   };
+
   let waypoint = json => {
     location: json |> field("location", array(Json.Decode.float)),
   };

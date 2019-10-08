@@ -15,12 +15,6 @@ let initialState = {
   droneId: None,
 };
 
-let toRecord = destination => {
-  Shared.GeoPosition.alias: destination##alias,
-  lat: destination##lat,
-  lon: destination##lon,
-};
-
 module AllDestinations = [%graphql
   {|
   query AllDestinations {
@@ -67,7 +61,7 @@ let make = () => {
        | Data(data) =>
          let selectOptions =
            data##allDestinations
-           ->Belt.Array.map(toRecord)
+           ->Belt.Array.map(Shared.GeoPosition.toRecord)
            ->Belt.List.fromArray;
          <React.Fragment>
            <label> {js|Från:|js}->React.string </label>

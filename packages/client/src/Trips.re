@@ -14,7 +14,6 @@ let make = () => {
      | Loading => "Loading"->React.string
      | Error(e) => e##message->React.string
      | NoData => "No data"->React.string
-
      | Data(data) =>
        switch (data##drones->Belt.Array.length) {
        | 0 => {j|Vi kunde inte hitta några aktiva drönare|j}->React.string

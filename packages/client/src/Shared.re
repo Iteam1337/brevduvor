@@ -13,6 +13,12 @@ module GeoPosition = {
   };
 
   let empty = {alias: "", lat: 0.0, lon: 0.0};
+
+  let toRecord = destination => {
+    alias: destination##alias,
+    lat: destination##lat,
+    lon: destination##lon,
+  };
 };
 
 module Drone = {
