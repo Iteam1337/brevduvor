@@ -13,19 +13,44 @@ let mocks = [|
           "alias": "Storuman",
           "lat": 13.333337,
           "lon": 16.666666,
+          "__typename": "Destination",
         },
       },
     },
   },
 |];
 
-describe("Book", () =>
-  test("renders", () => {
+describe("Book", () => {
+  testAsync("renders 2", finish => {
     let element =
       <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
-      |> render
-      |> getByText(~matcher=`Str("Data!"));
+      |> render;
 
-    expect(element) |> toMatchSnapshot;
-  })
-);
+    TestUtils.ReactTestUtils.act(() => {
+      expect(container(element)) |> toMatchSnapshot |> finish;
+      Js.Promise.resolve();
+    })
+    |> ignore;
+  });
+
+  testAsync("renders", finish => {
+    let element =
+      <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
+      |> render;
+
+    waitForElement(() => element |> getByText(~matcher=`Str("data")))
+    |> Js.Promise.then_(result => {
+         Js.log2("Result", result);
+         expect(element) |> toMatchSnapshot |> finish;
+         Js.Promise.resolve();
+       })
+    |> ignore;
+  });
+});
+
+/* testAsync("renders 2", finish => { */
+/*   let element = */
+/*     <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider> */
+/*     |> render; */
+/*   wait(0)->Future.get(_ => expect(element) |> toMatchSnapshot |> finish); */
+/* }); */

@@ -54,3 +54,21 @@ module MockedProvider = {
     </ApolloReactTesting.MockedProvider>;
   };
 };
+
+module ReactTestUtils = {
+  [@bs.module "react-dom/test-utils"] [@bs.val]
+  external act: (unit => Js.Promise.t(unit)) => Js.Promise.t(unit) = "act";
+};
+
+let wait = time =>
+  Js.Promise.make((~resolve, ~reject as _r) =>
+    Js.Global.setTimeout(
+      () => {
+        resolve(. 0);
+        ();
+      },
+      time,
+    )
+    |> ignore
+  )
+  ->FutureJs.fromPromise(Js.String.make);
