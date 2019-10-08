@@ -10,7 +10,7 @@ import { ValidationError } from 'apollo-server-express'
 export const maxLength = {
   args: ['length: Int'],
   validation(value: string, { length }: { length: number }) {
-    if (value.length > length) {
+    if (value.length >= length) {
       throw new ValidationError(
         `Max length is ${length}, got ${value} with length of ${value.length}`
       )
@@ -32,12 +32,7 @@ export const minLength = {
 export const isEmail = {
   validation(value: string) {
     const pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-    console.log(
-      ' value, pattern, pattern.test(value) -->',
-      value,
-      pattern,
-      pattern.test(value)
-    )
+
     if (pattern.test(value) === false) {
       throw new ValidationError(`This is not a valid email, got ${value}`)
     }
