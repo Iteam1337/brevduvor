@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book renders 1`] = `
+<div
+  class="w-full p-4 bg-white h-full flex flex-col"
+>
+  Laddar...
+</div>
+`;

@@ -73,12 +73,15 @@ let make = () => {
            <label> "Till:"->React.string </label>
            <GeoSelectBox onChange=handleDestinationSelect selectOptions />
          </>;
-       | Loading
-       | NoData
-       | Error(_) =>
+       | Loading => {js|Laddar...|js}->React.string
+       | NoData => {js|Verkar inte som det kom någon data.|js}->React.string
+       | Error(err) =>
+         let errorMessage = err##message;
          <p>
-           {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
-         </p>
+           {j|Kunde inte hämta tillgängliga destinationer. \nFelmeddelandet som gavs var:
+           $errorMessage |j}
+           ->React.string
+         </p>;
        }}
       {switch (departingPosition, destination) {
        | (Some(start), Some(stop)) => <InitDrone start stop />

@@ -12,8 +12,9 @@ module ApolloReactTesting = {
   };
 
   module MockLink = {
-    [@bs.module "@apollo/react-testing"] [@react.component]
-    external make: (~mocks: array(Js.t('mocks))) => React.element =
+    [@bs.module "@apollo/react-testing"] [@bs.new]
+    external make:
+      (~mocks: array(Js.t('mocks))) => ReasonApolloTypes.apolloLink =
       "MockLink";
   };
 
@@ -28,15 +29,28 @@ module ApolloReactTesting = {
     "createClient";
 };
 
-/* TODO: use this mockprovider in tests */
-module MockedProvider = {
-  /* use MockLink and stuff similar to MySkills here */
-  /* let client = {}; */
+/** Why do we need this custom MockedProvider?
+   In `@apolllo/react-testing` the MockedProvider is already provided with MockLink and a mocked
+   client.
 
+   But since we're also using the ReasonApolloHooks-provider we need to manually mock that.
+   */
+module MockedProvider = {
   [@react.component]
   let make = (~addTypename=false, ~children, ~mocks=[||]) => {
+    let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
+
+    let client =
+      ReasonApollo.createApolloClient(
+        ~link=ApolloReactTesting.MockLink.make(~mocks),
+        ~cache=inMemoryCache,
+        (),
+      );
+
     <ApolloReactTesting.MockedProvider addTypename mocks>
-      children
+      <ReasonApolloHooks.ApolloProvider client>
+        children
+      </ReasonApolloHooks.ApolloProvider>
     </ApolloReactTesting.MockedProvider>;
   };
 };

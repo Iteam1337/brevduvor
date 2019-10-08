@@ -20,10 +20,12 @@ let mocks = [|
 |];
 
 describe("Book", () =>
-  test("renders", () =>
-    <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
-    |> render
-    |> expect
-    |> toMatchSnapshot
-  )
+  test("renders", () => {
+    let element =
+      <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
+      |> render
+      |> getByText(~matcher=`Str("Data!"));
+
+    expect(element) |> toMatchSnapshot;
+  })
 );
