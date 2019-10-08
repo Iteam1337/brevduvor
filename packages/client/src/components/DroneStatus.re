@@ -1,16 +1,15 @@
 [@react.component]
-let make = (~data: Shared.Drone.t) => {
-  Js.log(data);
+let make = (~drone: Shared.Drone.t) => {
   <div>
     <p> "Latitud: "->React.string </p>
     <p>
-      {data.currentPos.lat
+      {drone.currentPos.lat
        ->Js.Float.toFixedWithPrecision(~digits=10)
        ->React.string}
     </p>
     <p> "Longitud: "->React.string </p>
     <p>
-      {data.currentPos.lon
+      {drone.currentPos.lon
        ->Js.Float.toFixedWithPrecision(~digits=10)
        ->React.string}
     </p>

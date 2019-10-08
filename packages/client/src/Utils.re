@@ -4,8 +4,4 @@ let invokeIfSet = (~callback, data) =>
   | None => ()
   };
 
-let mergeClassNames = (classNames: list(string)) => {
-  classNames->Belt.List.reduce("", (acc, cns) => acc ++ " " ++ cns);
-};
-
-let orEmptyStr = v => v->Belt.Option.getWithDefault("");
+let orEmptyString = v => v->Belt.Option.getWithDefault("");

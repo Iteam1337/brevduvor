@@ -12,7 +12,6 @@ let initialState =
 let make =
     (
       ~initialViewState=?,
-      ~children as _c=?,
       ~departingPosition=?,
       ~currentDestination=?,
       ~currentPosition=?,

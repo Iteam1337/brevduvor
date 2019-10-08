@@ -5,7 +5,7 @@ let make = () =>
       <Button.Primary
         className="mt-4 bg-green-400"
         onClick={_ => ReasonReactRouter.push("/boka-resa")}>
-        {js| Boka resa |js}->React.string
+        "Boka resa"->React.string
       </Button.Primary>
     </div>
   </div>;

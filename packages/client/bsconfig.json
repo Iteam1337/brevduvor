@@ -29,7 +29,9 @@
     "bs-fetch",
     "@ryb73/decco",
     "reason-apollo-hooks",
-    "reason-apollo"
+    "reason-apollo",
+    "reason-future",
+    "re-classnames"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",

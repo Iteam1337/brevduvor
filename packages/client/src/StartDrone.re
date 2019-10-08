@@ -21,28 +21,25 @@ let make = (~id, ~handleDroneInitResponse) => {
 
   let startDrone = _ => {
     startDroneMutation()
-    |> Js.Promise.then_(
-         (
-           result:
-             ReasonApolloHooks.Mutation.controledVariantResult(
-               StartDroneMutationConfig.t,
-             ),
-         ) => {
-         switch (result) {
-         | Data(data) =>
-           Belt.Result.Ok(data##startDrone##id)->handleDroneInitResponse
-         | Loading
-         | Called
-         | NoData =>
-           ();
-           Belt.Result.Error({js|Fick ingen data|js})->Js.log;
-         | Error(error) =>
-           ();
-           Belt.Result.Error(error##message)->Js.log;
-         };
-         Js.Promise.resolve();
-       })
-    |> ignore;
+    ->FutureJs.fromPromise(Js.String.make)
+    ->Future.mapOk(
+        (
+          result:
+            ReasonApolloHooks.Mutation.controledVariantResult(
+              StartDroneMutationConfig.t,
+            ),
+        ) =>
+        switch (result) {
+        | Data(data) =>
+          Belt.Result.Ok(data##startDrone##id)->handleDroneInitResponse
+        | Loading
+        | Called
+        | NoData => Belt.Result.Error({js|Fick ingen data|js})->Js.log
+        | Error(error) => Belt.Result.Error(error##message)->Js.log
+        }
+      )
+    ->Future.mapError(Js.log2("ERROR: Error in StartDroneMutation\n\n"))
+    ->ignore;
   };
 
   <div>

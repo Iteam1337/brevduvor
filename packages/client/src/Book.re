@@ -63,7 +63,8 @@ let make = () => {
            data##allDestinations
            ->Belt.Array.map(Shared.GeoPosition.toRecord)
            ->Belt.List.fromArray;
-         <React.Fragment>
+
+         <>
            <label> {js|Från:|js}->React.string </label>
            <GeoSelectBox
              onChange=handleDepartingPositionSelect
@@ -71,7 +72,7 @@ let make = () => {
            />
            <label> "Till:"->React.string </label>
            <GeoSelectBox onChange=handleDestinationSelect selectOptions />
-         </React.Fragment>;
+         </>;
        | Loading
        | NoData
        | Error(_) =>

@@ -16,8 +16,8 @@ let make = () => {
      | NoData => "No data"->React.string
      | Data(data) =>
        switch (data##drones->Belt.Array.length) {
-       | 0 => {j|Vi kunde inte hitta några aktiva drönare|j}->React.string
-       | _ =>
+       | 0 => {js|Vi kunde inte hitta några aktiva drönare|js}->React.string
+       | _length =>
          data##drones
          ->Belt.Array.map(id => <DroneListItem key=id id />)
          ->React.array
