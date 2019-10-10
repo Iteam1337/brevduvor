@@ -357,7 +357,7 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  initDrone: Resolver<
+  initDrone?: Resolver<
     ResolversTypes['InitDroneResponse'],
     ParentType,
     ContextType,
