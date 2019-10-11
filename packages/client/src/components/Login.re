@@ -32,7 +32,7 @@ let initialState: loginFormState = {
 };
 
 [@react.component]
-let make = () => {
+let make = (~onLogin) => {
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -47,24 +47,22 @@ let make = () => {
   let (loginMutation, loginResponse, _f) = LoginMutation.use();
 
   React.useEffect1(
-    () =>
+    () => {
       switch (loginResponse) {
       | Data(payload) =>
-        payload->Js.log;
+        let authPayload = Auth.Payload.make(payload);
         dispatch(ToggleLoading(false));
-        None;
+        onLogin(authPayload);
       | Error(error) =>
-        error->Js.log;
         dispatch(ToggleLoading(false));
-        None;
-      | Loading =>
-        dispatch(ToggleLoading(true));
-        None;
-      | NoData =>
-        dispatch(ToggleLoading(false));
-        None;
-      | Called => None
-      },
+        dispatch(SetError(error##message));
+      | Loading => dispatch(ToggleLoading(true))
+      | NoData => dispatch(ToggleLoading(false))
+      | Called => ()
+      };
+
+      None;
+    },
     [|loginResponse|],
   );
 
@@ -76,26 +74,23 @@ let make = () => {
     );
   };
 
-  let _handleSubmit = event => {
+  let handleSubmit = event => {
     event->ReactEvent.Synthetic.preventDefault;
     let formData = ReactEvent.Form.target(event);
     let username = formData##username##value;
     let password = formData##password##value;
 
     ignore(login(username, password));
-
-    ();
   };
-
-  state->Js.log;
 
   <div
     className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
-      <Loader.Inline isLoading={state.isLoading} />
+      "PPOOOPO"->React.string
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit=_handleSubmit>
+        onSubmit=handleSubmit>
+        {state.hasError ? state.errorMessage->React.string : React.null}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             "Username"->React.string
@@ -118,7 +113,9 @@ let make = () => {
             placeholder="****"
           />
         </div>
+        <Loader.Inline isLoading={state.isLoading} />
         <input
+          value="Login"
           type_="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500"

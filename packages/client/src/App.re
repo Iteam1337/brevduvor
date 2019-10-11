@@ -4,6 +4,7 @@ type appState = {
   currentDestination: option(Shared.GeoPosition.t),
   currentRoute: option(ReactMapGl.Waypoints.t),
   droneId: option(string),
+  loggedIn: bool,
 };
 
 type appActions =
@@ -20,6 +21,7 @@ let initialState = {
   currentDestination: None,
   currentRoute: None,
   droneId: None,
+  loggedIn: false,
 };
 
 let storuman: Shared.GeoPosition.t = {
@@ -86,8 +88,12 @@ let make = () => {
     ();
   };
 
+  // let handleLogin = data => {
+  //   //Auth.Storage.setLoginToken(data##token);
+  // };
+
   <div className="flex">
-    <Login />
+    <Login onLogin=Js.log />
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
       <div className="w-full flex flex-col justify-center">
         <Icon name=`Dashboard className="text-gray-100 w-6 h-6 mb-6" />

@@ -3,9 +3,18 @@ type loginDetails = {
   password: string,
 };
 
-type authPayload = {
-  username: string,
-  token: string,
+module Payload = {
+  type t = {
+    id: string,
+    username: string,
+    token: string,
+  };
+
+  let make = payload => {
+    id: payload##login##id,
+    username: payload##login##username,
+    token: payload##login##token,
+  };
 };
 
 let user = {username: "Kalle", password: "hunter2"};
