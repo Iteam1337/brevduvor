@@ -26,8 +26,8 @@ const typeDefs = gql`
 
   type AuthPayload {
     id: ID!
-    token: String
-    username: String
+    token: String!
+    username: String!
   }
 
   type LogoutResponse {
