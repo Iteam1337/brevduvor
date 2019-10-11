@@ -2,9 +2,9 @@ import { withFilter } from 'graphql-subscriptions'
 import { SubscriptionResolvers } from '../../../__generated__/brevduvor'
 import pubsub from '../../../adapters/pubsub'
 
-export const dronePosition: SubscriptionResolvers['dronePosition'] = {
+export const droneStatus: SubscriptionResolvers['droneStatus'] = {
   subscribe: withFilter(
-    () => pubsub.asyncIterator(['dronePosition']),
-    ({ dronePosition }, { id }) => dronePosition.id === id
+    () => pubsub.asyncIterator(['droneStatus']),
+    ({ droneStatus }, { id }) => droneStatus.id === id
   ),
 }

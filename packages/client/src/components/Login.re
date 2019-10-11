@@ -1,7 +1,7 @@
 module LoginMutationConfig = [%graphql
   {|
 
-  mutation LoginMutation($username: String!, $password: String!) {
+  mutation LoginMutation($username: RuleWrapper!, $password: String!) {
     login(username: $username, password: $password) {
       id
       token

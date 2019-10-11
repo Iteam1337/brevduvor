@@ -7,6 +7,7 @@
 ```sh
  MAPBOX_TOKEN=<your_mapbox_token>
  GRAPHQL_API=<graphql_api_uri>
+ GRAPHQL_WS_URI=<graphql_ws_uri>
 ```
 
 ## Run Project

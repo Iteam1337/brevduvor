@@ -1,4 +1,4 @@
-module Position = {
+module Drone = {
   [@react.component]
   let make = (~longitude, ~latitude) => {
     let shadow = `rgba((43, 108, 176, 100.0));
@@ -42,6 +42,15 @@ module Destination = {
   let make = (~longitude, ~latitude) => {
     <ReactMapGl.Marker longitude latitude>
       <Icon name=`Marker className="text-red-600 w-6 h-6 mb-6" />
+    </ReactMapGl.Marker>;
+  };
+};
+
+module Position = {
+  [@react.component]
+  let make = (~longitude, ~latitude) => {
+    <ReactMapGl.Marker longitude latitude>
+      <Icon name=`Travel className="text-green-600 w-6 h-6 mb-6" />
     </ReactMapGl.Marker>;
   };
 };

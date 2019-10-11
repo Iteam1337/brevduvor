@@ -8,26 +8,12 @@ module InitDroneMutationConfig = [%graphql
 |}
 ];
 
-type event =
-  | Id(string)
-  | NoId;
-
 module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
 
 [@react.component]
-let make = (~start, ~stop, ~handleDroneInitResponse) => {
-  let (state, dispatch) =
-    React.useReducer(
-      (_state, action) =>
-        switch (action) {
-        | Id(id) => `Id(id)
-        | NoId => `NoId
-        },
-      `NoId,
-    );
-
-  let (initDroneMutation, _simple, _full) = InitDroneMutation.use();
+let make = (~start, ~stop) => {
+  let (initDroneMutation, simple, _full) = InitDroneMutation.use();
 
   let initDrone = _ => {
     initDroneMutation(
@@ -39,42 +25,30 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
         )##variables,
       (),
     )
-    |> Js.Promise.then_(
-         (
-           result:
-             ReasonApolloHooks.Mutation.controledVariantResult(
-               InitDroneMutationConfig.t,
-             ),
-         ) => {
-         switch (result) {
-         | Data(data) =>
-           //  Belt.Result.Ok(data##initDrone##id)->handleDroneInitResponse;
-           switch (data##initDrone##id) {
-           | Some(id) => dispatch(Id(id))
-           | None => dispatch(NoId)
-           }
-         | Loading
-         | Called
-         | NoData =>
-           ();
-           Belt.Result.Error({js|Fick ingen data|js})
-           ->handleDroneInitResponse;
-         | Error(error) =>
-           ();
-           Belt.Result.Error(error##message)->handleDroneInitResponse;
-         };
-         Js.Promise.resolve();
-       })
-    |> ignore;
+    ->ignore;
   };
 
   <div>
-    {switch (state) {
-     | `NoId =>
+    {switch (simple) {
+     | Data(_) =>
+       <div>
+         <p>
+           {js|Du har nu förberett din bokning. Vi notifierar dig när det är dags att packa drönaren.|js}
+           ->React.string
+         </p>
+         <Button.Primary
+           className="mt-4 bg-green-400"
+           onClick={_ => ReasonReactRouter.push("/resor")}>
+           {js| Gå till överblicksvyn |js}->React.string
+         </Button.Primary>
+       </div>
+     | Loading => "Loading"->React.string
+     | Called
+     | NoData =>
        <Button.Primary onClick=initDrone className="mt-4">
          {React.string({js| Förbered bokning |js})}
        </Button.Primary>
-     | `Id(id) => <StartDrone id handleDroneInitResponse />
+     | Error(error) => error##message->React.string
      }}
   </div>;
 };

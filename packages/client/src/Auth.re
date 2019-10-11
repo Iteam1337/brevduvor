@@ -34,7 +34,8 @@ module Storage = {
   let setLoginToken = token =>
     storage |> keyToStr(LoginToken)->Dom.Storage.setItem(token);
 
-  let getLoginToken = () => Dom.Storage.getItem(keyToStr(LoginToken), storage);
+  let getLoginToken = () =>
+    Dom.Storage.getItem(keyToStr(LoginToken), storage);
 
   let unsetLoginToken = () => {
     storage |> Dom.Storage.removeItem(keyToStr(LoginToken));
