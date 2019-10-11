@@ -1,17 +1,14 @@
 [@react.component]
-let make = () => {
+let make = (~token) => {
   let url = ReasonReactRouter.useUrl();
 
-  let (loggedIn, setLoggedIn) = React.useState(_ => false);
-
-  React.useEffect0(() => {
-    let token = Auth.Storage.getLoginToken();
-    switch (token) {
-    | None => setLoggedIn(_ => false)
-    | Some(_) => setLoggedIn(_ => true)
-    };
-    Some(_ => ());
-  });
+  let (loggedIn, setLoggedIn) =
+    React.useState(_ =>
+      switch (token) {
+      | Some(_) => true
+      | None => false
+      }
+    );
 
   let handleLogin = (payload: Auth.Payload.t) => {
     setLoggedIn(_ => true);

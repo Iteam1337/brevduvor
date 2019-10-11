@@ -4,6 +4,6 @@ open ReactTestingLibrary;
 
 describe("App", () =>
   test("renders", () =>
-    <App /> |> render |> expect |> toMatchSnapshot
+    <App token=Some("xx") /> |> render |> expect |> toMatchSnapshot
   )
 );

@@ -2,11 +2,18 @@
 
 [@decco]
 type apolloHeaders = {authorization: string};
+let createHeaders = token =>
+  switch (token) {
+  | Some(token) => Some({authorization: "Bearer " ++ token})
+  | None => None
+  };
 
 module Setup = {
   [@react.component]
   let make = () => {
-    let (headers, setHeaders) = React.useState(() => None);
+    let (token, setToken) = React.useState(() => None);
+
+    let headers = createHeaders(token);
 
     let httpLink =
       switch (headers) {
@@ -41,19 +48,14 @@ module Setup = {
 
     React.useEffect0(() => {
       let token = Auth.Storage.getLoginToken();
-      let headers =
-        switch (token) {
-        | Some(token) => {authorization: "Bearer " ++ token}
-        | _ => {authorization: ""}
-        };
 
-      setHeaders(_ => Some(headers));
+      setToken(_ => token);
       Some(() => ());
     });
 
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
-        <App />
+        <App token />
       </ReasonApolloHooks.ApolloProvider>
     </ReasonApollo.Provider>;
   };
