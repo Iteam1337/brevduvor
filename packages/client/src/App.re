@@ -13,7 +13,8 @@ type appActions =
   | ChangeDestination(Shared.GeoPosition.t)
   | SaveDestination(Shared.GeoPosition.t)
   | SetCurrentRoute(ReactMapGl.Waypoints.t)
-  | DroneId(string);
+  | DroneId(string)
+  | SetLogin(bool);
 
 let initialState = {
   currentPosition: None,
@@ -39,7 +40,7 @@ let stations = [storuman, slussfors];
 
 [@react.component]
 let make = () => {
-  let ({currentDestination, currentPosition, droneId, _}, dispatch) =
+  let ({loggedIn, currentDestination, currentPosition, droneId, _}, dispatch) =
     React.useReducer(
       (state, action) =>
         switch (action) {
@@ -61,6 +62,7 @@ let make = () => {
             currentDestination: Some(dest),
           }
         | DroneId(droneId) => {...state, droneId: Some(droneId)}
+        | SetLogin(isLoggedIn) => {...state, loggedIn: isLoggedIn}
         },
       initialState,
     );
@@ -88,12 +90,22 @@ let make = () => {
     ();
   };
 
-  // let handleLogin = data => {
-  //   //Auth.Storage.setLoginToken(data##token);
-  // };
+  React.useEffect0(() => {
+    let token = Auth.Storage.getLoginToken();
+    switch (token) {
+    | None => false->SetLogin |> dispatch
+    | Some(_) => true->SetLogin |> dispatch
+    };
+    Some(_ => ());
+  });
+
+  let handleLogin = (payload: Auth.Payload.t) => {
+    dispatch(SetLogin(true));
+    Auth.Storage.setLoginToken(payload.token);
+  };
 
   <div className="flex">
-    <Login onLogin=Js.log />
+    {loggedIn ? React.null : <Login onLogin=handleLogin />}
     <div className="py-6 px-4 bg-blue-400 min-h-screen">
       <div className="w-full flex flex-col justify-center">
         <Icon name=`Dashboard className="text-gray-100 w-6 h-6 mb-6" />
@@ -108,7 +120,6 @@ let make = () => {
         {switch (currentPosition, currentDestination) {
          | (Some(start), Some(stop)) =>
            <InitDrone start stop handleDroneInitResponse />
-
          | _ => React.null
          }}
         {switch (droneId) {
