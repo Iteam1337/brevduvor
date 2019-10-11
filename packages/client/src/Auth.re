@@ -17,8 +17,6 @@ module Payload = {
   };
 };
 
-let user = {username: "Kalle", password: "hunter2"};
-
 module Storage = {
   type keys =
     | LoginToken

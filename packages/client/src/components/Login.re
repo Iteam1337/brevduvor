@@ -86,7 +86,6 @@ let make = (~onLogin) => {
   <div
     className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
-      "PPOOOPO"->React.string
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=handleSubmit>
