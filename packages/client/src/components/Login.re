@@ -14,32 +14,27 @@ module LoginMutationConfig = [%graphql
 
 module LoginMutation = ReasonApolloHooks.Mutation.Make(LoginMutationConfig);
 
-type loginFormState = {
-  hasError: bool,
-  errorMessage: string,
-  isLoading: bool,
-};
+type state =
+  | Error(string)
+  | Loading
+  | Idle;
 
 type loginFormActions =
   | SetError(string)
   | UnsetError
   | ToggleLoading(bool);
 
-let initialState: loginFormState = {
-  hasError: false,
-  errorMessage: "",
-  isLoading: false,
-};
+let initialState: state = Idle;
 
 [@react.component]
 let make = (~onLogin) => {
   let (state, dispatch) =
     React.useReducer(
-      (state, action) =>
+      (_, action) =>
         switch (action) {
-        | SetError(errorMessage) => {...state, hasError: true, errorMessage}
-        | UnsetError => {...state, hasError: false, errorMessage: ""}
-        | ToggleLoading(isLoading) => {...state, isLoading}
+        | SetError(errorMessage) => Error(errorMessage)
+        | UnsetError => Idle
+        | ToggleLoading(isLoading) => isLoading ? Loading : Idle
         },
       initialState,
     );
@@ -50,7 +45,7 @@ let make = (~onLogin) => {
     () => {
       switch (loginResponse) {
       | Data(payload) =>
-        let authPayload = Auth.Payload.make(payload);
+        let authPayload = Shared.AuthPayload.make(payload);
         dispatch(ToggleLoading(false));
         onLogin(authPayload);
       | Error(error) =>
@@ -89,7 +84,11 @@ let make = (~onLogin) => {
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=handleSubmit>
-        {state.hasError ? state.errorMessage->React.string : React.null}
+        {switch (state) {
+         | Error(errorMessage) => errorMessage->React.string
+         | Idle => React.null
+         | Loading => React.null
+         }}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             "Username"->React.string
@@ -112,7 +111,11 @@ let make = (~onLogin) => {
             placeholder="****"
           />
         </div>
-        <Loader.Inline isLoading={state.isLoading} />
+        {switch (state) {
+         | Error(_) => React.null
+         | Idle => <Loader.Inline isLoading=false />
+         | Loading => <Loader.Inline isLoading=true />
+         }}
         <input
           value="Login"
           type_="submit"

@@ -5,7 +5,10 @@ type apolloHeaders = {authorization: string};
 
 let setContextHeaders = () => {
   let token =
-    Belt.Option.getWithDefault(Auth.Storage.getLoginToken(), "UNAUTHORISED");
+    Belt.Option.getWithDefault(
+      Shared.AuthStorage.getLoginToken(),
+      "UNAUTHORISED",
+    );
 
   let headers = {authorization: "Bearer " ++ token};
 

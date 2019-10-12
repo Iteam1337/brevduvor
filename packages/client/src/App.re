@@ -1,19 +1,15 @@
 [@react.component]
 let make = () => {
+  open Shared;
+
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
-    React.useState(_ => {
-      let token = Auth.Storage.getLoginToken();
-      switch (token) {
-      | Some(_) => true
-      | None => false
-      };
-    });
+    React.useState(_ => AuthStorage.getLoginToken()->Belt.Option.isSome);
 
-  let handleLogin = (payload: Auth.Payload.t) => {
-    setLoggedIn(_ => true);
-    Auth.Storage.setLoginToken(payload.token);
+  let handleLogin = (payload: Shared.AuthPayload.t) => {
+    setLoggedIn(_prev => true);
+    AuthStorage.setLoginToken(payload.token);
   };
 
   loggedIn
