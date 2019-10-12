@@ -1,61 +1,51 @@
 [%bs.raw {| require("mapbox-gl/dist/mapbox-gl.css") |}];
 
-[@decco]
+[@bs.deriving jsConverter]
 type apolloHeaders = {authorization: string};
-let createHeaders = token =>
-  switch (token) {
-  | Some(token) => Some({authorization: "Bearer " ++ token})
-  | None => None
-  };
+
+let setContextHeaders = () => {
+  let token =
+    Belt.Option.getWithDefault(Auth.Storage.getLoginToken(), "UNAUTHORISED");
+
+  let headers = {authorization: "Bearer " ++ token};
+
+  {"headers": apolloHeadersToJs(headers)};
+};
 
 module Setup = {
   [@react.component]
   let make = () => {
-    let (token, setToken) = React.useState(() => None);
-
-    let headers = createHeaders(token);
-
     let httpLink =
-      switch (headers) {
-      | None => ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ())
-      | Some(headers) =>
-        ApolloLinks.createHttpLink(
-          ~uri=Config.graphqlEndpoint,
-          ~headers=apolloHeaders_encode(headers),
-          (),
-        )
-      };
+      ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ());
     let wsLink = ApolloLinks.webSocketLink(~uri=Config.graphqlWsUri, ());
     let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
+    let contextLink = ApolloLinks.createContextLink(() => setContextHeaders());
 
     let client =
       ReasonApollo.createApolloClient(
         ~link=
-          ApolloLinks.split(
-            operation => {
-              let operationDefition =
-                ApolloUtilities.getMainDefinition(operation##query);
-              operationDefition##kind == "OperationDefinition"
-              &&
-              operationDefition##operation == "subscription";
-            },
-            wsLink,
-            httpLink,
-          ),
+          ApolloLinks.from([|
+            contextLink, // set auth headers on each request
+            ApolloLinks.split(
+              operation => {
+                let operationDefition =
+                  ApolloUtilities.getMainDefinition(operation##query);
+                operationDefition##kind == "OperationDefinition"
+                &&
+                operationDefition##operation == "subscription";
+              },
+              wsLink,
+              httpLink,
+            ),
+          |]),
         ~cache=inMemoryCache,
         (),
       );
-
-    React.useEffect0(() => {
-      let token = Auth.Storage.getLoginToken();
-
-      setToken(_ => token);
-      Some(() => ());
-    });
+    Js.log(client);
 
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
-        <App token />
+        <App />
       </ReasonApolloHooks.ApolloProvider>
     </ReasonApollo.Provider>;
   };
