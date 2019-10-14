@@ -4,6 +4,6 @@ Cypress.Commands.add('login', () => {
     .type('Kalle')
     .get('#password')
     .type('hunter2')
-    .get('#submit')
+    .get(`[type="submit"]`)
     .click()
 })
