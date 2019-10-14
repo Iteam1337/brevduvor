@@ -67,11 +67,16 @@ let make = () => {
          <>
            <label> {js|Från:|js}->React.string </label>
            <GeoSelectBox
+             name="select-from"
              onChange=handleDepartingPositionSelect
              selectOptions
            />
            <label> "Till:"->React.string </label>
-           <GeoSelectBox onChange=handleDestinationSelect selectOptions />
+           <GeoSelectBox
+             name="select-to"
+             onChange=handleDestinationSelect
+             selectOptions
+           />
          </>;
        | Loading
        | NoData
