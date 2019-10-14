@@ -44,7 +44,6 @@ module Setup = {
         ~cache=inMemoryCache,
         (),
       );
-    Js.log(client);
 
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
