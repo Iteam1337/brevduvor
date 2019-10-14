@@ -1,3 +1,7 @@
+Given('I login', () => {
+  cy.login()
+})
+
 Given('I open the boka-resa page', () => {
   cy.visit('/boka-resa')
 })

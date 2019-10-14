@@ -120,6 +120,7 @@ let make = (~onLogin) => {
         <input
           value="Login"
           type_="submit"
+          id="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500"
         />

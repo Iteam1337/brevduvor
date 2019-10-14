@@ -4,6 +4,7 @@ Feature: Booking
   User can book a trip
 
   Background:
+    Given I login
     Given I open the boka-resa page
 
   Scenario: User can book a trip
