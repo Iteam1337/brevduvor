@@ -4,6 +4,7 @@ module Locale = {
     | Swedish;
 
   let ofString = locale => {
+    /* language string comes in as e.g. "sv-SE" */
     let language =
       Tablecloth.(
         locale
@@ -30,6 +31,10 @@ module Error = {
     };
   };
 
+  /* curried with the "globally" set Locale,
+      currently calls the "Navigator" on every request,
+      this could be set globally instead
+     */
   let toString =
     _toString(GlobalWindow.Navigator.language |> Locale.ofString);
 };
