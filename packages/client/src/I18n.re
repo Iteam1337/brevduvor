@@ -143,5 +143,6 @@ module Translations = {
     };
   };
 
-  let toString = _toString(Locale.English);
+  let toString =
+    _toString(GlobalWindow.Navigator.language |> Locale.ofString);
 };
