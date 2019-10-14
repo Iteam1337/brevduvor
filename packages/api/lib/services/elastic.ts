@@ -1,10 +1,10 @@
 import { Client } from '@elastic/elasticsearch'
 import config from './../config'
-import { DronePositionResponse } from '../__generated__/brevduvor'
+import { DroneStatusResponse } from '../__generated__/brevduvor'
 
 const client = new Client({ node: config.ELASTIC_URL })
 
-export const saveDroneStatus = async (droneStatus: DronePositionResponse) => {
+export const saveDroneStatus = async (droneStatus: DroneStatusResponse) => {
   await client.index({
     index: 'drone-status',
     body: {
