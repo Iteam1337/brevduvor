@@ -35,7 +35,7 @@ let make = (~id, ~handleDroneInitResponse) => {
         | Loading
         | Called
         | NoData =>
-          Belt.Result.Error(I18n.Error.(toString(NoDataFromServer)))->Js.log
+          Belt.Result.Error(I18n.Error.toString(NoDataFromServer))->Js.log
         | Error(error) => Belt.Result.Error(error##message)->Js.log
         }
       )

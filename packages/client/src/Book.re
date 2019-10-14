@@ -77,7 +77,8 @@ let make = () => {
        | NoData
        | Error(_) =>
          <p>
-           {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
+           {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
+            ->React.string}
          </p>
        }}
       {switch (departingPosition, destination) {
