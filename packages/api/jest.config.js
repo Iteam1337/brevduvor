@@ -5,7 +5,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts', 'node', 'd.ts'],
   globals: {
     'ts-jest': {
-      diagnostics: false,
+      diagnostics: { ignoreCodes: 'TS2722' },
     },
   },
   watchPlugins: [
