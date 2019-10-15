@@ -64,13 +64,13 @@ let make = () => {
          ->Belt.List.fromArray;
        <>
          <Input.GeoSelect
-           label={js|Från:|js}
+           label=I18n.Translations.(toString(BookTrip_From_DropdownLabel))
            name="select-from"
            onChange=handleDepartingPositionSelect
            selectOptions
          />
          <Input.GeoSelect
-           label="Till:"
+           label=I18n.Translations.(toString(BookTrip_To_DropdownLabel))
            name="select-to"
            onChange=handleDestinationSelect
            selectOptions
@@ -80,14 +80,16 @@ let make = () => {
      | NoData
      | Error(_) =>
        <p>
-         {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
+         {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
+          ->React.string}
        </p>
      }}
     {switch (departingPosition, destination) {
      | (Some(start), Some(stop)) => <InitDrone start stop />
      | _ =>
        <Button.Secondary disabled=true>
-         {js|Förbered bokning|js}->React.string
+         I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
+         ->React.string
        </Button.Secondary>
      }}
   </SideMenu>;

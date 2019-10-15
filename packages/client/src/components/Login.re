@@ -95,15 +95,19 @@ let make = (~onLogin) => {
           <Input.Text
             inputRef=usernameInputRef
             id="username"
-            placeholder="Username"
-            label="Username"
+            placeholder=I18n.Translations.(
+              toString(Auth_Username_Placeholder)
+            )
+            label=I18n.Translations.(toString(Auth_Username_Label))
           />
         </div>
         <div className="mb-6">
           <Input.Text
             id="password"
-            placeholder="Password"
-            label="Password"
+            placeholder=I18n.Translations.(
+              toString(Auth_Password_Placeholder)
+            )
+            label=I18n.Translations.(toString(Auth_Password_Label))
             type_="Password"
           />
         </div>
@@ -116,7 +120,7 @@ let make = (~onLogin) => {
           type_="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500">
-          "Login"->React.string
+          I18n.Translations.(toString(Auth_Login_Submit))->React.string
         </Button.Primary>
       </form>
     </div>

@@ -33,20 +33,22 @@ let make = (~start, ~stop) => {
      | Data(_) =>
        <div>
          <p>
-           {js|Du har nu förberett din bokning. Vi notifierar dig när det är dags att packa drönaren.|js}
+           I18n.Translations.(toString(BookTrip_TripPrepared_Message))
            ->React.string
          </p>
          <Button.Primary
            className="mt-4 bg-green-400"
            onClick={_ => ReasonReactRouter.push("/resor")}>
-           {js| Gå till överblicksvyn |js}->React.string
+           I18n.Translations.(toString(BookTrip_GoToOverview_Button))
+           ->React.string
          </Button.Primary>
        </div>
-     | Loading => "Loading"->React.string
+     | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
-       <Button.Primary onClick=initDrone>
-         {React.string({js| Förbered bokning |js})}
+       <Button.Primary onClick=initDrone className="mt-4">
+         I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
+         ->React.string
        </Button.Primary>
      | Error(error) => error##message->React.string
      }}

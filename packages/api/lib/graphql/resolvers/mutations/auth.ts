@@ -1,6 +1,7 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
 import * as auth from '../../../services/auth'
-import { AuthenticationError, ValidationError } from 'apollo-server-core'
+import { AuthenticationError } from 'apollo-server-core'
+import errorCodes from '../../../resources/errorCodes'
 
 export const login: MutationResolvers['login'] = async (
   _,
@@ -19,8 +20,8 @@ export const register: MutationResolvers['register'] = async (_, { input }) => {
     try {
       return await auth.register(username, password, confirmPassword)
     } catch (error) {
-      throw new ValidationError(error.message)
+      throw new AuthenticationError(error.message)
     }
   }
-  throw new ValidationError('Something went wrong')
+  throw new AuthenticationError(errorCodes.Auth.Unspecified)
 }

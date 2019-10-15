@@ -7,10 +7,6 @@
     {
       "dir": "src",
       "subdirs": true
-    },
-    {
-      "dir": "__tests__",
-      "type": "dev"
     }
   ],
   "package-specs": [
@@ -31,7 +27,8 @@
     "reason-apollo-hooks",
     "reason-apollo",
     "reason-future",
-    "re-classnames"
+    "re-classnames",
+    "tablecloth-bucklescript"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",
