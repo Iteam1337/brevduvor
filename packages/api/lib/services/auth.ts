@@ -1,5 +1,6 @@
 import { sign, verify } from 'jsonwebtoken'
 import { AuthPayload } from '../__generated__/brevduvor'
+import errorCodes from '../resources/errorCodes'
 
 const JWT_SECRET = 'MY SUPER SECRET KEY'
 
@@ -105,15 +106,15 @@ const authenticate = (username: string, password: string) => {
     try {
       usersDb.find(username, (err, user) => {
         if (err) {
-          reject({ message: 'Something went wrong' })
+          reject({ message: errorCodes.Auth.Unspecified })
         }
 
         if (!user) {
-          reject({ message: 'Could not find user' })
+          reject({ message: errorCodes.Auth.MissingUser })
         }
 
         if (user && user.password !== password) {
-          reject({ message: 'Password or username is incorrect' })
+          reject({ message: errorCodes.Auth.PassIncorrect })
         }
 
         resolve(user as User)
@@ -153,21 +154,21 @@ export const register = (
 ) => {
   return new Promise<AuthPayload>(async (resolve, reject) => {
     if (password !== confirmPassword) {
-      return reject({ message: 'Password fields are not matching' })
+      return reject({ message: errorCodes.Auth.PasswordFieldsNotMatching })
     }
 
     await usersDb.find(username, (error: any, user) => {
       if (error) {
-        return reject({ message: 'Something went wrong' })
+        return reject({ message: errorCodes.Auth.Unspecified })
       }
       if (user) {
-        return reject({ message: 'User already exists!' })
+        return reject({ message: errorCodes.Auth.UserExists })
       }
     })
 
     await usersDb.add({ username, password }, (error, user) => {
       if (error) {
-        return reject({ message: 'Something went wrong' })
+        return reject({ message: errorCodes.Auth.Unspecified })
       }
       if (user) {
         const token = sign(user as object, JWT_SECRET)
@@ -177,7 +178,7 @@ export const register = (
           username: user.name,
         } as AuthPayload)
       } else {
-        reject({ message: 'Something went wrong' })
+        reject({ message: errorCodes.Auth.Unspecified })
       }
     })
   })
