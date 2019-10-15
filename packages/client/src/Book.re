@@ -70,12 +70,19 @@ let make = () => {
              ->React.string
            </label>
            <GeoSelectBox
+             name="select-from"
              onChange=handleDepartingPositionSelect
              selectOptions
            />
-           <label> I18n.Translations.(toString(BookTrip_To_DropdownLabel))
-             ->React.string </label>
-           <GeoSelectBox onChange=handleDestinationSelect selectOptions />
+           <label>
+             I18n.Translations.(toString(BookTrip_To_DropdownLabel))
+             ->React.string
+           </label>
+           <GeoSelectBox
+             name="select-to"
+             onChange=handleDestinationSelect
+             selectOptions
+           />
          </>;
        | Loading
        | NoData

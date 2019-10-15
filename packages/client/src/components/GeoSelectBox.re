@@ -1,7 +1,8 @@
 [@react.component]
-let make = (~selectOptions: list(Shared.GeoPosition.t), ~onChange) => {
+let make = (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name) => {
   <div className="inline-block relative w-full">
     <select
+      name
       onChange={event => {
         let selectedDestination =
           selectOptions->Belt.List.get(
