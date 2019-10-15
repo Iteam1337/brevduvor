@@ -6,8 +6,6 @@ let make = (~children) => {
         <Icon name=`Dashboard className="text-gray-100 w-6 h-6 mb-6" />
       </div>
     </div>
-    <div className="p-5">
-    children
-    </div>
+    <div className="p-5 w-full"> children </div>
   </div>;
 };

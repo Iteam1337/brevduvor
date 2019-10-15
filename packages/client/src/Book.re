@@ -92,7 +92,7 @@ let make = () => {
            <InitDrone start stop handleDroneStartResponse />
          | (Some(_), Some(_), Some(_)) => React.null
          | _ =>
-           <Button.Secondary disabled=true className="mt-8">
+           <Button.Secondary disabled=true className="mt-5">
              {BookTrip_PrepareTrip_Button->toString->React.string}
            </Button.Secondary>
          }}

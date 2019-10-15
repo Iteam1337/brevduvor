@@ -41,7 +41,7 @@ let make = (~start, ~stop, ~handleDroneStartResponse) => {
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
-       <Button.Primary onClick=initDrone className="mt-8">
+       <Button.Primary onClick=initDrone className="mt-5">
          I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
          ->React.string
        </Button.Primary>

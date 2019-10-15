@@ -30,7 +30,7 @@ module GeoSelect = {
   let make =
       (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name, ~label) => {
     <>
-      <label htmlFor=name> label->React.string </label>
+      <label htmlFor=name className="inline-block mt-2"> label->React.string </label>
       <div className="inline-block relative w-full mt-1">
         <select
           name
