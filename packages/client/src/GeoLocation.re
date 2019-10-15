@@ -22,7 +22,7 @@ module Navigator = {
         let coords = coordinatesFromJs(positionAsRecord.coords);
         cb(coords);
       },
-      Js.log,
+      Js.log2("Navigator.GeoLocation"),
       geoOptions(~enableHighAccuracy=true),
     );
   };

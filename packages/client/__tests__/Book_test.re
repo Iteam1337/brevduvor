@@ -28,7 +28,15 @@ let mocks = [|
   },
 |];
 
-describe("Book", () =>
+describe("Book", () => {
+  test("renders loading initially", () => {
+    let element =
+      <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
+      |> render;
+
+    element |> container |> expect |> toMatchSnapshot;
+  });
+
   testAsync("renders with data", finish => {
     let element =
       <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
@@ -39,10 +47,11 @@ describe("Book", () =>
         element |> getByText(~matcher=`RegExp([%re "/till/i"]))
       )
       |> then_(_ => {
-           expect(container(element)) |> toMatchSnapshot |> finish;
+           element |> container |> expect |> toMatchSnapshot |> finish;
+
            resolve();
          })
       |> ignore
     );
-  })
-);
+  });
+});

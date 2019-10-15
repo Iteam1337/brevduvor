@@ -29,12 +29,6 @@ module ApolloReactTesting = {
     "createClient";
 };
 
-/** Why do we need this custom MockedProvider?
-   In `@apolllo/react-testing` the MockedProvider is already provided with MockLink and a mocked
-   client.
-
-   But since we're also using the ReasonApolloHooks-provider we need to manually mock that.
-   */
 module MockedProvider = {
   [@react.component]
   let make = (~addTypename=true, ~children, ~mocks=[||]) => {

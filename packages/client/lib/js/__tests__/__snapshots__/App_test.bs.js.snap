@@ -1,90 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App renders 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    <div>
-      <div
-        class="flex w-screen h-screen justify-center items-center"
-      >
-        <div>
-          <button
-            class="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
-        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500 mt-4 bg-green-400"
-            type="button"
-          >
-            Boka resa
-          </button>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
+<div>
+  <div
+    class="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center"
+  >
     <div
-      class="flex w-screen h-screen justify-center items-center"
+      class="w-full max-w-xs"
     >
-      <div>
+      <form
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
+        <div
+          class="mb-4"
+        >
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Username
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="username"
+            placeholder="Username"
+            type="text"
+          />
+        </div>
+        <div
+          class="mb-6"
+        >
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Password
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="password"
+            placeholder="****"
+            type="password"
+          />
+        </div>
         <button
           class="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
-        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500 mt-4 bg-green-400"
-          type="button"
+        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500 w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
+        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500"
+          type="submit"
         >
-          Boka resa
+          Login
         </button>
-      </div>
+      </form>
     </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
+  </div>
+</div>
 `;
