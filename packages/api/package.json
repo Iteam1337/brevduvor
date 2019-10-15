@@ -65,7 +65,6 @@
     "got": "^9.6.0",
     "graphql-type-json": "^0.3.0",
     "jsonwebtoken": "^8.5.1",
-    "dedent": "^0.7.0",
     "pg": "^7.12.1",
     "pg-promise": "^9.2.1"
   }

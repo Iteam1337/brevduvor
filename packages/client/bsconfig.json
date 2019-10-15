@@ -31,7 +31,8 @@
     "reason-apollo-hooks",
     "reason-apollo",
     "reason-future",
-    "re-classnames"
+    "re-classnames",
+    "tablecloth-bucklescript"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest",

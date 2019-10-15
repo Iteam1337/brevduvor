@@ -59,7 +59,7 @@ const typeDefs = gql`
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
     login(
-      username: String! @maxLength(length: 255) @isEmail
+      username: String! @minLength(length: 12) @isEmail
       password: String!
     ): AuthPayload!
 
