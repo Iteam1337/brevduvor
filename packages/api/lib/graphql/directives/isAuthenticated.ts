@@ -3,6 +3,7 @@ import {
   AuthenticationError,
 } from 'apollo-server-express'
 import { defaultFieldResolver } from 'graphql'
+import errorCodes from '../../resources/errorCodes'
 
 export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field: any) {
@@ -16,9 +17,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
         return result
       } else {
-        throw new AuthenticationError(
-          'You must be logged in to access this resource'
-        )
+        throw new AuthenticationError(errorCodes.Auth.RequireLogin)
       }
     }
   }
