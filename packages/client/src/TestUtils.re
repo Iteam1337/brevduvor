@@ -3,7 +3,6 @@ module ApolloReactTesting = {
     [@bs.module "@apollo/react-testing"] [@react.component]
     external make:
       (
-        ~cache: ReasonApolloTypes.apolloCache,
         ~children: React.element,
         ~mocks: array(Js.t('mocks)),
         ~addTypename: bool
@@ -39,9 +38,7 @@ module ApolloReactTesting = {
 module MockedProvider = {
   [@react.component]
   let make = (~addTypename=true, ~children, ~mocks=[||]) => {
-    let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
-
-    <ApolloReactTesting.MockedProvider addTypename cache=inMemoryCache mocks>
+    <ApolloReactTesting.MockedProvider addTypename mocks>
       children
     </ApolloReactTesting.MockedProvider>;
   };
