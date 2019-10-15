@@ -1,11 +1,11 @@
 [@react.component]
 let make = () =>
-  <div className="flex w-screen h-screen justify-center items-center">
+  <SideMenu>
     <div>
       <Button.Primary
-        className="mt-4 bg-green-400"
+        className="mt-4"
         onClick={_ => ReasonReactRouter.push("/boka-resa")}>
         "Boka resa"->React.string
       </Button.Primary>
     </div>
-  </div>;
+  </SideMenu>;

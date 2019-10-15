@@ -55,40 +55,37 @@ let make = () => {
 
   let {departingPosition, destination} = state;
 
-  <div className="w-3/12 min-h-screen flex">
-    <div className="w-full p-4 bg-white h-full flex flex-col">
-      {switch (availablePositionsResponse) {
-       | Data(data) =>
-         let selectOptions =
-           data##allDestinations
-           ->Belt.Array.map(Shared.GeoPosition.toRecord)
-           ->Belt.List.fromArray;
-
-         <>
-           <label> {js|Från:|js}->React.string </label>
-           <GeoSelectBox
-             name="select-from"
-             onChange=handleDepartingPositionSelect
-             selectOptions
-           />
-           <label> "Till:"->React.string </label>
-           <GeoSelectBox
-             name="select-to"
-             onChange=handleDestinationSelect
-             selectOptions
-           />
-         </>;
-       | Loading
-       | NoData
-       | Error(_) =>
-         <p>
-           {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
-         </p>
-       }}
-      {switch (departingPosition, destination) {
-       | (Some(start), Some(stop)) => <InitDrone start stop />
-       | _ => React.null
-       }}
-    </div>
-  </div>;
+  <SideMenu>
+    {switch (availablePositionsResponse) {
+     | Data(data) =>
+       let selectOptions =
+         data##allDestinations
+         ->Belt.Array.map(Shared.GeoPosition.toRecord)
+         ->Belt.List.fromArray;
+       <>
+         <Input.GeoSelect
+           label={js|Från:|js}
+           name="select-from"
+           onChange=handleDepartingPositionSelect
+           selectOptions
+         />
+         <Input.GeoSelect
+           label="Till:"
+           name="select-to"
+           onChange=handleDestinationSelect
+           selectOptions
+         />
+       </>;
+     | Loading => <Loader.Inline isLoading=true />
+     | NoData
+     | Error(_) =>
+       <p>
+         {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
+       </p>
+     }}
+    {switch (departingPosition, destination) {
+     | (Some(start), Some(stop)) => <InitDrone start stop />
+     | _ => React.null
+     }}
+  </SideMenu>;
 };
