@@ -69,7 +69,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    allDestinations: [Destination!]!
+    allDestinations: [Destination!]! @isAuthenticated
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
       @isAuthenticated
     drones: [String!]!

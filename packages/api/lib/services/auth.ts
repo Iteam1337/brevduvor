@@ -2,7 +2,7 @@ import { sign, verify } from 'jsonwebtoken'
 import { AuthPayload } from '../__generated__/brevduvor'
 import errorCodes from '../resources/errorCodes'
 
-import { createUser, getUserByEmail } from './users'
+import { createUser, getUserByEmail, getUserById } from './users'
 import { AuthenticationError } from 'apollo-server-core'
 import { errors } from 'pg-promise'
 import { GraphQLError } from 'graphql'
@@ -13,102 +13,129 @@ const JWT_SECRET = 'MY SUPER SECRET KEY'
 
 /** DUMMY IMPLEMENTATION OF USER RECORDS */
 type User = {
-  id: number
+  id: string
   name: string
   password: string
 }
 
-class Users {
-  private registered: User[] = [
-    {
-      id: 1,
-      name: 'Kalle',
-      password: 'hunter2',
-    },
-    {
-      id: 2,
-      name: 'Kenta',
-      password: 'password123',
-    },
-    {
-      id: 3,
-      name: 'Svin-Robban',
-      password: '213Hkldsfjy234Fjjklfd^^^^*',
-    },
-  ]
-  private tableIndex: number = 3
+// class Users {
+//   private registered: User[] = [
+//     {
+//       id: '1',
+//       name: 'Kalle',
+//       password: 'hunter2',
+//     },
+//     {
+//       id: '2',
+//       name: 'Kenta',
+//       password: 'password123',
+//     },
+//     {
+//       id: '3',
+//       name: 'Svin-Robban',
+//       password: '213Hkldsfjy234Fjjklfd^^^^*',
+//     },
+//   ]
+//   private tableIndex: number = 3
 
-  async find(
-    username: string,
-    callback: (err: any, user: User | null) => void
-  ) {
-    try {
-      const found = this.registered.find(user => user.name === username)
-      if (found) {
-        return callback(null, found)
-      } else {
-        return callback(null, null)
-      }
-    } catch (error) {
-      return callback(error, null)
-    }
-  }
+//   async find(
+//     username: string,
+//     callback: (err: any, user: User | null) => void
+//   ) {
+//     try {
+//       const found = this.registered.find(user => user.name === username)
+//       if (found) {
+//         return callback(null, found)
+//       } else {
+//         return callback(null, null)
+//       }
+//     } catch (error) {
+//       return callback(error, null)
+//     }
+//   }
 
-  async findById(id: number, callback: (err: any, user: User | null) => void) {
-    try {
-      const found = this.registered.find(user => user.id === id)
-      if (found) {
-        return callback(null, found)
-      } else {
-        return callback(null, null)
-      }
-    } catch (error) {
-      return callback(error, null)
-    }
-  }
+//   async findById(id: number, callback: (err: any, user: User | null) => void) {
+//     try {
+//       const found = this.registered.find(user => user.id === id)
+//       if (found) {
+//         return callback(null, found)
+//       } else {
+//         return callback(null, null)
+//       }
+//     } catch (error) {
+//       return callback(error, null)
+//     }
+//   }
 
-  async add(payload: any, callback: (err: any, user: User | null) => void) {
-    try {
-      const len = this.registered.push({
-        id: ++this.tableIndex,
-        name: payload.username,
-        password: payload.password,
-      })
+//   async add(payload: any, callback: (err: any, user: User | null) => void) {
+//     try {
+//       const len = this.registered.push({
+//         id: String(++this.tableIndex),
+//         name: payload.username,
+//         password: payload.password,
+//       })
 
-      return callback(null, this.registered[len - 1])
-    } catch (err) {
-      return callback(err, null)
-    }
-  }
-}
+//       return callback(null, this.registered[len - 1])
+//     } catch (err) {
+//       return callback(err, null)
+//     }
+//   }
+// }
 
-const usersDb = new Users()
+// //const usersDb = new Users()
 
 /* END DUMMY IMPLEMENTATION OF USERS*/
 
-export const verifyTokenAgainstUserRecords = (token: string) =>
-  new Promise((resolve, reject) => {
-    try {
-      token = token.split('Bearer ')[1]
+export const verifyTokenAgainstUserRecords = async (token: string) => {
+  try {
+    token = token.split('Bearer ')[1]
 
-      const payload = verify(token, JWT_SECRET) as User
+    const payload = verify(token, JWT_SECRET) as User
 
-      usersDb.findById(payload.id, (err: any, user: any) => {
-        if (err) {
-          reject(err)
-        }
-        if (!user || user.password !== payload.password) {
-          reject(err)
-        }
+    if (payload && payload.id) {
+      const user = await getUserById(payload.id)
 
-        resolve(user)
-      })
-    } catch (error) {
-      reject(error)
+      // User not found
+      if (
+        user instanceof errors.QueryResultError &&
+        user.code === errors.queryResultErrorCode.noData
+      ) {
+        throw new GraphQLError(errorCodes.Auth.MissingUser)
+      }
+
+      console.log(payload.password, user.password)
+
+      // Password
+      if ((await verifyPassword(payload.password, user.password)) !== true) {
+        throw new GraphQLError(errorCodes.Auth.PassIncorrect)
+      }
     }
-  })
+  } catch (error) {
+    throw new AuthenticationError(errorCodes.Auth.RequireLogin)
+  }
+}
+// new Promise((resolve, reject) => {
+//   try {
+//     token = token.split('Bearer ')[1]
 
-const authenticate = async (username: string, _password: string) => {
+//     const payload = verify(token, JWT_SECRET) as User
+
+//     usersDb.findById(payload.id, (err: any, user: any) => {
+//       if (err) {
+//         reject(err)
+//       }
+//       if (!user || user.password !== payload.password) {
+//         reject(err)
+//       }
+
+//       resolve(user)
+//     })
+//   } catch (error) {
+//     reject(error)
+//   }
+// })
+
+const authenticate = async (username: string, password: string) => {
   const res = await getUserByEmail(username)
 
   if (
@@ -118,7 +145,9 @@ const authenticate = async (username: string, _password: string) => {
     throw new GraphQLError(errorCodes.Auth.MissingUser)
   }
 
-  if ((await verifyPassword(_password, res.password)) !== true) {
+  console.log(password, res.password)
+
+  if ((await verifyPassword(password, res.password)) !== true) {
     throw new GraphQLError(errorCodes.Auth.PassIncorrect)
   }
 
