@@ -50,11 +50,6 @@ const typeDefs = gql`
     confirmPassword: String!
   }
 
-  input LoginInput {
-    username: String! @minLength(length: 12) @isEmail
-    password: String!
-  }
-
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -63,7 +58,10 @@ const typeDefs = gql`
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
-    login(input: LoginInput!): AuthPayload!
+    login(
+      username: String! @minLength(length: 12) @isEmail
+      password: String!
+    ): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
 

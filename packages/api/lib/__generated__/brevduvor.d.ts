@@ -87,11 +87,6 @@ export type InitDroneResponse = {
   eta: Scalars['String']
 }
 
-export type LoginInput = {
-  username: Scalars['RuleWrapper']
-  password: Scalars['String']
-}
-
 export type LogoutResponse = {
   __typename?: 'LogoutResponse'
   status: Scalars['String']
@@ -117,7 +112,8 @@ export type MutationStartDroneArgs = {
 }
 
 export type MutationLoginArgs = {
-  input: LoginInput
+  username: Scalars['RuleWrapper']
+  password: Scalars['String']
 }
 
 export type MutationRegisterArgs = {
@@ -287,7 +283,6 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
-  LoginInput: LoginInput
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
@@ -317,7 +312,6 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates
   Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
-  LoginInput: LoginInput
   RuleWrapper: Scalars['RuleWrapper']
   AuthPayload: AuthPayload
   ID: Scalars['ID']
@@ -471,7 +465,7 @@ export type MutationResolvers<
     ResolversTypes['AuthPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationLoginArgs, 'input'>
+    RequireFields<MutationLoginArgs, 'username' | 'password'>
   >
   register?: Resolver<
     ResolversTypes['AuthPayload'],

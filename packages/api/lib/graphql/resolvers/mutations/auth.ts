@@ -3,16 +3,15 @@ import * as auth from '../../../services/auth'
 import { AuthenticationError } from 'apollo-server-core'
 import errorCodes from '../../../resources/errorCodes'
 
-export const login: MutationResolvers['login'] = async (_, { input }) => {
-  const { username, password } = input
-  if (username) {
-    try {
-      return await auth.login(username, password)
-    } catch (error) {
-      throw new AuthenticationError(error.message)
-    }
+export const login: MutationResolvers['login'] = async (
+  _,
+  { username, password }
+) => {
+  try {
+    return await auth.login(username, password)
+  } catch (error) {
+    throw new AuthenticationError(error.message)
   }
-  throw new AuthenticationError(errorCodes.Auth.Unspecified)
 }
 
 export const register: MutationResolvers['register'] = async (_, { input }) => {
