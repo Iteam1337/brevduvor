@@ -7,9 +7,9 @@ let mocks = [|
     "request": {
       "query": Book.AllDestinationsQuery.gql(. Book.AllDestinations.query),
     },
-    "result": () => {
+    "result": {
       "data": {
-        "allDestinations": [
+        "allDestinations": [|
           {
             "alias": "Storuman",
             "lat": 13.333337,
@@ -22,7 +22,7 @@ let mocks = [|
             "lon": 16.666666,
             "__typename": "Destination",
           },
-        ],
+        |],
       },
     },
   },
@@ -34,16 +34,15 @@ describe("Book", () =>
       <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
       |> render;
 
-    waitForElement(() => element |> getByText(~matcher=`Str("Till")))
-    |> Js.Promise.then_(_ => {
-         TestUtils.ReactTestUtils.act(() => {
+    Js.Promise.(
+      TestUtils.waitForElement(() =>
+        element |> getByText(~matcher=`RegExp([%re "/till/i"]))
+      )
+      |> then_(_ => {
            expect(container(element)) |> toMatchSnapshot |> finish;
-           Js.Promise.resolve();
+           resolve();
          })
-         |> Js.Promise.then_(Js.Promise.resolve)
-         |> ignore;
-         Js.Promise.resolve();
-       })
-    |> ignore;
+      |> ignore
+    );
   })
 );

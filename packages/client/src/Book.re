@@ -59,7 +59,6 @@ let make = () => {
     <div className="w-full p-4 bg-white h-full flex flex-col">
       {switch (availablePositionsResponse) {
        | Data(data) =>
-         Js.log2("Data", data);
          let selectOptions =
            data##allDestinations
            ->Belt.Array.map(Shared.GeoPosition.toRecord)

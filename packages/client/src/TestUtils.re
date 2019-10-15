@@ -3,6 +3,7 @@ module ApolloReactTesting = {
     [@bs.module "@apollo/react-testing"] [@react.component]
     external make:
       (
+        ~cache: ReasonApolloTypes.apolloCache,
         ~children: React.element,
         ~mocks: array(Js.t('mocks)),
         ~addTypename: bool
@@ -37,38 +38,23 @@ module ApolloReactTesting = {
    */
 module MockedProvider = {
   [@react.component]
-  let make = (~addTypename=false, ~children, ~mocks=[||]) => {
+  let make = (~addTypename=true, ~children, ~mocks=[||]) => {
     let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
 
-    let client =
-      ReasonApollo.createApolloClient(
-        ~link=ApolloReactTesting.MockLink.make(~mocks),
-        ~cache=inMemoryCache,
-        (),
-      );
-
-    <ApolloReactTesting.MockedProvider addTypename mocks>
-      <ReasonApolloHooks.ApolloProvider client>
-        children
-      </ReasonApolloHooks.ApolloProvider>
+    <ApolloReactTesting.MockedProvider addTypename cache=inMemoryCache mocks>
+      children
     </ApolloReactTesting.MockedProvider>;
   };
 };
 
 module ReactTestUtils = {
   [@bs.module "react-dom/test-utils"] [@bs.val]
-  external act: (unit => Js.Promise.t(unit)) => Js.Promise.t(unit) = "act";
+  external act: (unit => unit) => unit = "act";
 };
 
-let wait = time =>
-  Js.Promise.make((~resolve, ~reject as _r) =>
-    Js.Global.setTimeout(
-      () => {
-        resolve(. 0);
-        ();
-      },
-      time,
-    )
-    |> ignore
-  )
-  ->FutureJs.fromPromise(Js.String.make);
+[@bs.module "@testing-library/react"]
+external waitForElement: (unit => Dom.element) => Js.Promise.t('a) =
+  "waitForElement";
+
+[@bs.module "@testing-library/react"]
+external wait: unit => Js.Promise.t('a) = "wait";
