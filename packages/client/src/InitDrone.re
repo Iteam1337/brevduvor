@@ -45,7 +45,7 @@ let make = (~start, ~stop) => {
      | Loading => "Loading"->React.string
      | Called
      | NoData =>
-       <Button.Primary onClick=initDrone className="mt-4">
+       <Button.Primary onClick=initDrone>
          {React.string({js| Förbered bokning |js})}
        </Button.Primary>
      | Error(error) => error##message->React.string

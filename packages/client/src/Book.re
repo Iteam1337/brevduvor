@@ -85,7 +85,10 @@ let make = () => {
      }}
     {switch (departingPosition, destination) {
      | (Some(start), Some(stop)) => <InitDrone start stop />
-     | _ => React.null
+     | _ =>
+       <Button.Secondary disabled=true>
+         {js|Förbered bokning|js}->React.string
+       </Button.Secondary>
      }}
   </SideMenu>;
 };
