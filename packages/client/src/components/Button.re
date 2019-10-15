@@ -24,8 +24,8 @@ module Secondary = {
         base,
         className->Cn.unpack,
         switch (disabled) {
-        | false => "border-blue-400  bg-blue-400 hover:bg-blue-500 hover:border-blue-600 text-white hover:text-blue-600"
-        | true => "bg-gray-400 text-white"
+        | false => "border-blue-400 bg-blue-400 hover:bg-blue-500 hover:border-blue-600 text-white hover:text-blue-600"
+        | true => "bg-gray-400 text-white focus:outline-none"
         },
       ]);
 

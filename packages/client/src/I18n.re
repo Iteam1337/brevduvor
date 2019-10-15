@@ -93,10 +93,13 @@ module Translations = {
     | BookTrip_To_DropdownLabel
     | BookTrip_PrepareTrip_Button
     | BookTrip_TripPrepared_Message
-    | BookTrip_GoToOverview_Button;
+    | BookTrip_GoToOverview_Button
+    | BookTrip_Booking_Finished;
 
   let _toString = (locale: Locale.t, translations) => {
     switch (locale, translations) {
+    | (English, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
+    | (Swedish, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details"
     | (English, UI_Loading) => "Loading"
     | (Swedish, UI_Loading) => {js|Laddar|js}
 
@@ -135,7 +138,7 @@ module Translations = {
     | (English, BookTrip_PrepareTrip_Button) => "Prepare trip"
     | (Swedish, BookTrip_PrepareTrip_Button) => {js|Förbered bokning|js}
 
-    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. You will get a notification when the drone is ready to be loaded"
+    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. You will get a notification when the drone is ready to be loaded."
     | (Swedish, BookTrip_TripPrepared_Message) => {js|Du har nu förberett din bokning. Vi notifierar dig när det är dags att packa drönaren.|js}
 
     | (English, BookTrip_GoToOverview_Button) => {js|Go to overview|js}

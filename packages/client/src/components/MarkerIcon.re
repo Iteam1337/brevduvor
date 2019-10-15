@@ -50,7 +50,7 @@ module Position = {
   [@react.component]
   let make = (~longitude, ~latitude) => {
     <ReactMapGl.Marker longitude latitude>
-      <Icon name=`Travel className="text-green-600 w-6 h-6 mb-6" />
+      <Icon name=`Marker className="text-green-600 w-6 h-6 mb-6" />
     </ReactMapGl.Marker>;
   };
 };

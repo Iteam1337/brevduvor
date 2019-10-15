@@ -12,7 +12,7 @@ module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
 
 [@react.component]
-let make = (~start, ~stop) => {
+let make = (~start, ~stop, ~handleDroneStartResponse) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
 
   let initDrone = _ => {
@@ -30,23 +30,12 @@ let make = (~start, ~stop) => {
 
   <div>
     {switch (simple) {
-     | Data(_) =>
-       <div>
-         <p>
-           I18n.Translations.(toString(BookTrip_TripPrepared_Message))
-           ->React.string
-         </p>
-         <Button.Primary
-           className="mt-4 bg-green-400"
-           onClick={_ => ReasonReactRouter.push("/resor")}>
-           I18n.Translations.(toString(BookTrip_GoToOverview_Button))
-           ->React.string
-         </Button.Primary>
-       </div>
+     | Data(d) =>
+       <div> <StartDrone id=d##initDrone##id handleDroneStartResponse /> </div>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
-       <Button.Primary onClick=initDrone className="mt-4">
+       <Button.Primary onClick=initDrone className="mt-8">
          I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
          ->React.string
        </Button.Primary>
