@@ -38,19 +38,25 @@ describe("Book", () => {
   });
 
   testAsync("renders with data", finish => {
+    open I18n.Translations;
+
     let element =
       <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
       |> render;
 
     Js.Promise.(
       TestUtils.waitForElement(() =>
-        element |> getByText(~matcher=`RegExp([%re "/till/i"]))
+        element
+        |> getByText(~matcher=`Str(toString(BookTrip_To_DropdownLabel)))
       )
-      |> then_(_ => {
-           element |> container |> expect |> toMatchSnapshot |> finish;
-
-           resolve();
-         })
+      |> then_(_ =>
+           element
+           |> container
+           |> expect
+           |> toMatchSnapshot
+           |> finish
+           |> resolve
+         )
       |> ignore
     );
   });

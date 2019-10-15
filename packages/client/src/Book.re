@@ -84,14 +84,13 @@ let make = () => {
              selectOptions
            />
          </>;
-       | Loading => {js|Laddar...|js}->React.string
-       | NoData => {js|Verkar inte som det kom någon data.|js}->React.string
-       | Error(err) =>
-         let errorMessage = err##message;
+       | Loading => {I18n.Translations.(toString(UI_Loading))}->React.string
+       | NoData => {I18n.Error.(toString(NoDataFromServer))}->React.string
+       | Error(_err) =>
          <p>
            {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
             ->React.string}
-         </p>;
+         </p>
        }}
       {switch (departingPosition, destination) {
        | (Some(start), Some(stop)) => <InitDrone start stop />
