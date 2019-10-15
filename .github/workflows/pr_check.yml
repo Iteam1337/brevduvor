@@ -22,7 +22,7 @@ jobs:
       - name: Bootstrap dependencies
         run: |
           npm install
-          npm run boostrap
+          npm run bootstrap
       - name: Lint
         run: npm run lint
       - name: Build
