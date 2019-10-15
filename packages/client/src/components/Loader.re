@@ -33,7 +33,9 @@ module Inline = {
       (delayMs, isLoading),
     );
 
-    show && isLoading ? "Loading"->React.string : ReasonReact.null;
+    show && isLoading
+      ? I18n.Translations.(toString(UI_Loading))->React.string
+      : ReasonReact.null;
   };
 };
 
@@ -58,6 +60,7 @@ module Container = {
       (delayMs, isLoading),
     );
 
-    show && isLoading ? "Loading"->React.string : children;
+    show && isLoading
+      ? I18n.Translations.(toString(UI_Loading))->React.string : children;
   };
 };

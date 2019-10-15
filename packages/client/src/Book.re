@@ -65,13 +65,19 @@ let make = () => {
            ->Belt.List.fromArray;
 
          <>
-           <label> {js|Från:|js}->React.string </label>
+           <label>
+             I18n.Translations.(toString(BookTrip_From_DropdownLabel))
+             ->React.string
+           </label>
            <GeoSelectBox
              name="select-from"
              onChange=handleDepartingPositionSelect
              selectOptions
            />
-           <label> "Till:"->React.string </label>
+           <label>
+             I18n.Translations.(toString(BookTrip_To_DropdownLabel))
+             ->React.string
+           </label>
            <GeoSelectBox
              name="select-to"
              onChange=handleDestinationSelect
@@ -82,7 +88,8 @@ let make = () => {
        | NoData
        | Error(_) =>
          <p>
-           {js|Kunde inte hämta tillgängliga destinationer|js}->React.string
+           {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
+            ->React.string}
          </p>
        }}
       {switch (departingPosition, destination) {

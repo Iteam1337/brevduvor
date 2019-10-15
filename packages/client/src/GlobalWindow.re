@@ -26,4 +26,6 @@ module Navigator = {
       geoOptions(~enableHighAccuracy=true),
     );
   };
+
+  [@bs.scope "navigator"] [@bs.val] external language: string = "language";
 };

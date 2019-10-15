@@ -71,16 +71,9 @@ let make = (~id) => {
            ->React.string,
          )
      | Loading => <p> {js|Laddar drönares position|js}->React.string </p>
-     | NoData =>
-       <p>
-         {js|Det verkar inte finnas någon drönare med detta id.|js}
-         ->React.string
-       </p>
+     | NoData => <p> {I18n.Error.toString(NoDroneWithId)->React.string} </p>
      | Error(_) =>
-       <p>
-         {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
-         ->React.string
-       </p>
+       <p> {I18n.Error.toString(NoDroneWithIdError)->React.string} </p>
      }}
   </div>;
 };
