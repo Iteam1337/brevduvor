@@ -1,4 +1,3 @@
-const osrm = require('./osrm')
 const moment = require('moment')
 const directions = require('../utils/directions')
 const got = require('got')
@@ -86,21 +85,11 @@ const interpolateCoords = async options => {
 
 async function start({ body: { webhookUrl, id } }, res) {
   try {
-    const { start, stop } = cache.get(id)
+    const { coordinates } = cache.get(id)
     const batteryStatus = 1000
-    const osrmTrip = await osrm.generate(start, stop)
-
-    const coords = [
-      [start.lon, start.lat],
-      ...osrmTrip.data.trips[0].geometry.coordinates,
-      [stop.lon, stop.lat],
-    ].map(cords => ({
-      lon: cords[0],
-      lat: cords[1],
-    }))
 
     interpolateCoords({
-      coords,
+      coords: coordinates,
       speed: DRONE_SPEED,
       batteryStatus,
       webhookUrl,
@@ -112,27 +101,15 @@ async function start({ body: { webhookUrl, id } }, res) {
   }
 }
 
-async function init({ body: { start, stop } }, res) {
+async function init({ body: { coordinates } }, res) {
   try {
-    const osrmTrip = await osrm.generate(start, stop)
-    const coords = [
-      [start.lon, start.lat],
-      ...osrmTrip.data.trips[0].geometry.coordinates,
-      [stop.lon, stop.lat],
-    ].map(cords => ({
-      lon: cords[0],
-      lat: cords[1],
-    }))
-
     const droneId = uuid()
     const batteryStatus = 1000
-    const totalDistance = directions.calculateTotalDistance(coords)
+    const totalDistance = directions.calculateTotalDistance(coordinates)
 
     const droneData = {
       id: droneId,
-      start,
-      stop,
-      currentPos: start,
+      coordinates,
       distance: totalDistance,
       bearing: 0,
       status: 'initiating',
@@ -144,7 +121,7 @@ async function init({ body: { start, stop } }, res) {
         .format(),
     }
 
-    cache.put(droneId, { id: droneId, start, stop })
+    cache.put(droneId, { id: droneId, coordinates })
 
     res.send(droneData)
   } catch (err) {
