@@ -4,7 +4,11 @@ import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 
+import { directiveTypeDefs } from './../directives/rules'
+
 const typeDefs = gql`
+  ${directiveTypeDefs}
+
   directive @isAuthenticated on FIELD_DEFINITION
 
   scalar JSON
@@ -29,6 +33,23 @@ const typeDefs = gql`
     distance: Float!
   }
 
+  type AuthPayload {
+    id: ID!
+    token: String!
+    username: String!
+  }
+
+  type LogoutResponse {
+    status: String!
+    message: String!
+  }
+
+  input RegisterInput {
+    username: String! @maxLength(length: 255)
+    password: String!
+    confirmPassword: String!
+  }
+
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -36,6 +57,15 @@ const typeDefs = gql`
     ): InitDroneResponse! @isAuthenticated
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
+
+    login(
+      username: String! @maxLength(length: 255) @isEmail
+      password: String!
+    ): AuthPayload!
+
+    register(input: RegisterInput!): AuthPayload!
+
+    logout: LogoutResponse!
   }
 
   type Query {

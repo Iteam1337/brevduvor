@@ -32,6 +32,14 @@ npm run server
 
 When both processes are running, open a browser at http://localhost:3000
 
+## Testing
+
+```
+npm run cypress
+```
+
+This will build the project and run cypress against it. We use cypress and cucumber preprocessor with 'Given, When, Then' syntax, see cypress/integration for examples.
+
 ## Build for Production
 
 ```sh
@@ -52,7 +60,3 @@ that server-side routing handles your routes or that 404's are directed back to
 `module` from `"commonjs"` to `"es6"`. Then re-run the above 2 commands. This
 will allow Webpack to remove unused code.
 '
-
-```
-
-```

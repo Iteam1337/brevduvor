@@ -1,6 +1,5 @@
-import passport from 'passport'
 import { sign, verify } from 'jsonwebtoken'
-import { Strategy as LocalStrategy } from 'passport-local'
+import { AuthPayload } from '../__generated__/brevduvor'
 
 const JWT_SECRET = 'MY SUPER SECRET KEY'
 
@@ -29,8 +28,12 @@ class Users {
       password: '213Hkldsfjy234Fjjklfd^^^^*',
     },
   ]
+  private tableIndex: number = 3
 
-  async find(username: string, callback: (err: any, user: any) => void) {
+  async find(
+    username: string,
+    callback: (err: any, user: User | null) => void
+  ) {
     try {
       const found = this.registered.find(user => user.name === username)
       if (found) {
@@ -43,7 +46,7 @@ class Users {
     }
   }
 
-  async findById(id: number, callback: (err: any, user: any) => void) {
+  async findById(id: number, callback: (err: any, user: User | null) => void) {
     try {
       const found = this.registered.find(user => user.id === id)
       if (found) {
@@ -55,28 +58,25 @@ class Users {
       return callback(error, null)
     }
   }
+
+  async add(payload: any, callback: (err: any, user: User | null) => void) {
+    try {
+      const len = this.registered.push({
+        id: ++this.tableIndex,
+        name: payload.username,
+        password: payload.password,
+      })
+
+      return callback(null, this.registered[len - 1])
+    } catch (err) {
+      return callback(err, null)
+    }
+  }
 }
 
 const usersDb = new Users()
 
 /* END DUMMY IMPLEMENTATION OF USERS*/
-
-export const login = (req: any, res: any, next: any) => {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({ ...info })
-    }
-
-    req.login(user, { session: false }, (err: any) => {
-      if (err) {
-        return res.status(500).json(err)
-      }
-
-      const token = sign(user, JWT_SECRET)
-      return res.json({ ...info, token, username: user.name, id: user.id })
-    })
-  })(req, res, next)
-}
 
 export const verifyTokenAgainstUserRecords = (token: string) =>
   new Promise((resolve, reject) => {
@@ -100,37 +100,85 @@ export const verifyTokenAgainstUserRecords = (token: string) =>
     }
   })
 
-export const registerPassport = () => {
-  // Configure passport
-  passport.use(
-    new LocalStrategy({}, (username: string, password: string, cb: any) => {
-      usersDb.find(username, (err: any, user: any) => {
+const authenticate = (username: string, password: string) => {
+  return new Promise<User>((resolve, reject) => {
+    try {
+      usersDb.find(username, (err, user) => {
         if (err) {
-          return cb(err)
+          reject({ message: 'Something went wrong' })
         }
 
-        if (!user || user.password !== password) {
-          return cb(null, false, { message: 'Incorrect username or password' })
+        if (!user) {
+          reject({ message: 'Could not find user' })
         }
 
-        return cb(null, user, { message: 'Logged in successfully' })
+        if (user && user.password !== password) {
+          reject({ message: 'Password or username is incorrect' })
+        }
+
+        resolve(user as User)
       })
-    })
-  )
-
-  passport.serializeUser((user: User, cb: (_: any, userId: number) => void) => {
-    cb(null, user.id)
-  })
-
-  passport.deserializeUser(
-    (id: number, cb: (error: any, user: User | null) => void) => {
-      usersDb.findById(id, (err, user) => {
-        if (err) {
-          return cb(err, null)
-        }
-
-        cb(null, user)
-      })
+    } catch (error) {
+      reject(error)
     }
-  )
+  })
+}
+
+export const login = (
+  username: string,
+  password: string
+): Promise<AuthPayload> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const user: User = await authenticate(username, password)
+
+      if (user) {
+        const token = sign(user, JWT_SECRET)
+        resolve({
+          token,
+          username: user.name,
+          id: String(user.id),
+        } as AuthPayload)
+      }
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+export const register = (
+  username: string,
+  password: string,
+  confirmPassword: string
+) => {
+  return new Promise<AuthPayload>(async (resolve, reject) => {
+    if (password !== confirmPassword) {
+      return reject({ message: 'Password fields are not matching' })
+    }
+
+    await usersDb.find(username, (error: any, user) => {
+      if (error) {
+        return reject({ message: 'Something went wrong' })
+      }
+      if (user) {
+        return reject({ message: 'User already exists!' })
+      }
+    })
+
+    await usersDb.add({ username, password }, (error, user) => {
+      if (error) {
+        return reject({ message: 'Something went wrong' })
+      }
+      if (user) {
+        const token = sign(user as object, JWT_SECRET)
+        return resolve({
+          id: String(user.id),
+          token,
+          username: user.name,
+        } as AuthPayload)
+      } else {
+        reject({ message: 'Something went wrong' })
+      }
+    })
+  })
 }

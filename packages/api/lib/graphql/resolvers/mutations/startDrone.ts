@@ -5,11 +5,16 @@ import config from '../../../config'
 
 export const startDrone: MutationResolvers['startDrone'] = async (
   _,
-  { id }
+  { id },
+  _ctx,
+  _resolvers
 ) => {
-  await dronePost('/start', { id, webhookUrl: config.WEBHOOK_URL })
-  await updateTripStatus(id, 'in progress')
-
+  try {
+    await dronePost('/start', { id, webhookUrl: config.WEBHOOK_URL })
+    await updateTripStatus(id, 'in progress')
+  } catch (err) {
+    throw new Error(`Error in startDrone: ${err}`)
+  }
   return {
     id,
   }
