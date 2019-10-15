@@ -31,6 +31,9 @@ module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
 
 [@react.component]
 let make = () => {
+  let ({errorToString, translationsToString}, _changeLocale): LocaleContext.t =
+    LocaleContext.use();
+
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -66,8 +69,7 @@ let make = () => {
 
          <>
            <label>
-             I18n.Translations.(toString(BookTrip_From_DropdownLabel))
-             ->React.string
+             {translationsToString(BookTrip_From_DropdownLabel)->React.string}
            </label>
            <GeoSelectBox
              name="select-from"
@@ -75,8 +77,7 @@ let make = () => {
              selectOptions
            />
            <label>
-             I18n.Translations.(toString(BookTrip_To_DropdownLabel))
-             ->React.string
+             {translationsToString(BookTrip_To_DropdownLabel)->React.string}
            </label>
            <GeoSelectBox
              name="select-to"
@@ -88,8 +89,7 @@ let make = () => {
        | NoData
        | Error(_) =>
          <p>
-           {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
-            ->React.string}
+           {errorToString(CouldNotGetAvailableDestinations)->React.string}
          </p>
        }}
       {switch (departingPosition, destination) {

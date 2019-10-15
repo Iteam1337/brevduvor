@@ -45,9 +45,21 @@ module Setup = {
         (),
       );
 
+    let currentLanguage =
+      GlobalWindow.Navigator.language |> I18n.Locale.ofString;
+
+    let localeContextValue =
+      React.useReducer(
+        LocaleContext.reducer,
+        {
+          errorToString: I18n.Error._toString(currentLanguage),
+          translationsToString: I18n.Translations._toString(currentLanguage),
+        },
+      );
+
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
-        <App />
+        <LocaleProvider value=localeContextValue> <App /> </LocaleProvider>
       </ReasonApolloHooks.ApolloProvider>
     </ReasonApollo.Provider>;
   };
