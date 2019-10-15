@@ -20,7 +20,7 @@ module Drone = {
     let className =
       Css.(
         merge([
-          "rounded-full bg-blue-400 w-5 h-5 border-white",
+          "rounded-full bg-blue-400 w-5 h-5 border-white z-20",
           style([
             animationName(pulse),
             animationDuration(2000),

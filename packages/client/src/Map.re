@@ -32,7 +32,7 @@ let make =
           ~longitude=lon,
           ~latitude=lat,
           ~zoom,
-          ~transitionDuration=1000,
+          ~transitionDuration=2000,
           ~transitionInterpolator=Interpolator.FlyTo.make(),
           (),
         ),
