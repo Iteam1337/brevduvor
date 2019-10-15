@@ -7,50 +7,43 @@ let mocks = [|
     "request": {
       "query": Book.AllDestinationsQuery.gql(. Book.AllDestinations.query),
     },
-    "result": {
+    "result": () => {
       "data": {
-        "allDestinations": {
-          "alias": "Storuman",
-          "lat": 13.333337,
-          "lon": 16.666666,
-          "__typename": "Destination",
-        },
+        "allDestinations": [
+          {
+            "alias": "Storuman",
+            "lat": 13.333337,
+            "lon": 16.666666,
+            "__typename": "Destination",
+          },
+          {
+            "alias": "Slussfors",
+            "lat": 13.333337,
+            "lon": 16.666666,
+            "__typename": "Destination",
+          },
+        ],
       },
     },
   },
 |];
 
-describe("Book", () => {
-  testAsync("renders 2", finish => {
+describe("Book", () =>
+  testAsync("renders with data", finish => {
     let element =
       <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
       |> render;
 
-    TestUtils.ReactTestUtils.act(() => {
-      expect(container(element)) |> toMatchSnapshot |> finish;
-      Js.Promise.resolve();
-    })
-    |> ignore;
-  });
-
-  testAsync("renders", finish => {
-    let element =
-      <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider>
-      |> render;
-
-    waitForElement(() => element |> getByText(~matcher=`Str("data")))
-    |> Js.Promise.then_(result => {
-         Js.log2("Result", result);
-         expect(element) |> toMatchSnapshot |> finish;
+    waitForElement(() => element |> getByText(~matcher=`Str("Till")))
+    |> Js.Promise.then_(_ => {
+         TestUtils.ReactTestUtils.act(() => {
+           expect(container(element)) |> toMatchSnapshot |> finish;
+           Js.Promise.resolve();
+         })
+         |> Js.Promise.then_(Js.Promise.resolve)
+         |> ignore;
          Js.Promise.resolve();
        })
     |> ignore;
-  });
-});
-
-/* testAsync("renders 2", finish => { */
-/*   let element = */
-/*     <TestUtils.MockedProvider mocks> <Book /> </TestUtils.MockedProvider> */
-/*     |> render; */
-/*   wait(0)->Future.get(_ => expect(element) |> toMatchSnapshot |> finish); */
-/* }); */
+  })
+);
