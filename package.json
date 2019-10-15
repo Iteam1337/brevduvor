@@ -4,7 +4,6 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --ignore-prepublish",
     "lint": "lerna run lint --stream",
-    "lint:js": "eslint 'packages/**/*.{ts,tsx}'",
     "build": "lerna run build --stream",
     "test": "lerna run test --stream"
   },
