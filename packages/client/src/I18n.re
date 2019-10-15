@@ -98,8 +98,8 @@ module Translations = {
 
   let _toString = (locale: Locale.t, translations) => {
     switch (locale, translations) {
-    | (English, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
-    | (Swedish, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details"
+    | (English, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details."
+    | (Swedish, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
     | (English, UI_Loading) => "Loading"
     | (Swedish, UI_Loading) => {js|Laddar|js}
 
@@ -138,8 +138,8 @@ module Translations = {
     | (English, BookTrip_PrepareTrip_Button) => "Prepare trip"
     | (Swedish, BookTrip_PrepareTrip_Button) => {js|Förbered bokning|js}
 
-    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. You will get a notification when the drone is ready to be loaded."
-    | (Swedish, BookTrip_TripPrepared_Message) => {js|Du har nu förberett din bokning. Vi notifierar dig när det är dags att packa drönaren.|js}
+    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. At this stage the drone has already been packed and is ready for take off."
+    | (Swedish, BookTrip_TripPrepared_Message) => {js|Du har nu förberett din bokning. I denna simulation har drönaren redan packats och är redo för avfärd.|js}
 
     | (English, BookTrip_GoToOverview_Button) => {js|Go to overview|js}
     | (Swedish, BookTrip_GoToOverview_Button) => {js|Gå till överblick|js}

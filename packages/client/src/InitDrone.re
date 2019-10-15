@@ -31,7 +31,13 @@ let make = (~start, ~stop, ~handleDroneStartResponse) => {
   <div>
     {switch (simple) {
      | Data(d) =>
-       <div> <StartDrone id=d##initDrone##id handleDroneStartResponse /> </div>
+       <div>
+         <p className="mt-5">
+           I18n.Translations.(toString(BookTrip_TripPrepared_Message))
+           ->React.string
+         </p>
+         <StartDrone id=d##initDrone##id handleDroneStartResponse />
+       </div>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>

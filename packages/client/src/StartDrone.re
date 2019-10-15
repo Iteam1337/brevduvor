@@ -44,7 +44,7 @@ let make = (~id, ~handleDroneStartResponse) => {
 
   <div>
     <Button.Primary
-      onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500 mt-8">
+      onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500 mt-5">
       I18n.Translations.(toString(BookTrip_Button))->React.string
     </Button.Primary>
   </div>;

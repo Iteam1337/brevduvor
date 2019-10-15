@@ -58,54 +58,60 @@ let make = () => {
   let {departingPosition, destination, droneId} = state;
   I18n.Translations.(
     <div className="w-full min-h-screen flex">
-    <SideMenu>
-      {switch (availablePositionsResponse) {
-       | Data(data) =>
-         let selectOptions =
-           data##allDestinations
-           ->Belt.Array.map(Shared.GeoPosition.toRecord)
-           ->Belt.List.fromArray;
-         <>
-           <Input.GeoSelect
-             label={BookTrip_From_DropdownLabel->toString}
-             name="select-from"
-             onChange=handleDepartingPositionSelect
-             selectOptions
-           />
-           <Input.GeoSelect
-             label={BookTrip_To_DropdownLabel->toString}
-             name="select-to"
-             onChange=handleDestinationSelect
-             selectOptions
-           />
-         </>;
-       | Loading => <Loader.Inline isLoading=true />
-       | NoData
-       | Error(_) =>
-         <p>
-           {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
-            ->React.string}
-         </p>
-       }}
-      {switch (departingPosition, destination, droneId) {
-       | (Some(start), Some(stop), None) =>
-         <InitDrone start stop handleDroneStartResponse />
-       | (Some(_), Some(_), Some(_)) => React.null
-       | _ =>
-         <Button.Secondary disabled=true className="mt-8">
-           {BookTrip_PrepareTrip_Button->toString->React.string}
-         </Button.Secondary>
-       }}
-      {switch (droneId) {
-       | Some(id) =>
-         <Button.Primary
-           className="mt-8"
-           onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
-           {BookTrip_GoToOverview_Button->toString->React.string}
-         </Button.Primary>
-       | _ => React.null
-       }}
-    </SideMenu>
+      <SideMenu>
+        {switch (availablePositionsResponse) {
+         | Data(data) =>
+           let selectOptions =
+             data##allDestinations
+             ->Belt.Array.map(Shared.GeoPosition.toRecord)
+             ->Belt.List.fromArray;
+           <>
+             <Input.GeoSelect
+               label={BookTrip_From_DropdownLabel->toString}
+               name="select-from"
+               onChange=handleDepartingPositionSelect
+               selectOptions
+             />
+             <Input.GeoSelect
+               label={BookTrip_To_DropdownLabel->toString}
+               name="select-to"
+               onChange=handleDestinationSelect
+               selectOptions
+             />
+           </>;
+         | Loading => <Loader.Inline isLoading=true />
+         | NoData
+         | Error(_) =>
+           <p>
+             {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
+              ->React.string}
+           </p>
+         }}
+        {switch (departingPosition, destination, droneId) {
+         | (Some(start), Some(stop), None) =>
+           <InitDrone start stop handleDroneStartResponse />
+         | (Some(_), Some(_), Some(_)) => React.null
+         | _ =>
+           <Button.Secondary disabled=true className="mt-8">
+             {BookTrip_PrepareTrip_Button->toString->React.string}
+           </Button.Secondary>
+         }}
+        {switch (droneId) {
+         | Some(id) =>
+           <>
+             <p className="mt-5">
+               {{I18n.Translations.toString(BookTrip_Booking_Finished)}
+                ->React.string}
+             </p>
+             <Button.Primary
+               className="mt-5"
+               onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
+               {BookTrip_GoToOverview_Button->toString->React.string}
+             </Button.Primary>
+           </>
+         | _ => React.null
+         }}
+      </SideMenu>
     </div>
   );
 };
