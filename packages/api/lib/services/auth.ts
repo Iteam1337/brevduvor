@@ -2,6 +2,13 @@ import { sign, verify } from 'jsonwebtoken'
 import { AuthPayload } from '../__generated__/brevduvor'
 import errorCodes from '../resources/errorCodes'
 
+import { createUser, getUserByEmail } from './users'
+import { AuthenticationError } from 'apollo-server-core'
+import { errors } from 'pg-promise'
+import { GraphQLError } from 'graphql'
+import { verifyPassword } from '../helpers/password'
+//import { errors } from 'pg-promise'
+
 const JWT_SECRET = 'MY SUPER SECRET KEY'
 
 /** DUMMY IMPLEMENTATION OF USER RECORDS */
@@ -101,85 +108,83 @@ export const verifyTokenAgainstUserRecords = (token: string) =>
     }
   })
 
-const authenticate = (username: string, password: string) => {
-  return new Promise<User>((resolve, reject) => {
-    try {
-      usersDb.find(username, (err, user) => {
-        if (err) {
-          reject({ message: errorCodes.Auth.Unspecified })
-        }
+const authenticate = async (username: string, _password: string) => {
+  const res = await getUserByEmail(username)
 
-        if (!user) {
-          reject({ message: errorCodes.Auth.MissingUser })
-        }
+  if (
+    res instanceof errors.QueryResultError &&
+    res.code === errors.queryResultErrorCode.noData
+  ) {
+    throw new GraphQLError(errorCodes.Auth.MissingUser)
+  }
 
-        if (user && user.password !== password) {
-          reject({ message: errorCodes.Auth.PassIncorrect })
-        }
+  if ((await verifyPassword(_password, res.password)) !== true) {
+    throw new GraphQLError(errorCodes.Auth.PassIncorrect)
+  }
 
-        resolve(user as User)
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
+  return res as User
 }
 
-export const login = (
+export const login = async (
   username: string,
   password: string
 ): Promise<AuthPayload> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const user: User = await authenticate(username, password)
+  const user: any /** any => User */ = await authenticate(username, password)
+  const token = sign(user, JWT_SECRET)
 
-      if (user) {
-        const token = sign(user, JWT_SECRET)
-        resolve({
-          token,
-          username: user.name,
-          id: String(user.id),
-        } as AuthPayload)
-      }
-    } catch (error) {
-      reject(error)
-    }
-  })
+  return {
+    token,
+    username: user.email,
+    id: user.id,
+  } as AuthPayload
 }
 
-export const register = (
+export const register = async (
   username: string,
   password: string,
   confirmPassword: string
-) => {
-  return new Promise<AuthPayload>(async (resolve, reject) => {
-    if (password !== confirmPassword) {
-      return reject({ message: errorCodes.Auth.PasswordFieldsNotMatching })
+): Promise<AuthPayload> => {
+  // make sure password fields are matching
+  if (password !== confirmPassword) {
+    throw new AuthenticationError(errorCodes.Auth.PasswordFieldsNotMatching)
+  }
+
+  // check that user doesn't exist already
+  const res = await getUserByEmail(username)
+  const userExists = res && res.email === username
+  const hasValidErrorResponse =
+    res &&
+    res instanceof errors.QueryResultError &&
+    res.code !== errors.queryResultErrorCode.noData
+
+  if (userExists) {
+    throw new AuthenticationError(errorCodes.Auth.UserExists)
+  }
+
+  if (hasValidErrorResponse) {
+    throw new AuthenticationError(errorCodes.Auth.Unspecified)
+  }
+
+  // register
+  try {
+    const user = await createUser({
+      email: username,
+      password,
+      name: username,
+    })
+
+    if (user) {
+      const token = sign(user as object, JWT_SECRET)
+
+      return {
+        id: String(user.id),
+        token,
+        username: user.email,
+      } as AuthPayload
     }
 
-    await usersDb.find(username, (error: any, user) => {
-      if (error) {
-        return reject({ message: errorCodes.Auth.Unspecified })
-      }
-      if (user) {
-        return reject({ message: errorCodes.Auth.UserExists })
-      }
-    })
-
-    await usersDb.add({ username, password }, (error, user) => {
-      if (error) {
-        return reject({ message: errorCodes.Auth.Unspecified })
-      }
-      if (user) {
-        const token = sign(user as object, JWT_SECRET)
-        return resolve({
-          id: String(user.id),
-          token,
-          username: user.name,
-        } as AuthPayload)
-      } else {
-        reject({ message: errorCodes.Auth.Unspecified })
-      }
-    })
-  })
+    throw new AuthenticationError(errorCodes.Auth.Unspecified)
+  } catch (error) {
+    throw new AuthenticationError(errorCodes.Auth.Unspecified)
+  }
 }

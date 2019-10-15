@@ -8,23 +8,51 @@ interface User {
   password: string
 }
 
-export async function getUserByEmail(email: String): Promise<User> {
-  return db.one(
-    dedent`
-    SELECT email FROM users where email = $1
-  `,
-    [email]
-  )
+interface RegisterUser {
+  email: string
+  name: string
+  password: string
 }
 
-export async function createUser(user: User) {
-  const query = pgp.helpers.insert(
-    {
-      ...user,
-      password: await createHash(user.password),
-    },
-    undefined,
-    'users'
-  )
-  return db.none(query)
+export async function getUserByEmail(email: String): Promise<any> {
+  return await db
+    .one(dedent`SELECT * FROM users where email = $1`, [email])
+    .then((user: any) => {
+      return user
+    })
+    .catch(err => {
+      return err
+    })
+}
+
+export async function getUserById(id: String): Promise<User> {
+  return db
+    .one(dedent`SELECT * FROM users where id = $1`, [id])
+    .then((user: any) => {
+      return user
+    })
+    .catch(err => {
+      return err
+    })
+}
+
+export async function createUser(user: RegisterUser) {
+  const query =
+    pgp.helpers.insert(
+      {
+        ...user,
+        password: await createHash(user.password),
+      },
+      undefined,
+      'users'
+    ) + 'RETURNING id, email, name'
+
+  return db
+    .one(query)
+    .then(user => {
+      return user
+    })
+    .catch(e => {
+      return e
+    })
 }
