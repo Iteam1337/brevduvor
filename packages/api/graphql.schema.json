@@ -316,7 +316,7 @@
       {
         "kind": "SCALAR",
         "name": "JSON",
-        "description": null,
+        "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -732,7 +732,11 @@
             "name": "token",
             "description": null,
             "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+            },
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -740,7 +744,11 @@
             "name": "username",
             "description": null,
             "args": [],
-            "type": { "kind": "SCALAR", "name": "String", "ofType": null },
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+            },
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -1768,7 +1776,7 @@
       {
         "kind": "SCALAR",
         "name": "JSONObject",
-        "description": null,
+        "description": "The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
