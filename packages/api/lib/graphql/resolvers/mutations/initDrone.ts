@@ -4,18 +4,24 @@ import { insertDroneTrip, Status } from '../../../services/drones'
 
 export const initDrone: MutationResolvers['initDrone'] = async (
   _,
-  { start, stop }
+  { start, stop },
+  _ctx,
+  _resolvers
 ) => {
-  const { body } = await dronePost('/init', { start, stop })
+  try {
+    const { body } = await dronePost('/init', { start, stop })
 
-  await insertDroneTrip({
-    drone_id: body.id,
-    status: 'initating' as Status,
-    start: `(${body.start.lat}, ${body.start.lon})`,
-    stop: `(${body.stop.lat}, ${body.stop.lon})`,
-    allowed_spectators: [],
-    finished: false,
-  })
+    await insertDroneTrip({
+      drone_id: body.id,
+      status: 'initating' as Status,
+      start: `(${body.start.lat}, ${body.start.lon})`,
+      stop: `(${body.stop.lat}, ${body.stop.lon})`,
+      allowed_spectators: [],
+      finished: false,
+    })
 
-  return body
+    return body
+  } catch (err) {
+    throw new Error(`Error in initDrone: ${err}`)
+  }
 }

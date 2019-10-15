@@ -7,16 +7,34 @@ import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
 
+import { verifyTokenAgainstUserRecords } from './lib/services/auth'
+
 export const osrmInstance = new OsrmAPI()
+
 export const serverConfig = {
+  context: async ({ req }: any) => {
+    try {
+      const token = req.headers.authorization || ''
+
+      if (token) {
+        const user = await verifyTokenAgainstUserRecords(token)
+
+        return { user }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
+  schemaDirectives: schema.directives,
   dataSources: () => ({
     osrm: osrmInstance,
   }),
 }
 
 const app = express()
+
 const server = new ApolloServer(serverConfig)
 
 server.applyMiddleware({ app })
