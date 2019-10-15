@@ -42,12 +42,12 @@ const typeDefs = gql`
     allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
       @isAuthenticated
+    drones: [String!]!
   }
 
   type Subscription {
     dronePosition(id: String!): InitDroneResponse! @isAuthenticated
     droneStatus(id: String!): DroneStatusResponse
-    drones: [String!]!
   }
 `
 

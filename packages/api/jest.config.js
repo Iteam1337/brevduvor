@@ -1,11 +1,11 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'brevduvor',
   collectCoverageFrom: ['lib/**/*.{ts,tsx}'],
   moduleFileExtensions: ['js', 'json', 'ts', 'node', 'd.ts'],
   globals: {
     'ts-jest': {
-      diagnostics: true,
+      diagnostics: { ignoreCodes: 'TS2722' },
     },
   },
   watchPlugins: [

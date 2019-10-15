@@ -28,7 +28,6 @@ describe('#verifyPassword', () => {
 
   test('it returns FALSE if incorrect', async () => {
     const response = await verifyPassword(incorrectPw, hashFromPw)
-    console.log('tjaaaa', Buffer.from('hello') instanceof Uint8Array)
 
     expect(response).toEqual(false)
   })
