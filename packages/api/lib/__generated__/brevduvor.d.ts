@@ -15,8 +15,10 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any
   RuleWrapper: any
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any
   /** The `Upload` scalar type represents a file upload. */
   Upload: any
@@ -25,8 +27,8 @@ export type Scalars = {
 export type AuthPayload = {
   __typename?: 'AuthPayload'
   id: Scalars['ID']
-  token?: Maybe<Scalars['String']>
-  username?: Maybe<Scalars['String']>
+  token: Scalars['String']
+  username: Scalars['String']
 }
 
 export enum CacheControlScope {
@@ -85,6 +87,11 @@ export type InitDroneResponse = {
   eta: Scalars['String']
 }
 
+export type LoginInput = {
+  username: Scalars['RuleWrapper']
+  password: Scalars['String']
+}
+
 export type LogoutResponse = {
   __typename?: 'LogoutResponse'
   status: Scalars['String']
@@ -110,8 +117,7 @@ export type MutationStartDroneArgs = {
 }
 
 export type MutationLoginArgs = {
-  username: Scalars['RuleWrapper']
-  password: Scalars['String']
+  input: LoginInput
 }
 
 export type MutationRegisterArgs = {
@@ -281,6 +287,7 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
+  LoginInput: LoginInput
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
@@ -310,6 +317,7 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates
   Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
+  LoginInput: LoginInput
   RuleWrapper: Scalars['RuleWrapper']
   AuthPayload: AuthPayload
   ID: Scalars['ID']
@@ -366,8 +374,8 @@ export type AuthPayloadResolvers<
   ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type CoordinatesResolvers<
@@ -463,7 +471,7 @@ export type MutationResolvers<
     ResolversTypes['AuthPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationLoginArgs, 'username' | 'password'>
+    RequireFields<MutationLoginArgs, 'input'>
   >
   register?: Resolver<
     ResolversTypes['AuthPayload'],
