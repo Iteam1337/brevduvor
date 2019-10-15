@@ -57,7 +57,10 @@ let make = (~id) => {
        kunde hämtas|js}
            ->React.string,
          )
-     | Loading => <p> {js|Laddar drönares position|js}->React.string </p>
+     | Loading =>
+       <SideMenu>
+         <p> {js|Laddar drönares position|js}->React.string </p>
+       </SideMenu>
      | NoData => <p> {I18n.Error.toString(NoDroneWithId)->React.string} </p>
      | Error(_) =>
        <p> {I18n.Error.toString(NoDroneWithIdError)->React.string} </p>
