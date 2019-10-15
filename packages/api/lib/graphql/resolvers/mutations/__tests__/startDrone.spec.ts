@@ -38,7 +38,9 @@ describe('#startDrone', () => {
   })
 
   it('throws an error when dronePost rejects', async () => {
-    ;(dronePost as jest.Mock).mockRejectedValueOnce('err')
+    const dronePostMock = dronePost as jest.Mock
+    dronePostMock.mockRejectedValueOnce('err')
+
     await expect(
       startDrone({} as any, { id } as any, {} as any, {} as any)
     ).rejects.toThrow('Error in startDrone: err')

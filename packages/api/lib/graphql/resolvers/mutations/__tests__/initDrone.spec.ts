@@ -46,7 +46,8 @@ describe('#initDrone', () => {
   })
 
   it('throws an error if it cant connect to the drone', async () => {
-    ;(dronePost as jest.Mock).mockRejectedValueOnce('err')
+    const mockDronePost = dronePost as jest.Mock
+    mockDronePost.mockRejectedValueOnce('err')
 
     expect(
       initDrone({} as any, input as any, {} as any, {} as any)
