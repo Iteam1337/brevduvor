@@ -1,3 +1,4 @@
+import config from './../config'
 import { sign, verify } from 'jsonwebtoken'
 import { AuthPayload } from '../__generated__/brevduvor'
 import errorCodes from '../resources/errorCodes'
@@ -9,89 +10,19 @@ import { GraphQLError } from 'graphql'
 import { verifyPassword } from '../helpers/password'
 //import { errors } from 'pg-promise'
 
-const JWT_SECRET = 'MY SUPER SECRET KEY'
-
-/** DUMMY IMPLEMENTATION OF USER RECORDS */
 type User = {
   id: string
   name: string
-  password: string
+  email: string
 }
-
-// class Users {
-//   private registered: User[] = [
-//     {
-//       id: '1',
-//       name: 'Kalle',
-//       password: 'hunter2',
-//     },
-//     {
-//       id: '2',
-//       name: 'Kenta',
-//       password: 'password123',
-//     },
-//     {
-//       id: '3',
-//       name: 'Svin-Robban',
-//       password: '213Hkldsfjy234Fjjklfd^^^^*',
-//     },
-//   ]
-//   private tableIndex: number = 3
-
-//   async find(
-//     username: string,
-//     callback: (err: any, user: User | null) => void
-//   ) {
-//     try {
-//       const found = this.registered.find(user => user.name === username)
-//       if (found) {
-//         return callback(null, found)
-//       } else {
-//         return callback(null, null)
-//       }
-//     } catch (error) {
-//       return callback(error, null)
-//     }
-//   }
-
-//   async findById(id: number, callback: (err: any, user: User | null) => void) {
-//     try {
-//       const found = this.registered.find(user => user.id === id)
-//       if (found) {
-//         return callback(null, found)
-//       } else {
-//         return callback(null, null)
-//       }
-//     } catch (error) {
-//       return callback(error, null)
-//     }
-//   }
-
-//   async add(payload: any, callback: (err: any, user: User | null) => void) {
-//     try {
-//       const len = this.registered.push({
-//         id: String(++this.tableIndex),
-//         name: payload.username,
-//         password: payload.password,
-//       })
-
-//       return callback(null, this.registered[len - 1])
-//     } catch (err) {
-//       return callback(err, null)
-//     }
-//   }
-// }
-
-// //const usersDb = new Users()
-
-/* END DUMMY IMPLEMENTATION OF USERS*/
 
 export const verifyTokenAgainstUserRecords = async (token: string) => {
   try {
     token = token.split('Bearer ')[1]
 
-    const payload = verify(token, JWT_SECRET) as User
+    const payload = verify(token, config.JWT_SECRET.publicKey) as User
 
+    console.log('verifyToken payload -->', payload)
     if (payload && payload.id) {
       const user = await getUserById(payload.id)
 
@@ -103,37 +34,12 @@ export const verifyTokenAgainstUserRecords = async (token: string) => {
         throw new GraphQLError(errorCodes.Auth.MissingUser)
       }
 
-      console.log(payload.password, user.password)
-
-      // Password
-      if ((await verifyPassword(payload.password, user.password)) !== true) {
-        throw new GraphQLError(errorCodes.Auth.PassIncorrect)
-      }
+      return { id: user.id, name: user.name, email: user.email } as User
     }
   } catch (error) {
     throw new AuthenticationError(errorCodes.Auth.RequireLogin)
   }
 }
-// new Promise((resolve, reject) => {
-//   try {
-//     token = token.split('Bearer ')[1]
-
-//     const payload = verify(token, JWT_SECRET) as User
-
-//     usersDb.findById(payload.id, (err: any, user: any) => {
-//       if (err) {
-//         reject(err)
-//       }
-//       if (!user || user.password !== payload.password) {
-//         reject(err)
-//       }
-
-//       resolve(user)
-//     })
-//   } catch (error) {
-//     reject(error)
-//   }
-// })
 
 const authenticate = async (username: string, password: string) => {
   const res = await getUserByEmail(username)
@@ -144,8 +50,6 @@ const authenticate = async (username: string, password: string) => {
   ) {
     throw new GraphQLError(errorCodes.Auth.MissingUser)
   }
-
-  console.log(password, res.password)
 
   if ((await verifyPassword(password, res.password)) !== true) {
     throw new GraphQLError(errorCodes.Auth.PassIncorrect)
@@ -158,8 +62,15 @@ export const login = async (
   username: string,
   password: string
 ): Promise<AuthPayload> => {
-  const user: any /** any => User */ = await authenticate(username, password)
-  const token = sign(user, JWT_SECRET)
+  const user = await authenticate(username, password)
+  // user object contains the password so we
+  // need to prune the data before signing it
+  const tokenPayload = {
+    name: user.name,
+    email: user.email,
+    id: user.id,
+  }
+  const token = sign(tokenPayload, config.JWT_SECRET.publicKey)
 
   return {
     token,
@@ -203,7 +114,15 @@ export const register = async (
     })
 
     if (user) {
-      const token = sign(user as object, JWT_SECRET)
+      // user object contains the password so we
+      // need to prune the data before signing it
+      const tokenPayload = {
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      }
+
+      const token = sign(tokenPayload as object, config.JWT_SECRET.publicKey)
 
       return {
         id: String(user.id),

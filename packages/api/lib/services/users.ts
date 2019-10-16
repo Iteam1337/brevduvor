@@ -2,12 +2,6 @@ import { db, pgp } from '../adapters/postgres'
 import dedent from 'dedent'
 import { createHash } from '../helpers/password'
 
-interface User {
-  // generate from graphql implementation
-  email: string
-  password: string
-}
-
 interface RegisterUser {
   email: string
   name: string
@@ -16,7 +10,9 @@ interface RegisterUser {
 
 export async function getUserByEmail(email: String): Promise<any> {
   return await db
-    .one(dedent`SELECT * FROM users where email = $1`, [email])
+    .one(dedent`SELECT id, email, name, password FROM users where email = $1`, [
+      email,
+    ])
     .then((user: any) => {
       return user
     })
@@ -25,9 +21,11 @@ export async function getUserByEmail(email: String): Promise<any> {
     })
 }
 
-export async function getUserById(id: String): Promise<User> {
+export async function getUserById(id: String): Promise<any> {
   return db
-    .one(dedent`SELECT * FROM users where id = $1`, [id])
+    .one(dedent`SELECT id, email, name, password FROM users where id = $1`, [
+      id,
+    ])
     .then((user: any) => {
       return user
     })
