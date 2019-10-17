@@ -152,7 +152,7 @@ export const register = async (
   username: string,
   password: string,
   confirmPassword: string
-) => {
+): Promise<AuthPayload> => {
   if (password !== confirmPassword) {
     return Promise.reject({
       message: errorCodes.Auth.PasswordFieldsNotMatching,
@@ -180,7 +180,9 @@ export const register = async (
         username: user.name,
       } as AuthPayload)
     } else {
-      Promise.reject({ message: errorCodes.Auth.Unspecified })
+      return Promise.reject({ message: errorCodes.Auth.Unspecified })
     }
   })
+
+  return Promise.reject({ message: errorCodes.Auth.Unspecified })
 }
