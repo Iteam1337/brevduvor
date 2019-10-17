@@ -7,6 +7,7 @@
     "clean": "bsb -clean-world",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watchAll",
+    "e2e": "cypress run",
     "buildAndServe": "npm run webpack:production && npm run serve",
     "serve": "serve ./dist -l 3001 -s",
     "cypress": "start-server-and-test buildAndServe http://localhost:3001 cypress:gui",
