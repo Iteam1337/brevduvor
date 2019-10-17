@@ -36,6 +36,7 @@ const typeDefs = gql`
   type AuthPayload {
     id: ID!
     token: String!
+    email: String!
     username: String!
   }
 
@@ -45,7 +46,8 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    username: String! @maxLength(length: 255)
+    email: String!
+    username: String!
     password: String!
     confirmPassword: String!
   }
@@ -58,10 +60,7 @@ const typeDefs = gql`
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
-    login(
-      username: String! @minLength(length: 12) @isEmail
-      password: String!
-    ): AuthPayload!
+    login(email: String!, password: String!): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
 

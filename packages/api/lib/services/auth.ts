@@ -8,7 +8,6 @@ import { AuthenticationError } from 'apollo-server-core'
 import { errors } from 'pg-promise'
 import { GraphQLError } from 'graphql'
 import { verifyPassword } from '../helpers/password'
-//import { errors } from 'pg-promise'
 
 type User = {
   id: string
@@ -41,8 +40,10 @@ export const verifyTokenAgainstUserRecords = async (token: string) => {
   }
 }
 
-const authenticate = async (username: string, password: string) => {
-  const res = await getUserByEmail(username)
+const authenticate = async (email: string, password: string) => {
+  const res = await getUserByEmail(email)
+
+  console.log('-->', res)
 
   if (
     res instanceof errors.QueryResultError &&
@@ -59,10 +60,10 @@ const authenticate = async (username: string, password: string) => {
 }
 
 export const login = async (
-  username: string,
+  email: string,
   password: string
 ): Promise<AuthPayload> => {
-  const user = await authenticate(username, password)
+  const user = await authenticate(email, password)
   // user object contains the password so we
   // need to prune the data before signing it
   const tokenPayload = {
@@ -74,12 +75,14 @@ export const login = async (
 
   return {
     token,
-    username: user.email,
+    email: user.email,
+    username: user.name,
     id: user.id,
   } as AuthPayload
 }
 
 export const register = async (
+  email: string,
   username: string,
   password: string,
   confirmPassword: string
@@ -90,8 +93,8 @@ export const register = async (
   }
 
   // check that user doesn't exist already
-  const res = await getUserByEmail(username)
-  const userExists = res && res.email === username
+  const res = await getUserByEmail(email)
+  const userExists = res && res.email === email
   const hasValidErrorResponse =
     res &&
     res instanceof errors.QueryResultError &&
@@ -108,9 +111,9 @@ export const register = async (
   // register
   try {
     const user = await createUser({
-      email: username,
-      password,
+      email: email,
       name: username,
+      password,
     })
 
     if (user) {
@@ -127,7 +130,8 @@ export const register = async (
       return {
         id: String(user.id),
         token,
-        username: user.email,
+        email: user.email,
+        username: user.name,
       } as AuthPayload
     }
 
