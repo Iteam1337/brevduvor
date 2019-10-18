@@ -43,8 +43,6 @@ export const verifyTokenAgainstUserRecords = async (token: string) => {
 const authenticate = async (email: string, password: string) => {
   const res = await getUserByEmail(email)
 
-  console.log('-->', res)
-
   if (
     res instanceof errors.QueryResultError &&
     res.code === errors.queryResultErrorCode.noData
