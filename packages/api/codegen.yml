@@ -5,6 +5,7 @@ generates:
   lib/__generated__/brevduvor.d.ts:
     config:
       noSchemaStitching: true
+      avoidOptionals: true
     plugins:
       - 'typescript'
       - 'typescript-resolvers'

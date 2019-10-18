@@ -133,9 +133,9 @@ export const register = async (
         email: user.email,
         username: user.name,
       } as AuthPayload
+    } else {
+      throw new AuthenticationError(errorCodes.Auth.Unspecified)
     }
-
-    throw new AuthenticationError(errorCodes.Auth.Unspecified)
   } catch (error) {
     throw new AuthenticationError(errorCodes.Auth.Unspecified)
   }
