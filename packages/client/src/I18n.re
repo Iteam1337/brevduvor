@@ -94,7 +94,9 @@ module Translations = {
     | BookTrip_PrepareTrip_Button
     | BookTrip_TripPrepared_Message
     | BookTrip_GoToOverview_Button
-    | BookTrip_Booking_Finished;
+    | BookTrip_Booking_Finished
+    | GeoLocation_Latitude
+    | GeoLocation_Longitude;
 
   let _toString = (locale: Locale.t, translations) => {
     switch (locale, translations) {
@@ -134,6 +136,11 @@ module Translations = {
 
     | (English, BookTrip_To_DropdownLabel) => "To"
     | (Swedish, BookTrip_To_DropdownLabel) => {js|Till|js}
+
+    | (English, GeoLocation_Latitude) => "Latitude"
+    | (Swedish, GeoLocation_Latitude) => "Latitud"
+    | (English, GeoLocation_Longitude) => "Longitude"
+    | (Swedish, GeoLocation_Longitude) => "Longitud"
 
     | (English, BookTrip_PrepareTrip_Button) => "Prepare trip"
     | (Swedish, BookTrip_PrepareTrip_Button) => {js|Förbered bokning|js}
