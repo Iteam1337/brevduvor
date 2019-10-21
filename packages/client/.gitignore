@@ -9,8 +9,6 @@
 /dist
 ## CommonJS setup
 /lib/js/src
-/lib/js/__tests__/*.bs.js
-/lib/js/__tests__
 ## ES6 setup
 /lib/es6/src
 /lib/es6/__tests__/*.bs.js
