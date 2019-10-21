@@ -5,9 +5,9 @@
     "build": "bsb -make-world",
     "start": "cross-env BS_WATCH_CLEAR=true bsb -make-world -w",
     "clean": "bsb -clean-world",
-    "test": "is-ci \"test:ci\" \"test:watch\"",
-    "test:ci": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watchAll",
+    "e2e": "cypress run",
     "buildAndServe": "npm run webpack:production && npm run serve",
     "serve": "serve ./dist -l 3001 -s",
     "cypress": "start-server-and-test buildAndServe http://localhost:3001 cypress:gui",
@@ -23,7 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.0",
+    "@apollo/react-hooks": "^3.1.2",
     "@deck.gl/core": "^7.2.3",
     "@deck.gl/geo-layers": "^7.2.3",
     "@deck.gl/layers": "^7.2.3",
@@ -43,6 +43,7 @@
     "tablecloth-bucklescript": "0.0.6"
   },
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.2",
     "@fullhuman/postcss-purgecss": "1.2.0",
     "@glennsl/bs-jest": "0.4.9",
     "@semantic-release/changelog": "3.0.4",
@@ -56,7 +57,6 @@
     "dotenv-webpack": "^1.7.0",
     "graphql_ppx": "^0.2.8",
     "html-webpack-plugin": "3.2.0",
-    "is-ci-cli": "1.1.1",
     "jest": "^24.9.0",
     "postcss-loader": "3.0.0",
     "style-loader": "1.0.0",

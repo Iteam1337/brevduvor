@@ -13,8 +13,8 @@ jest.mock('../../services/drones', () => ({
 
 describe('#droneStatus', () => {
   let data: { body: DroneStatusResponse }
-  let next = jest.fn()
-  let res = {
+  const next = jest.fn()
+  const res = {
     send: jest.fn(),
   } as any
   beforeEach(() => {

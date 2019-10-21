@@ -23,7 +23,7 @@ jest.mock('../../../../config', () => ({
 }))
 
 describe('#startDrone', () => {
-  let id = '3d8bfd0a-ef72-453b-b670-c47d125ad78f'
+  const id = '3d8bfd0a-ef72-453b-b670-c47d125ad78f'
 
   it('dronePost should be called with an id and webhookUrl', async () => {
     await startDrone({} as any, { id } as any, {} as any, {} as any)
@@ -38,7 +38,9 @@ describe('#startDrone', () => {
   })
 
   it('throws an error when dronePost rejects', async () => {
-    ;(dronePost as jest.Mock).mockRejectedValueOnce('err')
+    const dronePostMock = dronePost as jest.Mock
+    dronePostMock.mockRejectedValueOnce('err')
+
     await expect(
       startDrone({} as any, { id } as any, {} as any, {} as any)
     ).rejects.toThrow('Error in startDrone: err')

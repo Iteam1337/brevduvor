@@ -125,61 +125,64 @@ const authenticate = (username: string, password: string) => {
   })
 }
 
-export const login = (
+export const login = async (
   username: string,
   password: string
 ): Promise<AuthPayload> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const user: User = await authenticate(username, password)
+  try {
+    const user: User = await authenticate(username, password)
 
-      if (user) {
-        const token = sign(user, JWT_SECRET)
-        resolve({
-          token,
-          username: user.name,
-          id: String(user.id),
-        } as AuthPayload)
-      }
-    } catch (error) {
-      reject(error)
+    const token = sign(user, JWT_SECRET)
+
+    if (user) {
+      return Promise.resolve({
+        token,
+        username: user.name,
+        id: String(user.id),
+      } as AuthPayload)
+    } else {
+      return Promise.reject('Did not receive a user')
     }
-  })
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
-export const register = (
+export const register = async (
   username: string,
   password: string,
   confirmPassword: string
-) => {
-  return new Promise<AuthPayload>(async (resolve, reject) => {
-    if (password !== confirmPassword) {
-      return reject({ message: errorCodes.Auth.PasswordFieldsNotMatching })
+): Promise<AuthPayload> => {
+  if (password !== confirmPassword) {
+    return Promise.reject({
+      message: errorCodes.Auth.PasswordFieldsNotMatching,
+    })
+  }
+
+  await usersDb.find(username, (error: any, user) => {
+    if (error) {
+      return Promise.reject({ message: errorCodes.Auth.Unspecified })
     }
-
-    await usersDb.find(username, (error: any, user) => {
-      if (error) {
-        return reject({ message: errorCodes.Auth.Unspecified })
-      }
-      if (user) {
-        return reject({ message: errorCodes.Auth.UserExists })
-      }
-    })
-
-    await usersDb.add({ username, password }, (error, user) => {
-      if (error) {
-        return reject({ message: errorCodes.Auth.Unspecified })
-      }
-      if (user) {
-        const token = sign(user as object, JWT_SECRET)
-        return resolve({
-          id: String(user.id),
-          token,
-          username: user.name,
-        } as AuthPayload)
-      } else {
-        reject({ message: errorCodes.Auth.Unspecified })
-      }
-    })
+    if (user) {
+      return Promise.reject({ message: errorCodes.Auth.UserExists })
+    }
   })
+
+  await usersDb.add({ username, password }, (error, user) => {
+    if (error) {
+      return Promise.reject({ message: errorCodes.Auth.Unspecified })
+    }
+    if (user) {
+      const token = sign(user as object, JWT_SECRET)
+      return Promise.resolve({
+        id: String(user.id),
+        token,
+        username: user.name,
+      } as AuthPayload)
+    } else {
+      return Promise.reject({ message: errorCodes.Auth.Unspecified })
+    }
+  })
+
+  return Promise.reject({ message: errorCodes.Auth.Unspecified })
 }
