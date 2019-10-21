@@ -18,7 +18,7 @@ let make = () => {
       | ["boka-resa"] => <Book />
       | ["resor"] => <Trips />
       | ["resa", id] => <Trip id />
-      | _ => <p> {I18n.Error.toString(FourOFour)->React.string} </p>
+      | _ => <Typography.Error> I18n.Error.FourOFour </Typography.Error>
       }
     : <Login onLogin=handleLogin />;
 };

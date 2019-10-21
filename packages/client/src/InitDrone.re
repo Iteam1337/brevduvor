@@ -32,10 +32,9 @@ let make = (~start, ~stop, ~handleDroneStartResponse) => {
     {switch (simple) {
      | Data(d) =>
        <div>
-         <p className="mt-5">
-           I18n.Translations.(toString(BookTrip_TripPrepared_Message))
-           ->React.string
-         </p>
+         <Typography.P className="mt-5">
+           I18n.Translations.BookTrip_TripPrepared_Message
+         </Typography.P>
          <StartDrone id=d##initDrone##id handleDroneStartResponse />
        </div>
      | Loading => <Loader.Inline isLoading=true />
@@ -45,7 +44,8 @@ let make = (~start, ~stop, ~handleDroneStartResponse) => {
          I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
          ->React.string
        </Button.Primary>
-     | Error(error) => error##message->React.string
+     | Error(_) =>
+       <Typography.Error> I18n.Error.NoDroneWithIdError </Typography.Error>
      }}
   </div>;
 };

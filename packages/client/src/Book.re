@@ -67,13 +67,13 @@ let make = () => {
              ->Belt.List.fromArray;
            <>
              <Input.GeoSelect
-               label={BookTrip_From_DropdownLabel->toString}
+               label=BookTrip_From_DropdownLabel
                name="select-from"
                onChange=handleDepartingPositionSelect
                selectOptions
              />
              <Input.GeoSelect
-               label={BookTrip_To_DropdownLabel->toString}
+               label=BookTrip_To_DropdownLabel
                name="select-to"
                onChange=handleDestinationSelect
                selectOptions
@@ -82,10 +82,9 @@ let make = () => {
          | Loading => <Loader.Inline isLoading=true />
          | NoData
          | Error(_) =>
-           <p>
-             {{I18n.Error.toString(CouldNotGetAvailableDestinations)}
-              ->React.string}
-           </p>
+           <Typography.Error>
+             I18n.Error.CouldNotGetAvailableDestinations
+           </Typography.Error>
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
@@ -99,10 +98,9 @@ let make = () => {
         {switch (droneId) {
          | Some(id) =>
            <>
-             <p className="mt-5">
-               {{I18n.Translations.toString(BookTrip_Booking_Finished)}
-                ->React.string}
-             </p>
+             <Typography.P className="mt-5">
+               I18n.Translations.BookTrip_Booking_Finished
+             </Typography.P>
              <Button.Primary
                className="mt-5"
                onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>

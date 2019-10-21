@@ -4,7 +4,7 @@ module Text = {
       (
         ~inputRef=React.useRef(Js.Nullable.null)->ReactDOMRe.Ref.domRef,
         ~onChange=?,
-        ~placeholder: I18n.Translations.t,
+        ~placeholder,
         ~id,
         ~label: I18n.Translations.t,
         ~type_="text",
@@ -31,7 +31,7 @@ module GeoSelect = {
       (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name, ~label) => {
     <>
       <label htmlFor=name className="inline-block mt-2">
-        label->React.string
+        I18n.Translations.(toString(label))->React.string
       </label>
       <div className="inline-block relative w-full mt-1">
         <select

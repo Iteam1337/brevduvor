@@ -20,17 +20,15 @@ let make = (~id) => {
            </>
          )
        ->Belt.Option.getWithDefault(
-           {js|Det verkar som att någonting gick fel. Ingen drönardata
-       kunde hämtas|js}
-           ->React.string,
+           <Typography.Error> I18n.Error.NoDataFromServer </Typography.Error>,
          )
      | Loading =>
        <SideMenu>
-         <p> {js|Laddar drönares position|js}->React.string </p>
+         <Typography.P> I18n.Translations.UI_Loading </Typography.P>
        </SideMenu>
-     | NoData => <p> {I18n.Error.toString(NoDroneWithId)->React.string} </p>
+     | NoData
      | Error(_) =>
-       <p> {I18n.Error.toString(NoDroneWithIdError)->React.string} </p>
+       <Typography.Error> I18n.Error.NoDroneWithId </Typography.Error>
      }}
   </div>;
 };
