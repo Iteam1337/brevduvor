@@ -46,7 +46,7 @@ const typeDefs = gql`
   }
 
   input RegisterInput {
-    email: String!
+    email: String! @isEmail
     username: String!
     password: String!
     confirmPassword: String!
@@ -68,7 +68,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    allDestinations: [Destination!]! @isAuthenticated
+    allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
       @isAuthenticated
     drones: [String!]!
