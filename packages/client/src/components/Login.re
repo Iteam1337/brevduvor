@@ -95,19 +95,15 @@ let make = (~onLogin) => {
           <Input.Text
             inputRef=usernameInputRef
             id="username"
-            placeholder=I18n.Translations.(
-              toString(Auth_Username_Placeholder)
-            )
-            label=I18n.Translations.(toString(Auth_Username_Label))
+            placeholder=I18n.Translations.Auth_Username_Placeholder
+            label=I18n.Translations.Auth_Username_Label
           />
         </div>
         <div className="mb-6">
           <Input.Text
             id="password"
-            placeholder=I18n.Translations.(
-              toString(Auth_Password_Placeholder)
-            )
-            label=I18n.Translations.(toString(Auth_Password_Label))
+            placeholder=I18n.Translations.Auth_Password_Placeholder
+            label=I18n.Translations.Auth_Password_Label
             type_="Password"
           />
         </div>

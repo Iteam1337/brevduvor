@@ -4,21 +4,21 @@ module Text = {
       (
         ~inputRef=React.useRef(Js.Nullable.null)->ReactDOMRe.Ref.domRef,
         ~onChange=?,
-        ~placeholder,
+        ~placeholder: I18n.Translations.t,
         ~id,
-        ~label,
+        ~label: I18n.Translations.t,
         ~type_="text",
       ) => {
     <div className="mb-4">
       <label htmlFor=id className="block text-gray-700 text-sm font-bold mb-2">
-        label->React.string
+        I18n.Translations.(toString(label))->React.string
       </label>
       <input
         onChange={Utils.invokeIfSet(~callback=onChange)}
         ref=inputRef
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         id
-        placeholder
+        placeholder=I18n.Translations.(toString(placeholder))
         type_
       />
     </div>;
@@ -30,7 +30,9 @@ module GeoSelect = {
   let make =
       (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name, ~label) => {
     <>
-      <label htmlFor=name className="inline-block mt-2"> label->React.string </label>
+      <label htmlFor=name className="inline-block mt-2">
+        label->React.string
+      </label>
       <div className="inline-block relative w-full mt-1">
         <select
           name
