@@ -1,39 +1,6 @@
-module DroneStatusSubscriptionConfig = [%graphql
-  {|
-  subscription DroneStatusSubscription($id: String!) {
-    droneStatus(id: $id) {
-      id
-      status
-      batteryStatus
-      start {
-        alias
-        lat
-        lon
-      }
-      stop {
-        alias
-        lat
-        lon
-      }
-      currentPos {
-        lat
-        lon
-      }
-    }
-  }
-|}
-];
-
-module DroneStatusSubscription =
-  ReasonApolloHooks.Subscription.Make(DroneStatusSubscriptionConfig);
-
 [@react.component]
 let make = (~id) => {
-  let (response, _full) =
-    DroneStatusSubscription.use(
-      ~variables=DroneStatusSubscriptionConfig.make(~id, ())##variables,
-      (),
-    );
+  let response = DroneSubscription.use(~id, ());
 
   <div className="w-full min-h-screen flex">
     {switch (response) {

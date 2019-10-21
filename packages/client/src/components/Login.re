@@ -78,7 +78,7 @@ let make = (~onLogin) => {
     ignore(login(username, password));
   };
 
-  let usernameInputRef = UseAutoFocus.use();
+  let usernameInputRef = AutoFocus.use();
 
   <div
     className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">

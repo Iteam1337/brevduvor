@@ -51,7 +51,7 @@ let make =
   };
 
   let (routes, setSkipRouteQuery) =
-    UseGetRoute.use(~departingPosition, ~destination=currentDestination);
+    GetRoute.use(~departingPosition, ~destination=currentDestination);
 
   React.useEffect1(
     () => {
