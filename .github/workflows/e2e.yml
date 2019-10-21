@@ -15,7 +15,7 @@ jobs:
       - name: Bootstrap dependencies
         run: |
           npm install
-          lerna bootstrap
+          npm run bootstrap
       - name: Start the API (with services)
         run: |
           cd packages/api
