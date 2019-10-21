@@ -84,7 +84,6 @@ export const register = async (
   password: string,
   confirmPassword: string
 ): Promise<AuthPayload> => {
-  // make sure password fields are matching
   if (password !== confirmPassword) {
     throw new AuthenticationError(errorCodes.Auth.PasswordFieldsNotMatching)
   }
