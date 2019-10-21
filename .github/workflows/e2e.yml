@@ -17,6 +17,15 @@ jobs:
           npm install
           docker-compose up -d
           npm run start
+
+  api_schema:
+    needs: [api]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Start the API (with services)
+        run: |
+          cd packages/api
           npm run generate
 
   drone_simulator:
