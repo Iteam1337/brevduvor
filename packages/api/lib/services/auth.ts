@@ -21,7 +21,6 @@ export const verifyTokenAgainstUserRecords = async (token: string) => {
 
     const payload = verify(token, config.JWT_SECRET.publicKey) as User
 
-    console.log('verifyToken payload -->', payload)
     if (payload && payload.id) {
       const user = await getUserById(payload.id)
 
