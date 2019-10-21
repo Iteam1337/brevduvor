@@ -1,0 +1,32 @@
+name: E2E
+
+on:
+  # TODO: do this on push to master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Bootstrap dependencies
+        run: |
+          npm install
+          lerna bootstrap
+      - name: Start the API (with services)
+        run: |
+          cd packages/api
+          docker-compose up -d
+          npm run start
+          npm run generate
+      - name: Start the drone-simulator
+        run: |
+          cd ../drone-simulator
+          npm run start
+      - name: Run Cypress-tests
+        run: |
+          cd ../client
+          npm run cypress:run

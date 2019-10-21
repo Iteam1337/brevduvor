@@ -10,6 +10,7 @@
     "e2e": "cypress run",
     "buildAndServe": "npm run webpack:production && npm run serve",
     "serve": "serve ./dist -l 3001 -s",
+    "cypress:run": "start-server-and-test buildAndServe http://localhost:3001 e2e",
     "cypress": "start-server-and-test buildAndServe http://localhost:3001 cypress:gui",
     "cypress:gui": "cypress open",
     "webpack": "webpack -w",
