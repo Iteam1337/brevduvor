@@ -29,6 +29,8 @@ module DroneStatusSubscription =
 
 [@react.component]
 let make = (~id) => {
+  let ({errorToString, translationsToString}, _): LocaleContext.t =
+    LocaleContext.use();
   let (response, _full) =
     DroneStatusSubscription.use(
       ~variables=DroneStatusSubscriptionConfig.make(~id, ())##variables,
@@ -70,10 +72,12 @@ let make = (~id) => {
        kunde hämtas|js}
            ->React.string,
          )
-     | Loading => <p> {js|Laddar drönares position|js}->React.string </p>
-     | NoData => <p> {I18n.Error.toString(NoDroneWithId)->React.string} </p>
-     | Error(_) =>
-       <p> {I18n.Error.toString(NoDroneWithIdError)->React.string} </p>
+     | Loading =>
+       <p>
+         {{translationsToString(DroneStatus_Loading_Position)}->React.string}
+       </p>
+     | NoData => <p> {errorToString(NoDroneWithId)->React.string} </p>
+     | Error(_) => <p> {errorToString(NoDroneWithIdError)->React.string} </p>
      }}
   </div>;
 };
