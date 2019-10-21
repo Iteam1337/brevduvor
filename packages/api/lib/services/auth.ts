@@ -88,23 +88,13 @@ export const register = async (
     throw new AuthenticationError(errorCodes.Auth.PasswordFieldsNotMatching)
   }
 
-  // check that user doesn't exist already
   const res = await getUserByEmail(email)
   const userExists = res && res.email === email
-  const hasValidErrorResponse =
-    res &&
-    res instanceof errors.QueryResultError &&
-    res.code !== errors.queryResultErrorCode.noData
 
   if (userExists) {
     throw new AuthenticationError(errorCodes.Auth.UserExists)
   }
 
-  if (hasValidErrorResponse) {
-    throw new AuthenticationError(errorCodes.Auth.Unspecified)
-  }
-
-  // register
   try {
     const user = await createUser({
       email: email,
@@ -114,7 +104,7 @@ export const register = async (
 
     if (user) {
       // user object contains the password so we
-      // need to prune the data before signing it
+      // need to prune the data before signing the token
       const tokenPayload = {
         name: user.name,
         email: user.email,
