@@ -85,8 +85,8 @@ let make = () => {
              selectOptions
            />
          </>;
-       | Loading => {I18n.Translations.(toString(UI_Loading))}->React.string
-       | NoData => {I18n.Error.(toString(NoDataFromServer))}->React.string
+       | Loading => {translationsToString(UI_Loading)}->React.string
+       | NoData => {errorToString(NoDataFromServer)}->React.string
        | Error(_err) =>
          <p>
            {errorToString(CouldNotGetAvailableDestinations)->React.string}

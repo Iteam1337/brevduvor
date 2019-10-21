@@ -29,11 +29,28 @@ module ApolloReactTesting = {
     "createClient";
 };
 
+module MockedLocaleProvider = {
+  [@react.component]
+  let make = (~children, ~locale) => {
+    let localeContextValue =
+      React.useReducer(
+        LocaleContext.reducer,
+        {
+          errorToString: I18n.Error._toString(locale),
+          translationsToString: I18n.Translations._toString(locale),
+        },
+      );
+
+    <LocaleProvider value=localeContextValue> children </LocaleProvider>;
+  };
+};
+
 module MockedProvider = {
   [@react.component]
-  let make = (~addTypename=true, ~children, ~mocks=[||]) => {
+  let make =
+      (~addTypename=true, ~children, ~mocks=[||], ~locale=I18n.Locale.Swedish) => {
     <ApolloReactTesting.MockedProvider addTypename mocks>
-      children
+      <MockedLocaleProvider locale> children </MockedLocaleProvider>
     </ApolloReactTesting.MockedProvider>;
   };
 };

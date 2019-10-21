@@ -13,6 +13,9 @@ module StartDroneMutation =
 
 [@react.component]
 let make = (~id, ~handleDroneInitResponse) => {
+  let ({errorToString, translationsToString}, _changeLocale): LocaleContext.t =
+    LocaleContext.use();
+
   let (startDroneMutation, _simple, _full) =
     StartDroneMutation.use(
       ~variables=StartDroneMutationConfig.make(~id, ())##variables,
@@ -35,7 +38,7 @@ let make = (~id, ~handleDroneInitResponse) => {
         | Loading
         | Called
         | NoData =>
-          Belt.Result.Error(I18n.Error.toString(NoDataFromServer))->Js.log
+          Belt.Result.Error(errorToString(NoDataFromServer))->Js.log
         | Error(error) => Belt.Result.Error(error##message)->Js.log
         }
       )
@@ -46,7 +49,7 @@ let make = (~id, ~handleDroneInitResponse) => {
   <div>
     <Button.Primary
       onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500">
-      {React.string({js| Boka |js})}
+      {{translationsToString(BookTrip_Button)}->React.string}
     </Button.Primary>
   </div>;
 };

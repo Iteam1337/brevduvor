@@ -14,6 +14,7 @@ module InitDroneMutation =
 [@react.component]
 let make = (~start, ~stop) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
+  let ({translationsToString, _}, _): LocaleContext.t = LocaleContext.use();
 
   let initDrone = _ => {
     initDroneMutation(
@@ -33,22 +34,20 @@ let make = (~start, ~stop) => {
      | Data(_) =>
        <div>
          <p>
-           I18n.Translations.(toString(BookTrip_TripPrepared_Message))
-           ->React.string
+           {{translationsToString(BookTrip_TripPrepared_Message)}
+            ->React.string}
          </p>
          <Button.Primary
            className="mt-4 bg-green-400"
            onClick={_ => ReasonReactRouter.push("/resor")}>
-           I18n.Translations.(toString(BookTrip_GoToOverview_Button))
-           ->React.string
+           {{translationsToString(BookTrip_GoToOverview_Button)}->React.string}
          </Button.Primary>
        </div>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
        <Button.Primary onClick=initDrone className="mt-4">
-         I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
-         ->React.string
+         {{translationsToString(BookTrip_PrepareTrip_Button)}->React.string}
        </Button.Primary>
      | Error(error) => error##message->React.string
      }}

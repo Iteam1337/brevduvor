@@ -40,6 +40,7 @@ let make = (~onLogin) => {
     );
 
   let (loginMutation, loginResponse, _f) = LoginMutation.use();
+  let ({LocaleContext.translationsToString, _}, _) = LocaleContext.use();
 
   React.useEffect1(
     () => {
@@ -93,29 +94,25 @@ let make = (~onLogin) => {
          }}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            I18n.Translations.(toString(Auth_Username_Label))->React.string
+            {{translationsToString(Auth_Username_Label)}->React.string}
           </label>
           <input
             ref=usernameInputRef
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
             type_="text"
-            placeholder=I18n.Translations.(
-              toString(Auth_Username_Placeholder)
-            )
+            placeholder={translationsToString(Auth_Username_Placeholder)}
           />
         </div>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            I18n.Translations.(toString(Auth_Password_Label))->React.string
+            {{translationsToString(Auth_Password_Label)}->React.string}
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
             type_="password"
-            placeholder=I18n.Translations.(
-              toString(Auth_Password_Placeholder)
-            )
+            placeholder={translationsToString(Auth_Password_Placeholder)}
           />
         </div>
         {switch (state) {
@@ -127,7 +124,7 @@ let make = (~onLogin) => {
           type_="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500">
-          I18n.Translations.(toString(Auth_Login_Submit))->React.string
+          {{translationsToString(Auth_Login_Submit)}->React.string}
         </Button.Primary>
       </form>
     </div>
