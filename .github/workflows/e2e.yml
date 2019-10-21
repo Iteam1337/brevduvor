@@ -7,47 +7,36 @@ on:
       - master
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Bootstrap dependencies
-        run: |
-          npm install
-          npm run bootstrap
-
   api:
-    needs: [install]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Bootstrap dependencies
-        run: |
-          npm install
-          npm run bootstrap
       - name: Start the API (with services)
         run: |
           cd packages/api
+          npm install
           docker-compose up -d
           npm run start
           npm run generate
 
   drone_simulator:
-    needs: [install]
+    needs: [api]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Start the drone-simulator
         run: |
           cd packages/drone-simulator
+          npm install
           npm run start
 
   cypress:
-    needs: [install, api, drone_simulator]
+    needs: [api, drone_simulator]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Run Cypress-tests
         run: |
           cd packages/client
+          npm install
           npm run cypress:run
