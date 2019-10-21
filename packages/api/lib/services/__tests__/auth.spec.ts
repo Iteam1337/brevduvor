@@ -46,6 +46,6 @@ describe('authentication', () => {
   it("rejects a registration when password fields don't match", () => {
     expect(
       authService.register('hello@me', 'TestUser', 'Password!', 'NO MATCH')
-    ).rejects.toThrow('Auth')
+    ).rejects.toThrow()
   })
 })
