@@ -20,7 +20,7 @@ type state =
   | Idle;
 
 type loginFormActions =
-  | SetError(string)
+  | SetError(ReasonApolloHooks.Mutation.error)
   | UnsetError
   | ToggleLoading(bool);
 
@@ -32,7 +32,7 @@ let make = (~onLogin) => {
     React.useReducer(
       (_, action) =>
         switch (action) {
-        | SetError(errorMessage) => Error(errorMessage)
+        | SetError(error) => Error(error##message)
         | UnsetError => Idle
         | ToggleLoading(isLoading) => isLoading ? Loading : Idle
         },
@@ -50,7 +50,7 @@ let make = (~onLogin) => {
         onLogin(authPayload);
       | Error(error) =>
         dispatch(ToggleLoading(false));
-        dispatch(SetError(error##message));
+        dispatch(SetError(error));
       | Loading => dispatch(ToggleLoading(true))
       | NoData => dispatch(ToggleLoading(false))
       | Called => ()
@@ -79,7 +79,6 @@ let make = (~onLogin) => {
   };
 
   let usernameInputRef = AutoFocus.use();
-
   <div
     className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
@@ -87,7 +86,10 @@ let make = (~onLogin) => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=handleSubmit>
         {switch (state) {
-         | Error(errorMessage) => errorMessage->React.string
+         | Error(errorMessage) =>
+           <Typography.Error>
+             errorMessage->I18n.Error.authErrorFromSignature
+           </Typography.Error>
          | Idle => React.null
          | Loading => React.null
          }}

@@ -28,16 +28,34 @@ module Error = {
     | CouldNotGetAvailableDestinations
     | NoDroneWithId
     | NoDroneWithIdError
-    | FourOFour;
+    | FourOFour
+    | MissingUser
+    | PassIncorrect
+    | PasswordFieldsNotMatching
+    | Other(string);
+
+  let authErrorFromSignature =
+    /*** Matches error messages from API to translations,
+     * included with "GraphQL error:" because no way to strip
+     * from apollo error messages without external lib.
+     */
+    fun
+    | "GraphQL error: AuthMissingUser" => MissingUser
+    | "GraphQL error: AuthPassIncorrect" => PassIncorrect
+    | "GraphQL error: AuthPasswordFieldsNotMatching" =>
+      PasswordFieldsNotMatching
+    | other => other->Other;
 
   let _toString = (locale: Locale.t, error) => {
     switch (locale, error) {
     | (English, NoDataFromServer) => "Looks like we did not receive any data from the server."
     | (Swedish, NoDataFromServer) => {js|Det verkar som att vi inte fick tillbaka någon data från servern.|js}
 
+    | (English, NoDroneWithIdError) => "Something seems to have gone wrong. Possibly, there's no drone with this id."
+    | (Swedish, NoDroneWithIdError) => {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
+
     | (English, FourOFour) => "404. Sorry, the page was not found."
-    | (Swedish, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till
-    startsidan.|js}
+    | (Swedish, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till startsidan.|js}
 
     | (English, CouldNotGetAvailableDestinations) => "Could not fetch available destinations"
     | (Swedish, CouldNotGetAvailableDestinations) => {js|Kunde inte hämta tillgängliga destinationer|js}
@@ -45,8 +63,16 @@ module Error = {
     | (English, NoDroneWithId) => "Looks like there's no drone with that id."
     | (Swedish, NoDroneWithId) => {js|Det verkar inte finnas någon drönare med detta id.|js}
 
-    | (English, NoDroneWithIdError) => "Something seems to have gone wrong. Possibly, there's no drone with this id."
-    | (Swedish, NoDroneWithIdError) => {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
+    | (English, MissingUser) => "There is no user associated with that email."
+    | (Swedish, MissingUser) => {js|Det finns ingen användare associerat med denna email.|js}
+
+    | (English, PasswordFieldsNotMatching) => "Password fields do not match."
+    | (Swedish, PasswordFieldsNotMatching) => {js|Lösenorden matchar inte.|js}
+
+    | (English, PassIncorrect) => "Incorrect password."
+    | (Swedish, PassIncorrect) => {js|Fel lösenord.|js}
+
+    | (_, Other(msg)) => msg
     };
   };
 
@@ -120,7 +146,7 @@ module Translations = {
     | (English, Auth_Password_Label) => "Password"
     | (Swedish, Auth_Password_Label) => {js|Lösenord|js}
 
-    | (_, Auth_Password_Placeholder) => "****"
+    | (_, Auth_Password_Placeholder) => "********"
 
     | (English, Auth_Login_Submit) => "Login"
     | (Swedish, Auth_Login_Submit) => {js|Logga in|js}
