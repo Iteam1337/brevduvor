@@ -1,4 +1,4 @@
-/*
+/**
 
   Loader with delay. Prevent loading states from flashing up on the screen when the user has a
   fast connection or the operation completes very fast. Specify a timeout with delayMs, default is set to 300ms
@@ -15,6 +15,7 @@
 module Inline = {
   [@react.component]
   let make = (~delayMs=300, ~isLoading: bool) => {
+    let ({translationsToString}, _): LocaleContext.t = LocaleContext.use();
     let (show, setShow) = React.useState(() => false);
 
     React.useEffect2(
@@ -34,14 +35,14 @@ module Inline = {
     );
 
     show && isLoading
-      ? I18n.Translations.(toString(UI_Loading))->React.string
-      : ReasonReact.null;
+      ? translationsToString(UI_Loading)->React.string : ReasonReact.null;
   };
 };
 
 module Container = {
   [@react.component]
   let make = (~delayMs=300, ~isLoading: bool, ~children) => {
+    let ({translationsToString}, _): LocaleContext.t = LocaleContext.use();
     let (show, setShow) = React.useState(() => false);
 
     React.useEffect2(
@@ -61,6 +62,6 @@ module Container = {
     );
 
     show && isLoading
-      ? I18n.Translations.(toString(UI_Loading))->React.string : children;
+      ? translationsToString(UI_Loading)->React.string : children;
   };
 };

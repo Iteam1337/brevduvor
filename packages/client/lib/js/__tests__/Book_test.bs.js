@@ -61,9 +61,9 @@ Jest.describe('Book', function(param) {
     )
     var element = ReactTestingLibrary.render(undefined, undefined, eta)
     React$1.waitForElement(function(param) {
-      var partial_arg_001 = Curry._1(
-        I18n$Client.Translations[/* toString */ 1],
-        /* BookTrip_To_DropdownLabel */ 11
+      var partial_arg_001 = I18n$Client.Translations[/* _toString */ 0](
+        /* Swedish */ 1,
+        /* BookTrip_To_Label */ 11
       )
       var partial_arg = /* `Str */ [4153489, partial_arg_001]
       return (function(eta) {

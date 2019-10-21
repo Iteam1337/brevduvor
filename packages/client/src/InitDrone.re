@@ -12,8 +12,9 @@ module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
 
 [@react.component]
-let make = (~start, ~stop, ~handleDroneStartResponse) => {
+let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
+  let ({translationsToString, _}, _): LocaleContext.t = LocaleContext.use();
 
   let initDrone = _ => {
     initDroneMutation(
@@ -33,19 +34,20 @@ let make = (~start, ~stop, ~handleDroneStartResponse) => {
      | Data(d) =>
        <div>
          <Typography.P className="mt-5">
-           I18n.Translations.BookTrip_TripPrepared_Message
+           {translationsToString(BookTrip_TripPrepared_Message)}
          </Typography.P>
-         <StartDrone id=d##initDrone##id handleDroneStartResponse />
+         <StartDrone id=d##initDrone##id handleDroneInitResponse />
        </div>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
        <Button.Primary onClick=initDrone className="mt-5">
-         I18n.Translations.(toString(BookTrip_PrepareTrip_Button))
-         ->React.string
+         {{translationsToString(BookTrip_PrepareTrip_Button)}->React.string}
        </Button.Primary>
      | Error(_) =>
-       <Typography.Error> I18n.Error.NoDroneWithIdError </Typography.Error>
+       <Typography.Error>
+         {translationsToString(BookTrip_PrepareTrip_Button)}
+       </Typography.Error>
      }}
   </div>;
 };

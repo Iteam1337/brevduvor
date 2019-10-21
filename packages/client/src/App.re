@@ -2,6 +2,8 @@
 let make = () => {
   open Shared;
 
+  let ({errorToString, _}, _changeLocale): LocaleContext.t =
+    LocaleContext.use();
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
@@ -18,7 +20,7 @@ let make = () => {
       | ["boka-resa"] => <Book />
       | ["resor"] => <Trips />
       | ["resa", id] => <Trip id />
-      | _ => <Typography.Error> I18n.Error.FourOFour </Typography.Error>
+      | _ => <Typography.Error> {errorToString(FourOFour)} </Typography.Error>
       }
     : <Login onLogin=handleLogin />;
 };

@@ -9,16 +9,17 @@ module Text = {
         ~label: I18n.Translations.t,
         ~type_="text",
       ) => {
+    let ({LocaleContext.translationsToString, _}, _) = LocaleContext.use();
     <div className="mb-4">
       <label htmlFor=id className="block text-gray-700 text-sm font-bold mb-2">
-        I18n.Translations.(toString(label))->React.string
+        {label->translationsToString->React.string}
       </label>
       <input
+        id
         onChange={Utils.invokeIfSet(~callback=onChange)}
         ref=inputRef
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id
-        placeholder=I18n.Translations.(toString(placeholder))
+        placeholder={translationsToString(placeholder)}
         type_
       />
     </div>;
@@ -29,9 +30,10 @@ module GeoSelect = {
   [@react.component]
   let make =
       (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name, ~label) => {
+    let ({LocaleContext.translationsToString, _}, _) = LocaleContext.use();
     <>
       <label htmlFor=name className="inline-block mt-2">
-        I18n.Translations.(toString(label))->React.string
+        {label->translationsToString->React.string}
       </label>
       <div className="inline-block relative w-full mt-1">
         <select
@@ -50,7 +52,7 @@ module GeoSelect = {
           }}
           className="block w-full appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
           <option
-            label=I18n.Translations.(toString(BookTrip_Choose_DropdownLabel))
+            label={translationsToString(BookTrip_Choose_DropdownLabel)}
           />
           {selectOptions
            ->Belt.List.mapWithIndex((index, dest) =>

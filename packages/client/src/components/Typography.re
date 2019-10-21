@@ -4,15 +4,13 @@ module P = {
     let base = "";
 
     let className = Cn.make([base, className->Cn.unpack]);
-    <p className> I18n.Translations.(toString(children))->React.string </p>;
+    <p className> children->React.string </p>;
   };
 };
 
 module Error = {
   [@react.component]
   let make = (~children) => {
-    <p className="text-red">
-      I18n.Error.(toString(children))->React.string
-    </p>;
+    <p className="text-red"> children->React.string </p>;
   };
 };

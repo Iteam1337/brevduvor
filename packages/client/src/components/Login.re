@@ -40,6 +40,8 @@ let make = (~onLogin) => {
     );
 
   let (loginMutation, loginResponse, _f) = LoginMutation.use();
+  let ({LocaleContext.translationsToString, errorToString}, _) =
+    LocaleContext.use();
 
   React.useEffect1(
     () => {
@@ -88,7 +90,7 @@ let make = (~onLogin) => {
         {switch (state) {
          | Error(errorMessage) =>
            <Typography.Error>
-             errorMessage->I18n.Error.authErrorFromSignature
+             {errorMessage->I18n.Error.authErrorFromSignature->errorToString}
            </Typography.Error>
          | Idle => React.null
          | Loading => React.null
@@ -118,7 +120,7 @@ let make = (~onLogin) => {
           type_="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500">
-          I18n.Translations.(toString(Auth_Login_Submit))->React.string
+          {{translationsToString(Auth_Login_Submit)}->React.string}
         </Button.Primary>
       </form>
     </div>

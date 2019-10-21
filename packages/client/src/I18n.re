@@ -3,6 +3,13 @@ module Locale = {
     | English
     | Swedish;
 
+  let allLanguages = [English, Swedish];
+
+  let toString =
+    fun
+    | English => "English"
+    | Swedish => "Svenska";
+
   /**
     * language string comes in as e.g. "sv-SE"
     */
@@ -32,6 +39,7 @@ module Error = {
     | MissingUser
     | PassIncorrect
     | PasswordFieldsNotMatching
+    | NoDroneData
     | Other(string);
 
   let authErrorFromSignature =
@@ -72,6 +80,9 @@ module Error = {
     | (English, PassIncorrect) => "Incorrect password."
     | (Swedish, PassIncorrect) => {js|Fel lösenord.|js}
 
+    | (English, NoDroneData) => "Something seems to have gone wrong. No drone-data was received."
+    | (Swedish, NoDroneData) => {js|Det verkar som att någonting gick fel. Ingen drönardata
+       kunde hämtas|js}
     | (_, Other(msg)) => msg
     };
   };
@@ -115,14 +126,16 @@ module Translations = {
     | Auth_Login_Submit
     | BookTrip_Button
     | BookTrip_Choose_DropdownLabel
-    | BookTrip_From_DropdownLabel
-    | BookTrip_To_DropdownLabel
+    | BookTrip_From_Label
+    | BookTrip_To_Label
     | BookTrip_PrepareTrip_Button
     | BookTrip_TripPrepared_Message
     | BookTrip_GoToOverview_Button
     | BookTrip_Booking_Finished
     | GeoLocation_Latitude
-    | GeoLocation_Longitude;
+    | GeoLocation_Longitude
+    | DroneStatus_Loading_Position
+    | Language_Choose_DropdownLabel;
 
   let _toString = (locale: Locale.t, translations) => {
     switch (locale, translations) {
@@ -157,11 +170,11 @@ module Translations = {
     | (English, BookTrip_Choose_DropdownLabel) => "Select option"
     | (Swedish, BookTrip_Choose_DropdownLabel) => {js|Välj alternativ|js}
 
-    | (English, BookTrip_From_DropdownLabel) => "From"
-    | (Swedish, BookTrip_From_DropdownLabel) => {js|Från|js}
+    | (English, BookTrip_From_Label) => "From"
+    | (Swedish, BookTrip_From_Label) => {js|Från|js}
 
-    | (English, BookTrip_To_DropdownLabel) => "To"
-    | (Swedish, BookTrip_To_DropdownLabel) => {js|Till|js}
+    | (English, BookTrip_To_Label) => "To"
+    | (Swedish, BookTrip_To_Label) => {js|Till|js}
 
     | (English, GeoLocation_Latitude) => "Latitude"
     | (Swedish, GeoLocation_Latitude) => "Latitud"
@@ -176,6 +189,12 @@ module Translations = {
 
     | (English, BookTrip_GoToOverview_Button) => {js|Go to overview|js}
     | (Swedish, BookTrip_GoToOverview_Button) => {js|Gå till överblick|js}
+
+    | (English, DroneStatus_Loading_Position) => "Fetching the drones position"
+    | (Swedish, DroneStatus_Loading_Position) => {js|Laddar drönares position.|js}
+
+    | (English, Language_Choose_DropdownLabel) => "Select language"
+    | (Swedish, Language_Choose_DropdownLabel) => {js|Välj språk|js}
     };
   };
 

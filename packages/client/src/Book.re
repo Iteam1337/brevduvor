@@ -31,6 +31,9 @@ module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
 
 [@react.component]
 let make = () => {
+  let ({translationsToString, _}, _changeLocale): LocaleContext.t =
+    LocaleContext.use();
+
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -51,7 +54,7 @@ let make = () => {
   let handleDepartingPositionSelect = pos =>
     SetDepartingPosition(pos)->dispatch;
 
-  let handleDroneStartResponse = id => SetDroneId(id)->dispatch;
+  let handleDroneInitResponse = id => SetDroneId(id)->dispatch;
 
   let (availablePositionsResponse, _) = AllDestinationsQuery.use();
 
@@ -67,13 +70,13 @@ let make = () => {
              ->Belt.List.fromArray;
            <>
              <Input.GeoSelect
-               label=BookTrip_From_DropdownLabel
+               label=BookTrip_From_Label
                name="select-from"
                onChange=handleDepartingPositionSelect
                selectOptions
              />
              <Input.GeoSelect
-               label=BookTrip_To_DropdownLabel
+               label=BookTrip_To_Label
                name="select-to"
                onChange=handleDestinationSelect
                selectOptions
@@ -83,28 +86,29 @@ let make = () => {
          | NoData
          | Error(_) =>
            <Typography.Error>
-             I18n.Error.CouldNotGetAvailableDestinations
+             {translationsToString(BookTrip_From_Label)}
            </Typography.Error>
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
-           <InitDrone start stop handleDroneStartResponse />
+           <InitDrone start stop handleDroneInitResponse />
          | (Some(_), Some(_), Some(_)) => React.null
          | _ =>
            <Button.Secondary disabled=true className="mt-5">
-             {BookTrip_PrepareTrip_Button->toString->React.string}
+             {translationsToString(BookTrip_PrepareTrip_Button)->React.string}
            </Button.Secondary>
          }}
         {switch (droneId) {
          | Some(id) =>
            <>
              <Typography.P className="mt-5">
-               I18n.Translations.BookTrip_Booking_Finished
+               {translationsToString(BookTrip_Booking_Finished)}
              </Typography.P>
              <Button.Primary
                className="mt-5"
                onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
-               {BookTrip_GoToOverview_Button->toString->React.string}
+               {translationsToString(BookTrip_GoToOverview_Button)
+                ->React.string}
              </Button.Primary>
            </>
          | _ => React.null
