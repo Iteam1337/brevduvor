@@ -17,7 +17,10 @@ export const serverConfig = {
       const token = req.headers.authorization || ''
 
       if (token) {
-        const user = await verifyTokenAgainstUserRecords(token)
+        const user = await verifyTokenAgainstUserRecords(
+          token,
+          config.JWT_SECRET.publicKey
+        )
 
         return { user }
       }

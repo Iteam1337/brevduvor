@@ -15,11 +15,14 @@ type User = {
   email: string
 }
 
-export const verifyTokenAgainstUserRecords = async (token: string) => {
+export const verifyTokenAgainstUserRecords = async (
+  token: string,
+  privateKey: string
+) => {
   try {
     token = token.split('Bearer ')[1]
 
-    const payload = verify(token, config.JWT_SECRET.publicKey) as User
+    const payload = verify(token, privateKey) as User
 
     if (payload && payload.id) {
       const user = await getUserById(payload.id)
@@ -61,6 +64,7 @@ export const login = async (
   password: string
 ): Promise<AuthPayload> => {
   const user = await authenticate(email, password)
+
   // user object contains the password so we
   // need to prune the data before signing it
   const tokenPayload = {
@@ -68,6 +72,7 @@ export const login = async (
     email: user.email,
     id: user.id,
   }
+
   const token = sign(tokenPayload, config.JWT_SECRET.publicKey)
 
   return {
