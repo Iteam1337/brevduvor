@@ -16,9 +16,7 @@ jobs:
           cd packages/api
           npm install
           docker-compose up -d
-          npm run start \
-          & npx wait-on http://localhost:4000 \
-          && npm run generate
+          npm run start && npx wait-on http://localhost:4000 && npm run generate
 
   drone_simulator:
     needs: [api]
