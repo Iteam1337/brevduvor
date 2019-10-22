@@ -79,7 +79,7 @@ let make = (~onLogin) => {
     ignore(login(email, password));
   };
 
-  let emailInputRef = UseAutoFocus.use();
+  let emailInputRef = AutoFocus.use();
 
   <div
     className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">
