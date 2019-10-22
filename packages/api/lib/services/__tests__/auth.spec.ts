@@ -1,5 +1,4 @@
 const authService = require('./../auth')
-// const userService = require('./../users')
 
 const jsonwebtoken = require('jsonwebtoken')
 
