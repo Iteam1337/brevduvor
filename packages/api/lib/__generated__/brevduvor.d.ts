@@ -15,10 +15,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any
-  RuleWrapper: any
-  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any
   /** The `Upload` scalar type represents a file upload. */
   Upload: any
@@ -28,6 +25,7 @@ export type AuthPayload = {
   __typename?: 'AuthPayload'
   id: Scalars['ID']
   token: Scalars['String']
+  email: Scalars['String']
   username: Scalars['String']
 }
 
@@ -112,7 +110,7 @@ export type MutationStartDroneArgs = {
 }
 
 export type MutationLoginArgs = {
-  username: Scalars['RuleWrapper']
+  email: Scalars['String']
   password: Scalars['String']
 }
 
@@ -133,7 +131,8 @@ export type QueryGetRouteArgs = {
 }
 
 export type RegisterInput = {
-  username: Scalars['RuleWrapper']
+  email: Scalars['String']
+  username: Scalars['String']
   password: Scalars['String']
   confirmPassword: Scalars['String']
 }
@@ -283,7 +282,6 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
-  RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
   RegisterInput: RegisterInput
@@ -312,7 +310,6 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates
   Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
-  RuleWrapper: Scalars['RuleWrapper']
   AuthPayload: AuthPayload
   ID: Scalars['ID']
   RegisterInput: RegisterInput
@@ -367,9 +364,10 @@ export type AuthPayloadResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']
 > = {
-  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  token: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  username: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type CoordinatesResolvers<
@@ -465,7 +463,7 @@ export type MutationResolvers<
     ResolversTypes['AuthPayload'],
     ParentType,
     ContextType,
-    RequireFields<MutationLoginArgs, 'username' | 'password'>
+    RequireFields<MutationLoginArgs, 'email' | 'password'>
   >
   register: Resolver<
     ResolversTypes['AuthPayload'],
@@ -499,11 +497,6 @@ export type RouteResolvers<
   ParentType extends ResolversParentTypes['Route'] = ResolversParentTypes['Route']
 > = {
   trips: Resolver<Array<ResolversTypes['Trip']>, ParentType, ContextType>
-}
-
-export interface RuleWrapperScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes['RuleWrapper'], any> {
-  name: 'RuleWrapper'
 }
 
 export type StartDroneResponseResolvers<

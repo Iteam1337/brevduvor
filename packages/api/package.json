@@ -2,7 +2,6 @@
   "name": "api",
   "version": "0.0.0",
   "description": "Drone communication interface",
-  "author": "momentiris <momentiris@gmail.com>",
   "homepage": "https://github.com/Iteam1337/brevduvor#readme",
   "license": "ISC",
   "main": "./build/index.js",
@@ -19,12 +18,12 @@
   },
   "scripts": {
     "start": "tsc && node ./build/index.js",
-    "generate": "graphql-codegen --config codegen.yml",
     "migrate": "DATABASE_URL=\"postgres://iteamadmin:adminadmin1337@localhost:5432/brevduvor\" node-pg-migrate",
+    "generate": "graphql-codegen --config codegen.yml",
     "dev": "ts-node-dev --no-notify index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
-    "test": "NODE_ENV=test jest",
-    "test:watch": "NODE_ENV=test jest --watchAll"
+    "test": "jest --env brevduvor",
+    "test:watch": "jest --env brevduvor --watchAll"
   },
   "bugs": {
     "url": "https://github.com/Iteam1337/brevduvor/issues"
@@ -38,13 +37,14 @@
     "@types/graphql": "^14.5.0",
     "@types/jest": "^24.0.18",
     "jest": "^24.9.0",
+    "jest-environment-aegir": "^1.0.1",
     "jest-watch-typeahead": "^0.4.0",
+    "node-pg-migrate": "^3.23.1",
     "nodemon": "^1.19.2",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.3.0",
     "ts-node-dev": "^1.0.0-pre.42",
-    "typescript": "^3.6.3",
-    "node-pg-migrate": "^3.23.1"
+    "typescript": "^3.6.3"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.3.0",
@@ -54,6 +54,10 @@
     "@types/got": "^9.6.7",
     "@types/graphql-type-json": "^0.3.2",
     "@types/jsonwebtoken": "^8.3.4",
+    "@types/passport": "^1.0.1",
+    "@types/passport-jwt": "^3.0.2",
+    "@types/passport-local": "^1.0.33",
+    "@types/pg": "^7.11.1",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
     "apollo-datasource-rest": "^0.6.4",
@@ -64,8 +68,10 @@
     "eslint": "^6.4.0",
     "got": "^9.6.0",
     "graphql-type-json": "^0.3.0",
+    "jest-environment-brevduvor": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.1",
-    "pg-promise": "^9.2.1"
+    "pg-promise": "^9.2.1",
+    "scrypt-kdf": "^2.0.1"
   }
 }
