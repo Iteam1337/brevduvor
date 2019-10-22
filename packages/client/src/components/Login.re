@@ -1,8 +1,8 @@
 module LoginMutationConfig = [%graphql
   {|
 
-  mutation LoginMutation($username: RuleWrapper!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       id
       token
       username
@@ -62,10 +62,9 @@ let make = (~onLogin) => {
     [|loginResponse|],
   );
 
-  let login = (username, password) => {
+  let login = (email, password) => {
     loginMutation(
-      ~variables=
-        LoginMutationConfig.make(~username, ~password, ())##variables,
+      ~variables=LoginMutationConfig.make(~email, ~password, ())##variables,
       (),
     );
   };
@@ -73,13 +72,13 @@ let make = (~onLogin) => {
   let handleSubmit = event => {
     event->ReactEvent.Synthetic.preventDefault;
     let formData = ReactEvent.Form.target(event);
-    let username = formData##username##value;
+    let email = formData##email##value;
     let password = formData##password##value;
 
-    ignore(login(username, password));
+    ignore(login(email, password));
   };
 
-  let usernameInputRef = UseAutoFocus.use();
+  let emailInputRef = UseAutoFocus.use();
 
   <div
     className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
@@ -94,14 +93,14 @@ let make = (~onLogin) => {
          }}
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            {{translationsToString(Auth_Username_Label)}->React.string}
+            {{translationsToString(Auth_Email_Label)}->React.string}
           </label>
           <input
-            ref=usernameInputRef
+            ref=emailInputRef
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
+            id="email"
             type_="text"
-            placeholder={translationsToString(Auth_Username_Placeholder)}
+            placeholder={translationsToString(Auth_Email_Placeholder)}
           />
         </div>
         <div className="mb-6">
