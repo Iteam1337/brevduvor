@@ -14,6 +14,11 @@ const typeDefs = gql`
   scalar JSON
   scalar JSONObject
 
+  enum Languages {
+    ENGLISH
+    SWEDISH
+  }
+
   type Geometry {
     type: String!
     coordinates: JSON!
@@ -38,6 +43,7 @@ const typeDefs = gql`
     token: String!
     email: String!
     username: String!
+    language: Languages
   }
 
   type LogoutResponse {

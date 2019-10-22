@@ -316,7 +316,7 @@
       {
         "kind": "SCALAR",
         "name": "JSON",
-        "description": null,
+        "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -753,6 +753,14 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "language",
+            "description": null,
+            "args": [],
+            "type": { "kind": "ENUM", "name": "Languages", "ofType": null },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -771,6 +779,29 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "Languages",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "ENGLISH",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "SWEDISH",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "RegisterInput",
         "description": null,
@@ -782,7 +813,11 @@
             "type": {
               "kind": "NON_NULL",
               "name": null,
-              "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "RuleWrapper",
+                "ofType": null
+              }
             },
             "defaultValue": null
           },
@@ -817,6 +852,16 @@
             "defaultValue": null
           }
         ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "RuleWrapper",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -1784,7 +1829,7 @@
       {
         "kind": "SCALAR",
         "name": "JSONObject",
-        "description": null,
+        "description": "The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
         "fields": null,
         "inputFields": null,
         "interfaces": null,

@@ -10,9 +10,10 @@ interface RegisterUser {
 
 export async function getUserByEmail(email: String): Promise<any> {
   return await db
-    .one(dedent`SELECT id, email, name, password FROM users where email = $1`, [
-      email,
-    ])
+    .one(
+      dedent`SELECT id, email, name, password, language FROM users where email = $1`,
+      [email]
+    )
     .then((user: any) => {
       return user
     })
@@ -23,9 +24,10 @@ export async function getUserByEmail(email: String): Promise<any> {
 
 export async function getUserById(id: String): Promise<any> {
   return db
-    .one(dedent`SELECT id, email, name, password FROM users where id = $1`, [
-      id,
-    ])
+    .one(
+      dedent`SELECT id, email, name, password, language FROM users where id = $1`,
+      [id]
+    )
     .then((user: any) => {
       return user
     })
@@ -43,7 +45,7 @@ export async function createUser(user: RegisterUser) {
       },
       undefined,
       'users'
-    ) + 'RETURNING id, email, name'
+    ) + 'RETURNING id, email, name, language'
 
   return db
     .one(query)

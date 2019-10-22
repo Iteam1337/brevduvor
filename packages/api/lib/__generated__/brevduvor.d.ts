@@ -15,7 +15,10 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any
+  RuleWrapper: any
+  /** The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSONObject: any
   /** The `Upload` scalar type represents a file upload. */
   Upload: any
@@ -27,6 +30,7 @@ export type AuthPayload = {
   token: Scalars['String']
   email: Scalars['String']
   username: Scalars['String']
+  language: Maybe<Languages>
 }
 
 export enum CacheControlScope {
@@ -85,6 +89,11 @@ export type InitDroneResponse = {
   eta: Scalars['String']
 }
 
+export enum Languages {
+  English = 'ENGLISH',
+  Swedish = 'SWEDISH',
+}
+
 export type LogoutResponse = {
   __typename?: 'LogoutResponse'
   status: Scalars['String']
@@ -131,7 +140,7 @@ export type QueryGetRouteArgs = {
 }
 
 export type RegisterInput = {
-  email: Scalars['String']
+  email: Scalars['RuleWrapper']
   username: Scalars['String']
   password: Scalars['String']
   confirmPassword: Scalars['String']
@@ -284,7 +293,9 @@ export type ResolversTypes = {
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
+  Languages: Languages
   RegisterInput: RegisterInput
+  RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>
   Subscription: ResolverTypeWrapper<{}>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
@@ -312,7 +323,9 @@ export type ResolversParentTypes = {
   StartDroneResponse: StartDroneResponse
   AuthPayload: AuthPayload
   ID: Scalars['ID']
+  Languages: Languages
   RegisterInput: RegisterInput
+  RuleWrapper: Scalars['RuleWrapper']
   LogoutResponse: LogoutResponse
   Subscription: {}
   DroneStatusResponse: DroneStatusResponse
@@ -364,10 +377,15 @@ export type AuthPayloadResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']
 > = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  token: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  email: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  username: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  language: Resolver<
+    Maybe<ResolversTypes['Languages']>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type CoordinatesResolvers<
@@ -497,6 +515,11 @@ export type RouteResolvers<
   ParentType extends ResolversParentTypes['Route'] = ResolversParentTypes['Route']
 > = {
   trips: Resolver<Array<ResolversTypes['Trip']>, ParentType, ContextType>
+}
+
+export interface RuleWrapperScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['RuleWrapper'], any> {
+  name: 'RuleWrapper'
 }
 
 export type StartDroneResponseResolvers<
