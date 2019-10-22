@@ -27,15 +27,9 @@ jest.mock('../users', () => ({
   },
 }))
 
-jest.mock('../../helpers/password', () => ({
-  verifyPassword() {
-    return true
-  },
-}))
-
 describe.only('authentication', () => {
+  const privateKey = 'MY_PRIVATE_KEY'
   let token: string
-  let privateKey = 'MY_PRIVATE_KEY'
 
   describe('verifyTokenAgainstUserRecords', () => {
     beforeEach(() => {
