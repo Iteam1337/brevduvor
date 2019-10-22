@@ -1,8 +1,8 @@
 module LoginMutationConfig = [%graphql
   {|
 
-  mutation LoginMutation($username: RuleWrapper!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       id
       token
       username
@@ -63,10 +63,9 @@ let make = (~onLogin) => {
     [|loginResponse|],
   );
 
-  let login = (username, password) => {
+  let login = (email, password) => {
     loginMutation(
-      ~variables=
-        LoginMutationConfig.make(~username, ~password, ())##variables,
+      ~variables=LoginMutationConfig.make(~email, ~password, ())##variables,
       (),
     );
   };
@@ -74,13 +73,14 @@ let make = (~onLogin) => {
   let handleSubmit = event => {
     event->ReactEvent.Synthetic.preventDefault;
     let formData = ReactEvent.Form.target(event);
-    let username = formData##username##value;
+    let email = formData##email##value;
     let password = formData##password##value;
 
-    ignore(login(username, password));
+    ignore(login(email, password));
   };
 
-  let usernameInputRef = AutoFocus.use();
+  let emailInputRef = UseAutoFocus.use();
+
   <div
     className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
@@ -97,7 +97,7 @@ let make = (~onLogin) => {
          }}
         <div className="mb-4">
           <Input.Text
-            inputRef=usernameInputRef
+            inputRef=emailInputRef
             id="username"
             placeholder=I18n.Translations.Auth_Username_Placeholder
             label=I18n.Translations.Auth_Username_Label

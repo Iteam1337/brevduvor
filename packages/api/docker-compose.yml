@@ -42,7 +42,6 @@ services:
       - ELASTICSEARCH=http://elasticsearch:9200
     ports:
       - '5601:5601'
-
   osrm-backend:
     image: osrm/osrm-backend:v5.22.0
     environment:
