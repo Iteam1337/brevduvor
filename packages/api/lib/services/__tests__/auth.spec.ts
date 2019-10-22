@@ -84,10 +84,12 @@ describe.only('authentication', () => {
 
   it('registers a user', async () => {
     const authPayload = await authService
-      .register('hello@me', 'TestUser', 'Password!', 'Password!')
+      .register('newuser@me', 'TestUser', 'Password!', 'Password!')
       .then((payload: any) => {
         return payload
       })
+
+    console.log(authPayload)
 
     expect(authPayload).toHaveProperty('id')
     expect(authPayload).toHaveProperty('token')
