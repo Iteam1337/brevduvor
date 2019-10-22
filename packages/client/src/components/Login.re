@@ -20,7 +20,7 @@ type state =
   | Idle;
 
 type loginFormActions =
-  | SetError(string)
+  | SetError(ReasonApolloHooks.Mutation.error)
   | UnsetError
   | ToggleLoading(bool);
 
@@ -32,7 +32,7 @@ let make = (~onLogin) => {
     React.useReducer(
       (_, action) =>
         switch (action) {
-        | SetError(errorMessage) => Error(errorMessage)
+        | SetError(error) => Error(error##message)
         | UnsetError => Idle
         | ToggleLoading(isLoading) => isLoading ? Loading : Idle
         },
@@ -40,7 +40,8 @@ let make = (~onLogin) => {
     );
 
   let (loginMutation, loginResponse, _f) = LoginMutation.use();
-  let ({LocaleContext.translationsToString, _}, _) = LocaleContext.use();
+  let ({LocaleContext.translationsToString, errorToString}, _) =
+    LocaleContext.use();
 
   React.useEffect1(
     () => {
@@ -51,7 +52,7 @@ let make = (~onLogin) => {
         onLogin(authPayload);
       | Error(error) =>
         dispatch(ToggleLoading(false));
-        dispatch(SetError(error##message));
+        dispatch(SetError(error));
       | Loading => dispatch(ToggleLoading(true))
       | NoData => dispatch(ToggleLoading(false))
       | Called => ()
@@ -78,40 +79,36 @@ let make = (~onLogin) => {
     ignore(login(email, password));
   };
 
-  let emailInputRef = UseAutoFocus.use();
+  let emailInputRef = AutoFocus.use();
 
   <div
-    className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
+    className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=handleSubmit>
         {switch (state) {
-         | Error(errorMessage) => errorMessage->React.string
+         | Error(errorMessage) =>
+           <Typography.Error>
+             {errorMessage->I18n.Error.authErrorFromSignature->errorToString}
+           </Typography.Error>
          | Idle => React.null
          | Loading => React.null
          }}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            {{translationsToString(Auth_Email_Label)}->React.string}
-          </label>
-          <input
-            ref=emailInputRef
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type_="text"
-            placeholder={translationsToString(Auth_Email_Placeholder)}
+          <Input.Text
+            inputRef=emailInputRef
+            id="username"
+            placeholder=I18n.Translations.Auth_Username_Placeholder
+            label=I18n.Translations.Auth_Username_Label
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            {{translationsToString(Auth_Password_Label)}->React.string}
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <Input.Text
             id="password"
-            type_="password"
-            placeholder={translationsToString(Auth_Password_Placeholder)}
+            placeholder=I18n.Translations.Auth_Password_Placeholder
+            label=I18n.Translations.Auth_Password_Label
+            type_="Password"
           />
         </div>
         {switch (state) {

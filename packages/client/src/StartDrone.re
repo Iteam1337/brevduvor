@@ -33,8 +33,7 @@ let make = (~id, ~handleDroneInitResponse) => {
             ),
         ) =>
         switch (result) {
-        | Data(data) =>
-          Belt.Result.Ok(data##startDrone##id)->handleDroneInitResponse
+        | Data(data) => data##startDrone##id->handleDroneInitResponse
         | Loading
         | Called
         | NoData =>
@@ -48,7 +47,8 @@ let make = (~id, ~handleDroneInitResponse) => {
 
   <div>
     <Button.Primary
-      onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500">
+      onClick=startDrone
+      className="mt-4 bg-green-400 hover:bg-green-500  mt-5">
       {{translationsToString(BookTrip_Button)}->React.string}
     </Button.Primary>
   </div>;

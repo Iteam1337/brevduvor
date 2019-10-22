@@ -12,7 +12,7 @@ module InitDroneMutation =
   ReasonApolloHooks.Mutation.Make(InitDroneMutationConfig);
 
 [@react.component]
-let make = (~start, ~stop) => {
+let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
   let ({translationsToString, _}, _): LocaleContext.t = LocaleContext.use();
 
@@ -31,25 +31,23 @@ let make = (~start, ~stop) => {
 
   <div>
     {switch (simple) {
-     | Data(_) =>
+     | Data(d) =>
        <div>
-         <p>
-           {{translationsToString(BookTrip_TripPrepared_Message)}
-            ->React.string}
-         </p>
-         <Button.Primary
-           className="mt-4 bg-green-400"
-           onClick={_ => ReasonReactRouter.push("/resor")}>
-           {{translationsToString(BookTrip_GoToOverview_Button)}->React.string}
-         </Button.Primary>
+         <Typography.P className="mt-5">
+           {translationsToString(BookTrip_TripPrepared_Message)}
+         </Typography.P>
+         <StartDrone id=d##initDrone##id handleDroneInitResponse />
        </div>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
-       <Button.Primary onClick=initDrone className="mt-4">
+       <Button.Primary onClick=initDrone className="mt-5">
          {{translationsToString(BookTrip_PrepareTrip_Button)}->React.string}
        </Button.Primary>
-     | Error(error) => error##message->React.string
+     | Error(_) =>
+       <Typography.Error>
+         {translationsToString(BookTrip_PrepareTrip_Button)}
+       </Typography.Error>
      }}
   </div>;
 };

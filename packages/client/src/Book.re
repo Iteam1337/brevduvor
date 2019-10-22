@@ -31,7 +31,7 @@ module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
 
 [@react.component]
 let make = () => {
-  let ({errorToString, translationsToString}, _changeLocale): LocaleContext.t =
+  let ({translationsToString, _}, _changeLocale): LocaleContext.t =
     LocaleContext.use();
 
   let (state, dispatch) =
@@ -54,48 +54,66 @@ let make = () => {
   let handleDepartingPositionSelect = pos =>
     SetDepartingPosition(pos)->dispatch;
 
+  let handleDroneInitResponse = id => SetDroneId(id)->dispatch;
+
   let (availablePositionsResponse, _) = AllDestinationsQuery.use();
 
-  let {departingPosition, destination} = state;
-
-  <div className="w-3/12 min-h-screen flex">
-    <div className="w-full p-4 bg-white h-full flex flex-col">
-      {switch (availablePositionsResponse) {
-       | Data(data) =>
-         let selectOptions =
-           data##allDestinations
-           ->Belt.Array.map(Shared.GeoPosition.toRecord)
-           ->Belt.List.fromArray;
-
-         <>
-           <label>
-             {translationsToString(BookTrip_From_DropdownLabel)->React.string}
-           </label>
-           <GeoSelectBox
-             name="select-from"
-             onChange=handleDepartingPositionSelect
-             selectOptions
-           />
-           <label>
-             {translationsToString(BookTrip_To_DropdownLabel)->React.string}
-           </label>
-           <GeoSelectBox
-             name="select-to"
-             onChange=handleDestinationSelect
-             selectOptions
-           />
-         </>;
-       | Loading => {translationsToString(UI_Loading)}->React.string
-       | NoData => {errorToString(NoDataFromServer)}->React.string
-       | Error(_err) =>
-         <p>
-           {errorToString(CouldNotGetAvailableDestinations)->React.string}
-         </p>
-       }}
-      {switch (departingPosition, destination) {
-       | (Some(start), Some(stop)) => <InitDrone start stop />
-       | _ => React.null
-       }}
+  let {departingPosition, destination, droneId} = state;
+  I18n.Translations.(
+    <div className="w-full min-h-screen flex">
+      <SideMenu>
+        {switch (availablePositionsResponse) {
+         | Data(data) =>
+           let selectOptions =
+             data##allDestinations
+             ->Belt.Array.map(Shared.GeoPosition.toRecord)
+             ->Belt.List.fromArray;
+           <>
+             <Input.GeoSelect
+               label=BookTrip_From_Label
+               name="select-from"
+               onChange=handleDepartingPositionSelect
+               selectOptions
+             />
+             <Input.GeoSelect
+               label=BookTrip_To_Label
+               name="select-to"
+               onChange=handleDestinationSelect
+               selectOptions
+             />
+           </>;
+         | Loading => <Loader.Inline isLoading=true />
+         | NoData
+         | Error(_) =>
+           <Typography.Error>
+             {translationsToString(BookTrip_From_Label)}
+           </Typography.Error>
+         }}
+        {switch (departingPosition, destination, droneId) {
+         | (Some(start), Some(stop), None) =>
+           <InitDrone start stop handleDroneInitResponse />
+         | (Some(_), Some(_), Some(_)) => React.null
+         | _ =>
+           <Button.Secondary disabled=true className="mt-5">
+             {translationsToString(BookTrip_PrepareTrip_Button)->React.string}
+           </Button.Secondary>
+         }}
+        {switch (droneId) {
+         | Some(id) =>
+           <>
+             <Typography.P className="mt-5">
+               {translationsToString(BookTrip_Booking_Finished)}
+             </Typography.P>
+             <Button.Primary
+               className="mt-5"
+               onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
+               {translationsToString(BookTrip_GoToOverview_Button)
+                ->React.string}
+             </Button.Primary>
+           </>
+         | _ => React.null
+         }}
+      </SideMenu>
     </div>
-  </div>;
+  );
 };

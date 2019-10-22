@@ -32,7 +32,7 @@ let make =
           ~longitude=lon,
           ~latitude=lat,
           ~zoom,
-          ~transitionDuration=1000,
+          ~transitionDuration=2000,
           ~transitionInterpolator=Interpolator.FlyTo.make(),
           (),
         ),
@@ -51,7 +51,7 @@ let make =
   };
 
   let (routes, setSkipRouteQuery) =
-    UseGetRoute.use(~departingPosition, ~destination=currentDestination);
+    GetRoute.use(~departingPosition, ~destination=currentDestination);
 
   React.useEffect1(
     () => {

@@ -20,7 +20,7 @@ module Drone = {
     let className =
       Css.(
         merge([
-          "rounded-full bg-blue-400 w-5 h-5 border-white",
+          "rounded-full bg-blue-400 w-5 h-5 border-white z-20",
           style([
             animationName(pulse),
             animationDuration(2000),
@@ -50,7 +50,7 @@ module Position = {
   [@react.component]
   let make = (~longitude, ~latitude) => {
     <ReactMapGl.Marker longitude latitude>
-      <Icon name=`Travel className="text-green-600 w-6 h-6 mb-6" />
+      <Icon name=`Marker className="text-green-600 w-6 h-6 mb-6" />
     </ReactMapGl.Marker>;
   };
 };

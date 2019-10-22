@@ -20,7 +20,7 @@ let make = () => {
       | ["boka-resa"] => <Book />
       | ["resor"] => <Trips />
       | ["resa", id] => <Trip id />
-      | _ => <p> {errorToString(FourOFour)->React.string} </p>
+      | _ => <Typography.Error> {errorToString(FourOFour)} </Typography.Error>
       }
     : <Login onLogin=handleLogin />;
 };

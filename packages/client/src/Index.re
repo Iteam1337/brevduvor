@@ -9,9 +9,7 @@ let setContextHeaders = () => {
       Shared.AuthStorage.getLoginToken(),
       "UNAUTHORISED",
     );
-
   let headers = {authorization: "Bearer " ++ token};
-
   {"headers": apolloHeadersToJs(headers)};
 };
 
@@ -37,8 +35,8 @@ module Setup = {
                 &&
                 operationDefition##operation == "subscription";
               },
-              wsLink,
               httpLink,
+              wsLink,
             ),
           |]),
         ~cache=inMemoryCache,

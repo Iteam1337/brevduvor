@@ -2,7 +2,7 @@ module Primary = {
   [@react.component]
   let make = (~children, ~type_="button", ~className=?, ~onClick=?) => {
     let base = "w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
-        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500";
+        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500 mt-5";
 
     let className = Cn.make([base, className->Cn.unpack]);
 
@@ -15,17 +15,22 @@ module Primary = {
 module Secondary = {
   [@react.component]
   let make =
-      (~children, ~type_="button", ~onClick, ~disabled=false, ~className=?) => {
+      (~children, ~type_="button", ~onClick=?, ~disabled=false, ~className=?) => {
+    let base = "w-full text-xs text-white font-semibold
+        py-3 px-4 rounded tracking-wide mt-5";
+
     let className =
       Cn.make([
-        "w-full border font-semibold py-3 px-4 rounded tracking-wide",
+        base,
         className->Cn.unpack,
         switch (disabled) {
-        | false => "border-blue-400 hover:border-blue-600 text-blue-400 hover:text-blue-600 bg-white"
-        | true => "cursor-not-allowed border-gray-600 hover:border-gray-600 text-gray-600 opacity-50"
+        | false => "border-blue-400 bg-blue-400 hover:bg-blue-500 hover:border-blue-600 text-white hover:text-blue-600"
+        | true => "bg-gray-400 text-white focus:outline-none"
         },
       ]);
 
-    <button className onClick type_> children </button>;
+    <button className onClick={Utils.invokeIfSet(~callback=onClick)} type_>
+      children
+    </button>;
   };
 };
