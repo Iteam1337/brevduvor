@@ -73,7 +73,7 @@ export const login = async (
     id: user.id,
   }
 
-  const token = sign(tokenPayload, config.JWT_SECRET.publicKey)
+  const token = sign(tokenPayload, config.JWT_SECRET)
 
   return {
     token,
@@ -116,7 +116,7 @@ export const register = async (
         id: user.id,
       }
 
-      const token = sign(tokenPayload as object, config.JWT_SECRET.publicKey)
+      const token = sign(tokenPayload as object, config.JWT_SECRET)
 
       return {
         id: String(user.id),
