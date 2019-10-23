@@ -9,7 +9,7 @@ import { errors } from 'pg-promise'
 import { GraphQLError } from 'graphql'
 import { verifyPassword } from '../helpers/password'
 
-enum Languages { // TODO Remove when typescript is great again
+export enum Languages { // TODO Remove when typescript is great again
   English = 'ENGLISH',
   Swedish = 'SWEDISH',
 }

@@ -106,6 +106,7 @@ export type Mutation = {
   startDrone: StartDroneResponse
   login: AuthPayload
   register: AuthPayload
+  updateUser: Scalars['Boolean']
   logout: LogoutResponse
 }
 
@@ -125,6 +126,10 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: RegisterInput
+}
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUser
 }
 
 export type Query = {
@@ -174,6 +179,12 @@ export type Trip = {
   __typename?: 'Trip'
   geoJson: Geometry
   distance: Scalars['Float']
+}
+
+export type UpdateUser = {
+  id: Scalars['ID']
+  email: Scalars['RuleWrapper']
+  language: Maybe<Languages>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -296,10 +307,11 @@ export type ResolversTypes = {
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
+  UpdateUser: UpdateUser
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>
   Subscription: ResolverTypeWrapper<{}>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   CacheControlScope: CacheControlScope
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
   Upload: ResolverTypeWrapper<Scalars['Upload']>
@@ -326,10 +338,11 @@ export type ResolversParentTypes = {
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: Scalars['RuleWrapper']
+  UpdateUser: UpdateUser
+  Boolean: Scalars['Boolean']
   LogoutResponse: LogoutResponse
   Subscription: {}
   DroneStatusResponse: DroneStatusResponse
-  Boolean: Scalars['Boolean']
   CacheControlScope: CacheControlScope
   JSONObject: Scalars['JSONObject']
   Upload: Scalars['Upload']
@@ -488,6 +501,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationRegisterArgs, 'input'>
+  >
+  updateUser: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'input'>
   >
   logout: Resolver<ResolversTypes['LogoutResponse'], ParentType, ContextType>
 }

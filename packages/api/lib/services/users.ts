@@ -1,6 +1,7 @@
 import { db, pgp } from '../adapters/postgres'
 import dedent from 'dedent'
 import { createHash } from '../helpers/password'
+import { Languages } from './auth'
 
 interface RegisterUser {
   email: string
@@ -55,4 +56,27 @@ export async function createUser(user: RegisterUser) {
     .catch(e => {
       return e
     })
+}
+
+export async function updateLanguage(
+  id: String,
+  language: Languages
+): Promise<any> {
+  const toCodeFromLanguageEnum = (language: Languages): string | null => {
+    switch (language) {
+      case Languages.Swedish:
+        return 'sv'
+      case Languages.English:
+        return 'en'
+      default:
+        return null
+    }
+  }
+
+  const langCode = toCodeFromLanguageEnum(language)
+
+  return db.query(dedent`UPDATE users SET language = $1 WHERE id = $2`, [
+    langCode,
+    id,
+  ])
 }
