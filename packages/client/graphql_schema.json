@@ -418,14 +418,14 @@
               "description": "",
               "args": [
                 {
-                  "name": "username",
+                  "name": "email",
                   "description": "",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
                       "kind": "SCALAR",
-                      "name": "RuleWrapper",
+                      "name": "String",
                       "ofType": null
                     }
                   },
@@ -740,6 +740,18 @@
               "deprecationReason": null
             },
             {
+              "name": "email",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "username",
               "description": "",
               "args": [],
@@ -774,7 +786,7 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "username",
+              "name": "email",
               "description": "",
               "type": {
                 "kind": "NON_NULL",
@@ -784,6 +796,16 @@
                   "name": "RuleWrapper",
                   "ofType": null
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "username",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": { "kind": "SCALAR", "name": "String", "ofType": null }
               },
               "defaultValue": null
             },
