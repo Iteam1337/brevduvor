@@ -27,8 +27,8 @@ let reducer = (_state, action) =>
 /* initial context */
 let initialContext: t = (
   {
-    errorToString: I18n.Error._toString(Swedish),
-    translationsToString: I18n.Translations._toString(Swedish),
+    errorToString: I18n.Error._toString(`SWEDISH),
+    translationsToString: I18n.Translations._toString(`SWEDISH),
   },
   _ => ignore(),
 );

@@ -6,6 +6,7 @@ module LoginMutationConfig = [%graphql
       id
       token
       username
+      language
     }
   }
 

@@ -61,12 +61,14 @@ module AuthPayload = {
     id: string,
     username: string,
     token: string,
+    language: option(I18n.Locale.t),
   };
 
   let make = payload => {
     id: payload##login##id,
     username: payload##login##username,
     token: payload##login##token,
+    language: payload##login##language,
   };
 };
 

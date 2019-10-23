@@ -2,8 +2,8 @@
 let make = () => {
   open Shared;
 
-  let ({errorToString, _}, _changeLocale): LocaleContext.t =
-    LocaleContext.use();
+  let ({errorToString}, changeLocale): LocaleContext.t = LocaleContext.use();
+
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
@@ -11,7 +11,15 @@ let make = () => {
 
   let handleLogin = (payload: Shared.AuthPayload.t) => {
     setLoggedIn(_prev => true);
+
     AuthStorage.setLoginToken(payload.token);
+    changeLocale(
+      LocaleContext.SetLocale(
+        payload.language->Belt.Option.getWithDefault(`SWEDISH),
+      ),
+    );
+
+    Js.log3(`SWEDISH, `ENGLISH, payload);
   };
 
   loggedIn
