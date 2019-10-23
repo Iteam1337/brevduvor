@@ -58,11 +58,6 @@ const typeDefs = gql`
     confirmPassword: String!
   }
 
-  input UpdateUser {
-    email: String! @isEmail
-    language: Languages
-  }
-
   type Mutation {
     initDrone(
       start: DestinationInput!
@@ -75,7 +70,8 @@ const typeDefs = gql`
 
     register(input: RegisterInput!): AuthPayload!
 
-    updateUser(input: UpdateUser!): Boolean! @isAuthenticated
+    updateUserLanguage(email: String! @isEmail, language: Languages!): Boolean!
+      @isAuthenticated
 
     logout: LogoutResponse!
   }

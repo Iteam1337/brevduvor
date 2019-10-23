@@ -106,7 +106,7 @@ export type Mutation = {
   startDrone: StartDroneResponse
   login: AuthPayload
   register: AuthPayload
-  updateUser: Scalars['Boolean']
+  updateUserLanguage: Scalars['Boolean']
   logout: LogoutResponse
 }
 
@@ -128,8 +128,9 @@ export type MutationRegisterArgs = {
   input: RegisterInput
 }
 
-export type MutationUpdateUserArgs = {
-  input: UpdateUser
+export type MutationUpdateUserLanguageArgs = {
+  email: Scalars['RuleWrapper']
+  language: Languages
 }
 
 export type Query = {
@@ -179,12 +180,6 @@ export type Trip = {
   __typename?: 'Trip'
   geoJson: Geometry
   distance: Scalars['Float']
-}
-
-export type UpdateUser = {
-  id: Scalars['ID']
-  email: Scalars['RuleWrapper']
-  language: Maybe<Languages>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -307,7 +302,6 @@ export type ResolversTypes = {
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
-  UpdateUser: UpdateUser
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>
   Subscription: ResolverTypeWrapper<{}>
@@ -338,7 +332,6 @@ export type ResolversParentTypes = {
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: Scalars['RuleWrapper']
-  UpdateUser: UpdateUser
   Boolean: Scalars['Boolean']
   LogoutResponse: LogoutResponse
   Subscription: {}
@@ -502,11 +495,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRegisterArgs, 'input'>
   >
-  updateUser: Resolver<
+  updateUserLanguage: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateUserArgs, 'input'>
+    RequireFields<MutationUpdateUserLanguageArgs, 'email' | 'language'>
   >
   logout: Resolver<ResolversTypes['LogoutResponse'], ParentType, ContextType>
 }

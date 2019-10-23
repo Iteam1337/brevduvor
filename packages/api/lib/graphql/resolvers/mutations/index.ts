@@ -1,4 +1,4 @@
 export * from './initDrone'
 export * from './startDrone'
 export * from './auth'
-export * from './updateUser'
+export * from './user'
