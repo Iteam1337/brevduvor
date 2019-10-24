@@ -7,6 +7,9 @@
 # Build folders
 /lib/bs
 /dist
+/cypress/videos/
+/cypress/screenshots/
+
 ## CommonJS setup
 /lib/js/src
 /lib/js/__tests__/*.bs.js

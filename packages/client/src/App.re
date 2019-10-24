@@ -23,8 +23,7 @@ let make = () => {
 
   loggedIn
     ? switch (url.path) {
-      | [] => <Start />
-      | ["boka-resa"] => <Book />
+      | [] => <Book />
       | ["resor"] => <Trips />
       | ["resa", id] => <Trip id />
       | _ => <p> {errorToString(FourOFour)->React.string} </p>

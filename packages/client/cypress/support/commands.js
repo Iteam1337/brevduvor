@@ -1,9 +1,10 @@
 Cypress.Commands.add('login', () => {
   cy.visit('/')
-    .get('#username')
-    .type('Kalle')
+    .get('#email')
+    .type('chrille@yo')
     .get('#password')
-    .type('hunter2')
+    .type('1234hahaha')
     .get(`[type="submit"]`)
     .click()
+    .wait(500)
 })

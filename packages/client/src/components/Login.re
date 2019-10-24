@@ -76,7 +76,7 @@ let make = (~onLogin) => {
     let email = formData##email##value;
     let password = formData##password##value;
 
-    ignore(login(email, password));
+    login(email, password)->ignore;
   };
 
   let emailInputRef = UseAutoFocus.use();
