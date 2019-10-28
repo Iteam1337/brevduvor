@@ -9,6 +9,9 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    env:
+      DRONE_DOCKER_IMAGE_ID: abc
+      API_DOCKER_IMAGE_ID: abc
     steps:
       - uses: actions/checkout@v1
       - name: Build the Drone-simulator image
