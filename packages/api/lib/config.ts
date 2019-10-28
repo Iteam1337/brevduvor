@@ -2,19 +2,21 @@ const config = require('@iteam/config')({
   file: `${__dirname}/../config.json`,
   defaults: {
     PORT: 4000,
-    DRONE_URL: 'http://localhost:3030',
-    OSRM_URL: 'http://localhost:5000',
-    ELASTIC_URL: 'http://localhost:9200',
-    WEBHOOK_URL: 'http://localhost:4000/status',
+    DRONE_URL: 'http://127.0.0.1:3030',
+    OSRM_URL: 'http://127.0.0.1:5000',
+    ELASTIC_URL: 'http://127.0.0.1:9200',
+    WEBHOOK_URL: 'http://127.0.0.1:4000/status',
     POSTGRES: {
       USER: 'iteamadmin',
       PASSWORD: 'adminadmin1337',
       DATABASE: 'brevduvor',
       PORT: 5432,
-      HOST: 'localhost',
+      HOST: process.env.PSQL_HOST || 'localhost',
       MAX: 20,
       timeout: 30000,
     },
+    JWT_PRIVATE_KEY:
+      'wgQuABVcobsQhcFv1XjflYPRAwZRU-cvzVjjk-dv7rz2yOXIstOxgi30rKLTZzVyfHYbQNw-UqYfI1IZYiZHv1fuN2muTqwUH5LKzfp_DwxuVyGbdZa9lBwmJbDeSwciStsyCylonFYyUCCr4k-Jg2hr68fo3dl-SRYQlDq_gRSY2Irtoyve_XKO_OvSxA3HRztdJJb9AyaTAi9_3O617j4oTcFIMaW80n8QATWCzXlm2QWU4sK5odw-MDK83WJuJ20p6iYz1dHWL2Avw6CB8Y0fq0kEw4wUZJXt1IYi42ZXZDKxl-goHzE8gBhCdeRsnLtVilHGGIZKM3QEkRXgYQ',
   },
 })
 
@@ -25,5 +27,5 @@ export default {
   ELASTIC_URL: config.get('ELASTIC_URL'),
   WEBHOOK_URL: config.get('WEBHOOK_URL'),
   POSTGRES: config.get('POSTGRES'),
-  JWT_SECRET: config.get('jwtPrivateKey'),
+  JWT_SECRET: config.get('JWT_PRIVATE_KEY'),
 }

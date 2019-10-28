@@ -25,6 +25,7 @@ bower_components
 config.json
 .cache
 postgres-data
+data
 
 # Testing
 cypress/videos
