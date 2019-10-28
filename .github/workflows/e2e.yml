@@ -15,12 +15,14 @@ jobs:
         run: |
           cd packages/drone-simulator
           docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
-          export DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
+        env:
+          DRONE_DOCKER_IMAGE_ID: $(cat TEMP_DRONE_IMAGE_ID.txt)
       - name: Build the API image
         run: |
           cd packages/api
           docker build . --iidfile TEMP_API_IMAGE_ID.txt
-          export API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
+        env:
+          API_DOCKER_IMAGE_ID: $(cat TEMP_API_IMAGE_ID.txt)
       - name: Start all services
         run: |
           cd packages/api
