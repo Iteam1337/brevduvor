@@ -59,13 +59,13 @@ module Drone = {
 module AuthPayload = {
   type t = {
     id: string,
-    username: string,
+    email: string,
     token: string,
   };
 
   let make = payload => {
     id: payload##login##id,
-    username: payload##login##username,
+    email: payload##login##email,
     token: payload##login##token,
   };
 };

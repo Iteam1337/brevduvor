@@ -13,12 +13,30 @@ let setContextHeaders = () => {
   {"headers": apolloHeadersToJs(headers)};
 };
 
+[@decco]
+type subscriptionConnectionParams = {token: string};
+
+let encodedConnectionParams = () =>
+  subscriptionConnectionParams_encode({
+    token:
+      Belt.Option.getWithDefault(
+        Shared.AuthStorage.getLoginToken(),
+        "UNAUTHORISED",
+      ),
+  });
+
 module Setup = {
   [@react.component]
   let make = () => {
     let httpLink =
       ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ());
-    let wsLink = ApolloLinks.webSocketLink(~uri=Config.graphqlWsUri, ());
+    let wsLink =
+      ApolloLinks.webSocketLink(
+        ~uri=Config.graphqlWsUri,
+        ~connectionParams=encodedConnectionParams(),
+        ~reconnect=true,
+        (),
+      );
     let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
     let contextLink = ApolloLinks.createContextLink(() => setContextHeaders());
 
@@ -29,14 +47,14 @@ module Setup = {
             contextLink, // set auth headers on each request
             ApolloLinks.split(
               operation => {
-                let operationDefition =
+                let operationDefinition =
                   ApolloUtilities.getMainDefinition(operation##query);
-                operationDefition##kind == "OperationDefinition"
+                operationDefinition##kind == "OperationDefinition"
                 &&
-                operationDefition##operation == "subscription";
+                operationDefinition##operation == "subscription";
               },
-              httpLink,
               wsLink,
+              httpLink,
             ),
           |]),
         ~cache=inMemoryCache,

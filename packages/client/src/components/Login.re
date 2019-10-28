@@ -5,7 +5,7 @@ module LoginMutationConfig = [%graphql
     login(email: $email, password: $password) {
       id
       token
-      username
+      email
     }
   }
 
@@ -98,9 +98,10 @@ let make = (~onLogin) => {
         <div className="mb-4">
           <Input.Text
             inputRef=emailInputRef
-            id="username"
-            placeholder=I18n.Translations.Auth_Username_Placeholder
-            label=I18n.Translations.Auth_Username_Label
+            id="email"
+            type_="email"
+            placeholder=I18n.Translations.Auth_Email_Placeholder
+            label=I18n.Translations.Auth_Email_Label
           />
         </div>
         <div className="mb-6">
