@@ -88,7 +88,10 @@ services:
   api:
     image: ${API_DOCKER_IMAGE_ID}
     ports:
-      - '3030:3030'
+      - '4000:4000'
+    depends_on:
+      - postgres
+      - osrm-backend
 
 volumes:
   postgres11:

@@ -9,4 +9,4 @@ RUN npm ci
 
 COPY ./ /app
 
-CMD npm run start
+CMD npm run migrate up npm run start

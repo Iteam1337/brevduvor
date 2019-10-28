@@ -24,7 +24,7 @@ jobs:
       - name: Start all services
         run: |
           cd packages/api
-          docker-compose -f docker-compose-e2e.yml up -d
+          docker-compose -f docker-compose-ci.yml up -d
       - name: Run Cypress-tests
         run: |
           cd packages/client
@@ -32,5 +32,6 @@ jobs:
           npm run cypress:run
         env:
           CI: true
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
           GRAPHQL_API: http://localhost:4000/graphql
           GRAPHQL_WS_URI: ws://localhost:4000/graphql
