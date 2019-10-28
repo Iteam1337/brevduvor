@@ -7,35 +7,30 @@ on:
       - master
 
 jobs:
-  api:
+  e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Start the API (with services)
-        run: |
-          cd packages/api
-          npm install
-          docker-compose up -d
-          npm run start && npx wait-on http://localhost:4000 && npm run generate
-
-  drone_simulator:
-    needs: [api]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Start the drone-simulator
+      - name: Build the Drone-simulator image
         run: |
           cd packages/drone-simulator
-          npm install
-          npm run start
-
-  cypress:
-    needs: [api, drone_simulator]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+          docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
+          export DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
+      - name: Build the API image
+        run: |
+          cd packages/api
+          docker build . --iidfile TEMP_API_IMAGE_ID.txt
+          export API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
+      - name: Start all services
+        run: |
+          cd packages/api
+          docker-compose -f docker-compose-e2e.yml up -d
       - name: Run Cypress-tests
         run: |
           cd packages/client
           npm install
           npm run cypress:run
+        env:
+          CI: true
+          GRAPHQL_API: http://localhost:4000/graphql
+          GRAPHQL_WS_URI: ws://localhost:4000/graphql
