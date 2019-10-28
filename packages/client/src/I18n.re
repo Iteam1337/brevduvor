@@ -33,8 +33,24 @@ module Error = {
     | CouldNotGetAvailableDestinations
     | NoDroneWithId
     | NoDroneWithIdError
+    | FourOFour
+    | MissingUser
+    | PassIncorrect
+    | PasswordFieldsNotMatching
     | NoDroneData
-    | FourOFour;
+    | Other(string);
+
+  let authErrorFromSignature =
+    /*** Matches error messages from API to translations,
+     * included with "GraphQL error:" because no way to strip
+     * from apollo error messages without external lib.
+     */
+    fun
+    | "GraphQL error: AuthMissingUser" => MissingUser
+    | "GraphQL error: AuthPassIncorrect" => PassIncorrect
+    | "GraphQL error: AuthPasswordFieldsNotMatching" =>
+      PasswordFieldsNotMatching
+    | other => other->Other;
 
   let _toString = (locale: Locale.t, error) => {
     switch (locale, error) {
@@ -54,9 +70,20 @@ module Error = {
     | (`ENGLISH, NoDroneWithIdError) => "Something seems to have gone wrong. Possibly, there's no drone with this id."
     | (`SWEDISH, NoDroneWithIdError) => {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
 
+    | (`ENGLISH, MissingUser) => "There is no user associated with that email."
+    | (`SWEDISH, MissingUser) => {js|Det finns ingen användare associerat med denna email.|js}
+
+    | (`ENGLISH, PasswordFieldsNotMatching) => "Password fields do not match."
+    | (`SWEDISH, PasswordFieldsNotMatching) => {js|Lösenorden matchar inte.|js}
+
+    | (`ENGLISH, PassIncorrect) => "Incorrect password."
+    | (`SWEDISH, PassIncorrect) => {js|Fel lösenord.|js}
+
     | (`ENGLISH, NoDroneData) => "Something seems to have gone wrong. No drone-data was received."
     | (`SWEDISH, NoDroneData) => {js|Det verkar som att någonting gick fel. Ingen drönardata
        kunde hämtas|js}
+
+    | (_, Other(msg)) => msg
     };
   };
 
@@ -99,11 +126,14 @@ module Translations = {
     | Auth_Login_Submit
     | BookTrip_Button
     | BookTrip_Choose_DropdownLabel
-    | BookTrip_From_DropdownLabel
-    | BookTrip_To_DropdownLabel
+    | BookTrip_From_Label
+    | BookTrip_To_Label
     | BookTrip_PrepareTrip_Button
     | BookTrip_TripPrepared_Message
     | BookTrip_GoToOverview_Button
+    | BookTrip_Booking_Finished
+    | GeoLocation_Latitude
+    | GeoLocation_Longitude
     | DroneStatus_Loading_Position
     | Language_Choose_DropdownLabel;
 
@@ -111,6 +141,9 @@ module Translations = {
     switch (locale, translations) {
     | (`ENGLISH, UI_Loading) => "Loading"
     | (`SWEDISH, UI_Loading) => {js|Laddar|js}
+
+    | (`ENGLISH, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details."
+    | (`SWEDISH, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
 
     | (`ENGLISH, Auth_Email_Label) => "Email"
     | (`SWEDISH, Auth_Email_Label) => {js|E-post|js}
@@ -127,7 +160,7 @@ module Translations = {
     | (`ENGLISH, Auth_Password_Label) => "Password"
     | (`SWEDISH, Auth_Password_Label) => {js|Lösenord|js}
 
-    | (_, Auth_Password_Placeholder) => "****"
+    | (_, Auth_Password_Placeholder) => "********"
 
     | (`ENGLISH, Auth_Login_Submit) => "Login"
     | (`SWEDISH, Auth_Login_Submit) => {js|Logga in|js}
@@ -135,14 +168,20 @@ module Translations = {
     | (`ENGLISH, BookTrip_Button) => "Book trip"
     | (`SWEDISH, BookTrip_Button) => {js|Boka resa|js}
 
-    | (`ENGLISH, BookTrip_Choose_DropdownLabel) => "Choose option"
+    | (`ENGLISH, BookTrip_Choose_DropdownLabel) => "Select option"
     | (`SWEDISH, BookTrip_Choose_DropdownLabel) => {js|Välj alternativ|js}
 
-    | (`ENGLISH, BookTrip_From_DropdownLabel) => "From"
-    | (`SWEDISH, BookTrip_From_DropdownLabel) => {js|Från|js}
+    | (`ENGLISH, BookTrip_From_Label) => "From"
+    | (`SWEDISH, BookTrip_From_Label) => {js|Från|js}
 
-    | (`ENGLISH, BookTrip_To_DropdownLabel) => "To"
-    | (`SWEDISH, BookTrip_To_DropdownLabel) => {js|Till|js}
+    | (`ENGLISH, BookTrip_To_Label) => "To"
+    | (`SWEDISH, BookTrip_To_Label) => {js|Till|js}
+
+    | (`ENGLISH, GeoLocation_Latitude) => "Latitude"
+    | (`SWEDISH, GeoLocation_Latitude) => "Latitud"
+
+    | (`ENGLISH, GeoLocation_Longitude) => "Longitude"
+    | (`SWEDISH, GeoLocation_Longitude) => "Longitud"
 
     | (`ENGLISH, BookTrip_PrepareTrip_Button) => "Prepare trip"
     | (`SWEDISH, BookTrip_PrepareTrip_Button) => {js|Förbered bokning|js}

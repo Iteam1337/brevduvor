@@ -88,7 +88,6 @@ describe.only('authentication', () => {
         return payload
       })
 
-
     expect(authPayload).toHaveProperty('id')
     expect(authPayload).toHaveProperty('token')
     expect(authPayload).toHaveProperty('email')

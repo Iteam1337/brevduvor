@@ -59,14 +59,14 @@ module Drone = {
 module AuthPayload = {
   type t = {
     id: string,
-    username: string,
+    email: string,
     token: string,
     language: option(I18n.Locale.t),
   };
 
   let make = payload => {
     id: payload##login##id,
-    username: payload##login##username,
+    email: payload##login##email,
     token: payload##login##token,
     language: payload##login##language,
   };

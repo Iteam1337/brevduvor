@@ -9,9 +9,7 @@ let setContextHeaders = () => {
       Shared.AuthStorage.getLoginToken(),
       "UNAUTHORISED",
     );
-
   let headers = {authorization: "Bearer " ++ token};
-
   {"headers": apolloHeadersToJs(headers)};
 };
 
@@ -20,7 +18,12 @@ module Setup = {
   let make = () => {
     let httpLink =
       ApolloLinks.createHttpLink(~uri=Config.graphqlEndpoint, ());
-    let wsLink = ApolloLinks.webSocketLink(~uri=Config.graphqlWsUri, ());
+    let wsLink =
+      ApolloLinks.webSocketLink(
+        ~uri=Config.graphqlWsUri,
+        ~reconnect=true,
+        (),
+      );
     let inMemoryCache = ApolloInMemoryCache.createInMemoryCache();
     let contextLink = ApolloLinks.createContextLink(() => setContextHeaders());
 
@@ -31,11 +34,11 @@ module Setup = {
             contextLink, // set auth headers on each request
             ApolloLinks.split(
               operation => {
-                let operationDefition =
+                let operationDefinition =
                   ApolloUtilities.getMainDefinition(operation##query);
-                operationDefition##kind == "OperationDefinition"
+                operationDefinition##kind == "OperationDefinition"
                 &&
-                operationDefition##operation == "subscription";
+                operationDefinition##operation == "subscription";
               },
               wsLink,
               httpLink,
