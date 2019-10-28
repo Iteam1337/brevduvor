@@ -13,18 +13,6 @@ let setContextHeaders = () => {
   {"headers": apolloHeadersToJs(headers)};
 };
 
-[@decco]
-type subscriptionConnectionParams = {token: string};
-
-let encodedConnectionParams = () =>
-  subscriptionConnectionParams_encode({
-    token:
-      Belt.Option.getWithDefault(
-        Shared.AuthStorage.getLoginToken(),
-        "UNAUTHORISED",
-      ),
-  });
-
 module Setup = {
   [@react.component]
   let make = () => {
@@ -33,7 +21,6 @@ module Setup = {
     let wsLink =
       ApolloLinks.webSocketLink(
         ~uri=Config.graphqlWsUri,
-        ~connectionParams=encodedConnectionParams(),
         ~reconnect=true,
         (),
       );
