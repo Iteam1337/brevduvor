@@ -12,19 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Build the Drone-simulator image
+        id: drone
         run: |
           cd packages/drone-simulator
           docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
           DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt) 
-          echo $DRONE_DOCKER_IMAGE_ID
-          echo '::set-env name=DRONE_DOCKER_IMAGE_ID::add-mask::$DRONE_DOCKER_IMAGE_ID'
+          echo ::set-env name=DRONE_DOCKER_IMAGE_ID::$(echo $DRONE_DOCKER_IMAGE_ID)
       - name: Build the API image
+        id: api
         run: |
           cd packages/api
           docker build . --iidfile TEMP_API_IMAGE_ID.txt
           API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt) 
-          echo $API_DOCKER_IMAGE_ID
-          echo '::set-env name=API_DOCKER_IMAGE_ID::add-mask::$API_DOCKER_IMAGE_ID'
+          echo ::set-env name=API_DOCKER_IMAGE_ID::$(echo $API_DOCKER_IMAGE_ID)
       - name: Start all services
         run: |
           echo $DRONE_DOCKER_IMAGE_ID
