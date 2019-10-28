@@ -47,9 +47,7 @@ describe("Book", () => {
     Js.Promise.(
       TestUtils.waitForElement(() =>
         element
-        |> getByText(
-             ~matcher=`Str(_toString(`SWEDISH, BookTrip_To_DropdownLabel)),
-           )
+        |> getByText(~matcher=`Str(_toString(`SWEDISH, BookTrip_To_Label)))
       )
       |> then_(_ =>
            element
