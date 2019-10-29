@@ -34,7 +34,7 @@ jobs:
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          npm install
+          npm ci 
           npm run cypress:run
         env:
           CI: true
