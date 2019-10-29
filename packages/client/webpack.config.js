@@ -1,7 +1,10 @@
 const path = require('path')
+const ReactDOM = require('react-dom')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const outputDir = path.join(__dirname, 'dist/')
 const Dotenv = require('dotenv-webpack')
+
+console.log('==\n', ReactDOM, '==\n')
 
 const isProd = process.env.NODE_ENV === 'production'
 

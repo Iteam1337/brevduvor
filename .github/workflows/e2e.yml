@@ -35,7 +35,7 @@ jobs:
         run: |
           cd packages/client
           npm ci 
-          npm i -D html-webpack-plugin
+          ls -lah
           npm run cypress:run
         env:
           CI: true
