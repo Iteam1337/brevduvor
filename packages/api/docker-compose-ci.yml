@@ -93,5 +93,17 @@ services:
       - postgres
       - osrm-backend
 
+  client:
+    image: ${CLIENT_DOCKER_IMAGE_ID}
+    ports:
+      - '3001:3000'
+    depends_on:
+      - drone-simulator
+      - api
+    environment:
+      - MAPBOX_TOKEN=${MAPBOX_TOKEN}
+      - GRAPHQL_API=${GRAPHQL_API}
+      - GRAPHQL_WS_URI=${GRAPHQL_WS_URI}
+
 volumes:
   postgres11:
