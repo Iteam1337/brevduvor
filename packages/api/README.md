@@ -2,6 +2,14 @@
 
 ## Getting started
 
+Create a `config.json`-file in the root of the API.
+
+```json
+{
+  "JWT_PRIVATE_KEY": "CAN_BE_ANYTHING_DURING_DEVELOPMENT"
+}
+```
+
 ```sh
 npm install
 docker-compose up -d

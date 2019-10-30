@@ -11,6 +11,7 @@
 /lib/js/src
 /lib/js/__tests__/*.bs.js
 /lib/js/__tests__
+!/lib/js/__tests__/__snapshots__/*
 ## ES6 setup
 /lib/es6/src
 /lib/es6/__tests__/*.bs.js

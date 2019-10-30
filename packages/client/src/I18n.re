@@ -3,6 +3,13 @@ module Locale = {
     | English
     | Swedish;
 
+  let allLanguages = [English, Swedish];
+
+  let toString =
+    fun
+    | English => "English"
+    | Swedish => "Svenska";
+
   /**
     * language string comes in as e.g. "sv-SE"
     */
@@ -28,16 +35,35 @@ module Error = {
     | CouldNotGetAvailableDestinations
     | NoDroneWithId
     | NoDroneWithIdError
-    | FourOFour;
+    | FourOFour
+    | MissingUser
+    | PassIncorrect
+    | PasswordFieldsNotMatching
+    | NoDroneData
+    | Other(string);
+
+  let authErrorFromSignature =
+    /*** Matches error messages from API to translations,
+     * included with "GraphQL error:" because no way to strip
+     * from apollo error messages without external lib.
+     */
+    fun
+    | "GraphQL error: AuthMissingUser" => MissingUser
+    | "GraphQL error: AuthPassIncorrect" => PassIncorrect
+    | "GraphQL error: AuthPasswordFieldsNotMatching" =>
+      PasswordFieldsNotMatching
+    | other => other->Other;
 
   let _toString = (locale: Locale.t, error) => {
     switch (locale, error) {
     | (English, NoDataFromServer) => "Looks like we did not receive any data from the server."
     | (Swedish, NoDataFromServer) => {js|Det verkar som att vi inte fick tillbaka någon data från servern.|js}
 
+    | (English, NoDroneWithIdError) => "Something seems to have gone wrong. Possibly, there's no drone with this id."
+    | (Swedish, NoDroneWithIdError) => {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
+
     | (English, FourOFour) => "404. Sorry, the page was not found."
-    | (Swedish, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till
-    startsidan.|js}
+    | (Swedish, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till startsidan.|js}
 
     | (English, CouldNotGetAvailableDestinations) => "Could not fetch available destinations"
     | (Swedish, CouldNotGetAvailableDestinations) => {js|Kunde inte hämta tillgängliga destinationer|js}
@@ -45,8 +71,19 @@ module Error = {
     | (English, NoDroneWithId) => "Looks like there's no drone with that id."
     | (Swedish, NoDroneWithId) => {js|Det verkar inte finnas någon drönare med detta id.|js}
 
-    | (English, NoDroneWithIdError) => "Something seems to have gone wrong. Possibly, there's no drone with this id."
-    | (Swedish, NoDroneWithIdError) => {js|Någonting verkar ha gått fel. Kanske finns det ingen drönare med detta id.|js}
+    | (English, MissingUser) => "There is no user associated with that email."
+    | (Swedish, MissingUser) => {js|Det finns ingen användare associerat med denna email.|js}
+
+    | (English, PasswordFieldsNotMatching) => "Password fields do not match."
+    | (Swedish, PasswordFieldsNotMatching) => {js|Lösenorden matchar inte.|js}
+
+    | (English, PassIncorrect) => "Incorrect password."
+    | (Swedish, PassIncorrect) => {js|Fel lösenord.|js}
+
+    | (English, NoDroneData) => "Something seems to have gone wrong. No drone-data was received."
+    | (Swedish, NoDroneData) => {js|Det verkar som att någonting gick fel. Ingen drönardata
+       kunde hämtas|js}
+    | (_, Other(msg)) => msg
     };
   };
 
@@ -89,14 +126,21 @@ module Translations = {
     | Auth_Login_Submit
     | BookTrip_Button
     | BookTrip_Choose_DropdownLabel
-    | BookTrip_From_DropdownLabel
-    | BookTrip_To_DropdownLabel
+    | BookTrip_From_Label
+    | BookTrip_To_Label
     | BookTrip_PrepareTrip_Button
     | BookTrip_TripPrepared_Message
-    | BookTrip_GoToOverview_Button;
+    | BookTrip_GoToOverview_Button
+    | BookTrip_Booking_Finished
+    | GeoLocation_Latitude
+    | GeoLocation_Longitude
+    | DroneStatus_Loading_Position
+    | Language_Choose_DropdownLabel;
 
   let _toString = (locale: Locale.t, translations) => {
     switch (locale, translations) {
+    | (English, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details."
+    | (Swedish, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
     | (English, UI_Loading) => "Loading"
     | (Swedish, UI_Loading) => {js|Laddar|js}
 
@@ -115,7 +159,7 @@ module Translations = {
     | (English, Auth_Password_Label) => "Password"
     | (Swedish, Auth_Password_Label) => {js|Lösenord|js}
 
-    | (_, Auth_Password_Placeholder) => "****"
+    | (_, Auth_Password_Placeholder) => "********"
 
     | (English, Auth_Login_Submit) => "Login"
     | (Swedish, Auth_Login_Submit) => {js|Logga in|js}
@@ -123,23 +167,34 @@ module Translations = {
     | (English, BookTrip_Button) => "Book trip"
     | (Swedish, BookTrip_Button) => {js|Boka resa|js}
 
-    | (English, BookTrip_Choose_DropdownLabel) => "Choose option"
+    | (English, BookTrip_Choose_DropdownLabel) => "Select option"
     | (Swedish, BookTrip_Choose_DropdownLabel) => {js|Välj alternativ|js}
 
-    | (English, BookTrip_From_DropdownLabel) => "From"
-    | (Swedish, BookTrip_From_DropdownLabel) => {js|Från|js}
+    | (English, BookTrip_From_Label) => "From"
+    | (Swedish, BookTrip_From_Label) => {js|Från|js}
 
-    | (English, BookTrip_To_DropdownLabel) => "To"
-    | (Swedish, BookTrip_To_DropdownLabel) => {js|Till|js}
+    | (English, BookTrip_To_Label) => "To"
+    | (Swedish, BookTrip_To_Label) => {js|Till|js}
+
+    | (English, GeoLocation_Latitude) => "Latitude"
+    | (Swedish, GeoLocation_Latitude) => "Latitud"
+    | (English, GeoLocation_Longitude) => "Longitude"
+    | (Swedish, GeoLocation_Longitude) => "Longitud"
 
     | (English, BookTrip_PrepareTrip_Button) => "Prepare trip"
     | (Swedish, BookTrip_PrepareTrip_Button) => {js|Förbered bokning|js}
 
-    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. You will get a notification when the drone is ready to be loaded"
-    | (Swedish, BookTrip_TripPrepared_Message) => {js|Du har nu förberett din bokning. Vi notifierar dig när det är dags att packa drönaren.|js}
+    | (English, BookTrip_TripPrepared_Message) => "This trip has been prepared. At this stage the drone has already been packed and is ready for take off."
+    | (Swedish, BookTrip_TripPrepared_Message) => {js|Du har nu förberett din bokning. I denna simulation har drönaren redan packats och är redo för avfärd.|js}
 
     | (English, BookTrip_GoToOverview_Button) => {js|Go to overview|js}
     | (Swedish, BookTrip_GoToOverview_Button) => {js|Gå till överblick|js}
+
+    | (English, DroneStatus_Loading_Position) => "Fetching the drones position"
+    | (Swedish, DroneStatus_Loading_Position) => {js|Laddar drönares position.|js}
+
+    | (English, Language_Choose_DropdownLabel) => "Select language"
+    | (Swedish, Language_Choose_DropdownLabel) => {js|Välj språk|js}
     };
   };
 

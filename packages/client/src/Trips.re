@@ -8,12 +8,14 @@ module AllDronesQuery = ReasonApolloHooks.Query.Make(AllDrones);
 
 [@react.component]
 let make = () => {
+  let ({errorToString, translationsToString}, _): LocaleContext.t =
+    LocaleContext.use();
   let (response, _) = AllDronesQuery.use();
   <>
     {switch (response) {
-     | Loading => "Loading"->React.string
+     | Loading => {translationsToString(UI_Loading)}->React.string
      | Error(e) => e##message->React.string
-     | NoData => "No data"->React.string
+     | NoData => {errorToString(NoDataFromServer)}->React.string
      | Data(data) =>
        switch (data##drones->Belt.Array.length) {
        | 0 => {I18n.Info.toString(NoActiveDrones)}->React.string

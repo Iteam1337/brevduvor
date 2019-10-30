@@ -1,11 +1,11 @@
 module LoginMutationConfig = [%graphql
   {|
 
-  mutation LoginMutation($username: RuleWrapper!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation LoginMutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
       id
       token
-      username
+      email
     }
   }
 
@@ -20,7 +20,7 @@ type state =
   | Idle;
 
 type loginFormActions =
-  | SetError(string)
+  | SetError(ReasonApolloHooks.Mutation.error)
   | UnsetError
   | ToggleLoading(bool);
 
@@ -32,7 +32,7 @@ let make = (~onLogin) => {
     React.useReducer(
       (_, action) =>
         switch (action) {
-        | SetError(errorMessage) => Error(errorMessage)
+        | SetError(error) => Error(error##message)
         | UnsetError => Idle
         | ToggleLoading(isLoading) => isLoading ? Loading : Idle
         },
@@ -40,6 +40,8 @@ let make = (~onLogin) => {
     );
 
   let (loginMutation, loginResponse, _f) = LoginMutation.use();
+  let ({LocaleContext.translationsToString, errorToString}, _) =
+    LocaleContext.use();
 
   React.useEffect1(
     () => {
@@ -50,7 +52,7 @@ let make = (~onLogin) => {
         onLogin(authPayload);
       | Error(error) =>
         dispatch(ToggleLoading(false));
-        dispatch(SetError(error##message));
+        dispatch(SetError(error));
       | Loading => dispatch(ToggleLoading(true))
       | NoData => dispatch(ToggleLoading(false))
       | Called => ()
@@ -61,10 +63,9 @@ let make = (~onLogin) => {
     [|loginResponse|],
   );
 
-  let login = (username, password) => {
+  let login = (email, password) => {
     loginMutation(
-      ~variables=
-        LoginMutationConfig.make(~username, ~password, ())##variables,
+      ~variables=LoginMutationConfig.make(~email, ~password, ())##variables,
       (),
     );
   };
@@ -72,50 +73,43 @@ let make = (~onLogin) => {
   let handleSubmit = event => {
     event->ReactEvent.Synthetic.preventDefault;
     let formData = ReactEvent.Form.target(event);
-    let username = formData##username##value;
+    let email = formData##email##value;
     let password = formData##password##value;
 
-    ignore(login(username, password));
+    ignore(login(email, password));
   };
 
-  let usernameInputRef = UseAutoFocus.use();
+  let emailInputRef = AutoFocus.use();
 
   <div
-    className="flex fixed bg-gray-600 w-full min-h-screen z-50 items-center justify-center">
+    className="flex fixed bg-background w-full min-h-screen z-50 items-center justify-center">
     <div className="w-full max-w-xs">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit=handleSubmit>
         {switch (state) {
-         | Error(errorMessage) => errorMessage->React.string
+         | Error(errorMessage) =>
+           <Typography.Error>
+             {errorMessage->I18n.Error.authErrorFromSignature->errorToString}
+           </Typography.Error>
          | Idle => React.null
          | Loading => React.null
          }}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            I18n.Translations.(toString(Auth_Username_Label))->React.string
-          </label>
-          <input
-            ref=usernameInputRef
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="username"
-            type_="text"
-            placeholder=I18n.Translations.(
-              toString(Auth_Username_Placeholder)
-            )
+          <Input.Text
+            inputRef=emailInputRef
+            id="email"
+            type_="email"
+            placeholder=I18n.Translations.Auth_Email_Placeholder
+            label=I18n.Translations.Auth_Email_Label
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            I18n.Translations.(toString(Auth_Password_Label))->React.string
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <Input.Text
             id="password"
-            type_="password"
-            placeholder=I18n.Translations.(
-              toString(Auth_Password_Placeholder)
-            )
+            placeholder=I18n.Translations.Auth_Password_Placeholder
+            label=I18n.Translations.Auth_Password_Label
+            type_="Password"
           />
         </div>
         {switch (state) {
@@ -127,7 +121,7 @@ let make = (~onLogin) => {
           type_="submit"
           className="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
         py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500">
-          I18n.Translations.(toString(Auth_Login_Submit))->React.string
+          {{translationsToString(Auth_Login_Submit)}->React.string}
         </Button.Primary>
       </form>
     </div>

@@ -5,20 +5,20 @@ import errorCodes from '../../../resources/errorCodes'
 
 export const login: MutationResolvers['login'] = async (
   _,
-  { username, password }
+  { email, password }
 ) => {
   try {
-    return await auth.login(username, password)
+    return await auth.login(email, password)
   } catch (error) {
     throw new AuthenticationError(error.message)
   }
 }
 
 export const register: MutationResolvers['register'] = async (_, { input }) => {
-  const { username, password, confirmPassword } = input
-  if (username) {
+  const { email, username, password, confirmPassword } = input
+  if (email) {
     try {
-      return await auth.register(username, password, confirmPassword)
+      return await auth.register(email, username, password, confirmPassword)
     } catch (error) {
       throw new AuthenticationError(error.message)
     }
