@@ -1,14 +1,20 @@
- jobs:
+jobs:
   include:
     - stage: test
       language: node_js
-      node_js:
-        - 12
-      install:
-        - npm ci
+      # node_js:
+      #   - 12
+      # install:
+      #   - npm ci
       script:
-        - npm run build
-        - npm test
+        # - cd packages/client
+        - npm ci
+        - ls -lah ./node_modules
+        - npm run cypress:ci
+
+      # script:
+      #   - npm run build
+      #   - npm test
     # - stage: release
     #   language: node_js
     #   node_js:
@@ -27,7 +33,7 @@
     #   - now --token=$NOW_TOKEN --target=production
 stages:
   - test
-  - release
-    if: branch = master AND type != pull_request
+  # - release
+  #   if: branch = master AND type != pull_request
   # - deploy
   # if: branch = master AND type != pull_request
