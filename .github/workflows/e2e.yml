@@ -7,35 +7,43 @@ on:
       - master
 
 jobs:
-  api:
+  e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Start the API (with services)
-        run: |
-          cd packages/api
-          npm install
-          docker-compose up -d
-          npm run start && npx wait-on http://localhost:4000 && npm run generate
-
-  drone_simulator:
-    needs: [api]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Start the drone-simulator
+      - name: Build the Drone-simulator image
+        id: drone
         run: |
           cd packages/drone-simulator
-          npm install
-          npm run start
-
-  cypress:
-    needs: [api, drone_simulator]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+          docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
+          DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
+          echo ::set-env name=DRONE_DOCKER_IMAGE_ID::$(echo $DRONE_DOCKER_IMAGE_ID)
+      - name: Build the API image
+        id: api
+        run: |
+          cd packages/api
+          docker build . --iidfile TEMP_API_IMAGE_ID.txt
+          API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
+          echo ::set-env name=API_DOCKER_IMAGE_ID::$(echo $API_DOCKER_IMAGE_ID)
+      - name: Build the Client image
+        id: client
+        run: |
+          cd packages/client
+          docker build . --iidfile TEMP_CLIENT_IMAGE_ID.txt
+          CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)
+          echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
+      - name: Start all services
+        run: |
+          cd packages/api
+          docker-compose -f docker-compose-ci.yml up -d
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          npm install
-          npm run cypress:run
+          npm ci
+          npm run cypress:ci
+        env:
+          CI: true
+          NODE_ENV: production
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+          GRAPHQL_API: http://localhost:4000/graphql
+          GRAPHQL_WS_URI: ws://localhost:4000/graphql

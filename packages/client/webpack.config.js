@@ -1,4 +1,7 @@
 const path = require('path')
+const ReactDOM = require('react-dom')
+
+console.log('==\n', ReactDOM, '==\n')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const outputDir = path.join(__dirname, 'dist/')
 const Dotenv = require('dotenv-webpack')
