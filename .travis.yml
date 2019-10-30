@@ -7,8 +7,8 @@ jobs:
       install:
         - npm install
       script:
-        # - cd packages/client
-        # - npm ci
+        - cd packages/client
+        - npm ci
         - ls -lah ./node_modules
         - npm run cypress:ci
 
