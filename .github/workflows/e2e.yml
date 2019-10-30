@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Use Node.js 10.16.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
       - name: Build the Drone-simulator image
         id: drone
         run: |
@@ -39,6 +43,7 @@ jobs:
       - name: Run Cypress-tests
         run: |
           cd packages/client
+          nvm use 10.1
           npm install 
           npm install --save cypress-cucumber-preprocessor
           ls -lah ./node_modules
