@@ -39,7 +39,7 @@ jobs:
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          npm ci
+          npm install 
           ls -lah ./node_modules
           npm run cypress:ci
         env:
