@@ -12,7 +12,7 @@
     "serve": "serve ./dist -l 3001 -s",
     "cypress:run": "npx start-server-and-test buildAndServe http://localhost:3001 e2e",
     "cypress": "start-server-and-test buildAndServe http://localhost:3001 cypress:gui",
-    "cypress:ci": "cypress run",
+    "cypress:ci": "npx cypress run",
     "cypress:gui": "cypress open",
     "webpack": "webpack -w",
     "webpack:production": "NODE_ENV=production webpack",
