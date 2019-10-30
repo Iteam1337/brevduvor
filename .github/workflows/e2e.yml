@@ -40,6 +40,10 @@ jobs:
         run: |
           cd packages/api
           docker-compose -f docker-compose-ci.yml up -d
+      - name: Bootstrap dependencies
+        run: |
+          npm install
+          npm run bootstrap
       - name: Run Cypress-tests
         run: |
           cd packages/client
