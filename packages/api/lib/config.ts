@@ -8,10 +8,10 @@ const config = require('@iteam/config')({
     WEBHOOK_URL: 'https://api.brevduvor.iteamdev.se/status',
     POSTGRES: {
       USER: 'iteamadmin',
-      PASSWORD: process.env.PSQL_PASSWORD || 'adminadmin1337',
+      PASSWORD: process.env.POSTGRES_PASSWORD || 'adminadmin1337',
       DATABASE: 'brevduvor',
       PORT: 5432,
-      HOST: process.env.PSQL_HOST || 'localhost',
+      HOST: process.env.POSTGRES_HOST || 'localhost',
       MAX: 20,
       timeout: 30000,
     },

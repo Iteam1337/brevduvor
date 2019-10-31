@@ -28,34 +28,34 @@ spec:
           resources: {}
           envFrom:
             - secretRef:
-                name: psql-password
+                name: postgres-password
           env:
             - name: OSRM_HOST
               value: http://osrm.default.svc.cluster.local
             - name: ELASTIC_HOST
               value: http://10.245.229.112:9200
-            - name: PSQL_HOST
+            - name: POSTGRES_HOST
               value: postgres.default.svc.cluster.local
-            - name: PSQL_USER
+            - name: POSTGRES_USER
               value: iteamadmin
-            - name: PSQL_DATABASE
+            - name: POSTGRES_DATABASE
               value: brevduvor
       initContainers:
         - name: migrate-api
           image: iteam1337/brevduvor-api:latest
           envFrom:
             - secretRef:
-                name: psql-password
+                name: postgres-password
           env:
             - name: OSRM_HOST
               value: http://osrm.default.svc.cluster.local
             - name: ELASTIC_HOST
               value: http://10.245.229.112:9200
-            - name: PSQL_HOST
+            - name: POSTGRES_HOST
               value: postgres.default.svc.cluster.local
-            - name: PSQL_USER
+            - name: POSTGRES_USER
               value: iteamadmin
-            - name: PSQL_DATABASE
+            - name: POSTGRES_DATABASE
               value: brevduvor
           command: ['sh', '-c', 'sh bin/migrate.sh']
 ---
