@@ -1,0 +1,110 @@
+# Source: api/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api
+      app.kubernetes.io/instance: api
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api
+        app.kubernetes.io/instance: api
+    spec:
+      containers:
+        - name: api
+          image: iteam1337/brevduvor-api:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          resources: {}
+          envFrom:
+            - secretRef:
+                name: psql-password
+          env:
+            - name: OSRM_HOST
+              value: http://osrm.default.svc.cluster.local
+            - name: ELASTIC_HOST
+              value: http://10.245.229.112:9200
+            - name: PSQL_HOST
+              value: postgres.default.svc.cluster.local
+            - name: PSQL_USER
+              value: iteamadmin
+            - name: PSQL_DATABASE
+              value: brevduvor
+      initContainers:
+        - name: migrate-api
+          image: iteam1337/brevduvor-api:latest
+          envFrom:
+            - secretRef:
+                name: psql-password
+          env:
+            - name: OSRM_HOST
+              value: http://osrm.default.svc.cluster.local
+            - name: ELASTIC_HOST
+              value: http://10.245.229.112:9200
+            - name: PSQL_HOST
+              value: postgres.default.svc.cluster.local
+            - name: PSQL_USER
+              value: iteamadmin
+            - name: PSQL_DATABASE
+              value: brevduvor
+          command: ['sh', '-c', 'sh bin/migrate.sh']
+---
+# Source: api/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    app.kubernetes.io/name: api
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/instance: api
+    app.kubernetes.io/version: '1.0'
+    app.kubernetes.io/managed-by: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: api
+---
+# Source: api/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api
+  labels:
+    app.kubernetes.io/name: api
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/instance: api
+    app.kubernetes.io/version: '1.0'
+    app.kubernetes.io/managed-by: Tiller
+  annotations:
+    kubernetes.io/ingress.class: traefik
+
+spec:
+  tls:
+    - hosts:
+        - 'api.brevduvor.iteamdev.se'
+      secretName: api-letsencrypt-prod
+  rules:
+    - host: 'api.brevduvor.iteamdev.se'
+      http:
+        paths:
+          - path: '/'
+            backend:
+              serviceName: api
+              servicePort: http

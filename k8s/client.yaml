@@ -1,0 +1,89 @@
+---
+# Source: client/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+  labels:
+    app.kubernetes.io/name: client
+    helm.sh/chart: client-0.1.0
+    app.kubernetes.io/instance: client
+    app.kubernetes.io/version: '1.0'
+    app.kubernetes.io/managed-by: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: client
+    app.kubernetes.io/instance: client
+
+---
+# Source: client/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: client
+      app.kubernetes.io/instance: client
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: client
+        app.kubernetes.io/instance: client
+    spec:
+      containers:
+        - name: client
+          image: 'iteam1337/brevduvor-client:latest'
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: mapbox-token
+          env:
+            - name: GRAPHQL_API
+              value: https://api.brevduvor.iteamdev.se/graphql
+            - name: GRAPHQL_WS_URI
+              value: ws://api.brevduvor.iteamdev.se/graphql
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          resources: {}
+
+---
+# Source: client/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: client
+  labels:
+    app.kubernetes.io/name: client
+    helm.sh/chart: client-0.1.0
+    app.kubernetes.io/instance: client
+    app.kubernetes.io/version: '1.0'
+    app.kubernetes.io/managed-by: Tiller
+  annotations:
+    kubernetes.io/ingress.class: traefik
+
+spec:
+  tls:
+    - hosts:
+        - 'client.brevduvor.iteamdev.se'
+      secretName: client-letsencrypt-prod
+  rules:
+    - host: 'client.brevduvor.iteamdev.se'
+      http:
+        paths:
+          - path: '/'
+            backend:
+              serviceName: client
+              servicePort: http
