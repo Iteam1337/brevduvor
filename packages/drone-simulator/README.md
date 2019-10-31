@@ -17,7 +17,6 @@ npm start
 ```js
 /init - initialise a departure, simulates a drone on the way, continously sending its data
 /setup - simulate what a drone might be sending (battery-status, coordinates etc)
-/status - the endpoint where a drone should post data, logs status and location to Elastic
 ```
 
 ## Map visualiser
