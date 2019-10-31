@@ -13,11 +13,10 @@ let make = () => {
     setLoggedIn(_prev => true);
 
     AuthStorage.setLoginToken(payload.token);
-
-    changeLocale(
-      LocaleContext.SetLocale(
-        payload.language->Belt.Option.getWithDefault(`SWEDISH),
-      ),
+    Belt.Option.(
+      payload.language
+      ->map(userLang => changeLocale(SetLocale(userLang)))
+      ->getWithDefault()
     );
   };
 
