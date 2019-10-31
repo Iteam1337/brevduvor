@@ -3,11 +3,12 @@ import {
   MutationUpdateUserLanguageArgs,
 } from '../../../__generated__/brevduvor'
 import { updateLanguage } from '../../../services/users'
+import { User } from '../../../services/auth'
 
 export const updateUserLanguage: MutationResolvers['updateUserLanguage'] = async (
   _: any,
   { email, language }: MutationUpdateUserLanguageArgs,
-  { user }: any
+  { user }: { user: User }
 ) => {
   if (user.email === email && language) {
     try {

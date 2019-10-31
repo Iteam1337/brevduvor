@@ -14,7 +14,7 @@ export enum Languages { // TODO Remove when typescript is great again
   Swedish = 'SWEDISH',
 }
 
-type User = {
+export type User = {
   id: string
   name: string
   email: string
