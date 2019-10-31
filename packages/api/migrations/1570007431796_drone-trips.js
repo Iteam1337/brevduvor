@@ -23,4 +23,7 @@ exports.up = pgm => {
   })
 }
 
-exports.down = pgm => pgm.dropTable('drone_trips') && pgm.deleteType('status')
+exports.down = async pgm => {
+  await pgm.dropTable('drone_trips')
+  await pgm.dropType('status')
+}

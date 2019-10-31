@@ -2,8 +2,8 @@
 let make = () => {
   open Shared;
 
-  let ({errorToString, _}, _changeLocale): LocaleContext.t =
-    LocaleContext.use();
+  let ({errorToString}, changeLocale): LocaleContext.t = LocaleContext.use();
+
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
@@ -11,13 +11,18 @@ let make = () => {
 
   let handleLogin = (payload: Shared.AuthPayload.t) => {
     setLoggedIn(_prev => true);
+
     AuthStorage.setLoginToken(payload.token);
+    Belt.Option.(
+      payload.language
+      ->map(userLang => changeLocale(SetLocale(userLang)))
+      ->getWithDefault()
+    );
   };
 
   loggedIn
     ? switch (url.path) {
-      | [] => <Start />
-      | ["boka-resa"] => <Book />
+      | [] => <Book />
       | ["resor"] => <Trips />
       | ["resa", id] => <Trip id />
       | _ => <Typography.Error> {errorToString(FourOFour)} </Typography.Error>

@@ -9,10 +9,27 @@ import { errors } from 'pg-promise'
 import { GraphQLError } from 'graphql'
 import { verifyPassword } from '../helpers/password'
 
-type User = {
+export enum Languages { // TODO Remove when typescript is great again
+  English = 'ENGLISH',
+  Swedish = 'SWEDISH',
+}
+
+export type User = {
   id: string
   name: string
   email: string
+  language: string
+}
+
+const fromCodeToLanguageEnum = (langCode: string): Languages | null => {
+  switch (langCode) {
+    case 'sv':
+      return Languages.Swedish
+    case 'en':
+      return Languages.English
+    default:
+      return null
+  }
 }
 
 export const verifyTokenAgainstUserRecords = async (
@@ -80,6 +97,7 @@ export const login = async (
     email: user.email,
     username: user.name,
     id: user.id,
+    language: fromCodeToLanguageEnum(user.language),
   } as AuthPayload
 }
 
@@ -123,6 +141,7 @@ export const register = async (
         token,
         email: user.email,
         username: user.name,
+        language: user.language,
       } as AuthPayload
     } else {
       throw new AuthenticationError(errorCodes.Auth.Unspecified)

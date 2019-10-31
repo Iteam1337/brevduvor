@@ -14,6 +14,11 @@ const typeDefs = gql`
   scalar JSON
   scalar JSONObject
 
+  enum Languages {
+    ENGLISH
+    SWEDISH
+  }
+
   type Geometry {
     type: String!
     coordinates: JSON!
@@ -38,6 +43,7 @@ const typeDefs = gql`
     token: String!
     email: String!
     username: String!
+    language: Languages
   }
 
   type LogoutResponse {
@@ -63,6 +69,9 @@ const typeDefs = gql`
     login(email: String!, password: String!): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
+
+    updateUserLanguage(email: String! @isEmail, language: Languages!): Boolean!
+      @isAuthenticated
 
     logout: LogoutResponse!
   }

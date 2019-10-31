@@ -1,6 +1,7 @@
 import { db, pgp } from '../adapters/postgres'
 import dedent from 'dedent'
 import { createHash } from '../helpers/password'
+import { Languages } from './auth'
 
 interface RegisterUser {
   email: string
@@ -10,9 +11,10 @@ interface RegisterUser {
 
 export async function getUserByEmail(email: String): Promise<any> {
   return await db
-    .one(dedent`SELECT id, email, name, password FROM users where email = $1`, [
-      email,
-    ])
+    .one(
+      dedent`SELECT id, email, name, password, language FROM users where email = $1`,
+      [email]
+    )
     .then((user: any) => {
       return user
     })
@@ -23,9 +25,10 @@ export async function getUserByEmail(email: String): Promise<any> {
 
 export async function getUserById(id: String): Promise<any> {
   return db
-    .one(dedent`SELECT id, email, name, password FROM users where id = $1`, [
-      id,
-    ])
+    .one(
+      dedent`SELECT id, email, name, password, language FROM users where id = $1`,
+      [id]
+    )
     .then((user: any) => {
       return user
     })
@@ -43,7 +46,7 @@ export async function createUser(user: RegisterUser) {
       },
       undefined,
       'users'
-    ) + 'RETURNING id, email, name'
+    ) + 'RETURNING id, email, name, language'
 
   return db
     .one(query)
@@ -53,4 +56,27 @@ export async function createUser(user: RegisterUser) {
     .catch(e => {
       return e
     })
+}
+
+export async function updateLanguage(
+  id: String,
+  language: Languages
+): Promise<any> {
+  const toCodeFromLanguageEnum = (language: Languages): string | null => {
+    switch (language) {
+      case Languages.Swedish:
+        return 'sv'
+      case Languages.English:
+        return 'en'
+      default:
+        return null
+    }
+  }
+
+  const langCode = toCodeFromLanguageEnum(language)
+
+  return db.query(dedent`UPDATE users SET language = $1 WHERE id = $2`, [
+    langCode,
+    id,
+  ])
 }
