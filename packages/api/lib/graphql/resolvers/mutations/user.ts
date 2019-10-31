@@ -6,7 +6,7 @@ import { updateLanguage } from '../../../services/users'
 import { User } from '../../../services/auth'
 
 export const updateUserLanguage: MutationResolvers['updateUserLanguage'] = async (
-  _: any,
+  _,
   { email, language }: MutationUpdateUserLanguageArgs,
   { user }: { user: User }
 ) => {
