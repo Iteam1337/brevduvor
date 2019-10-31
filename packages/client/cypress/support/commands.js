@@ -1,5 +1,6 @@
 Cypress.Commands.add('login', () => {
   cy.visit('/')
+    .wait(500)
     .get('#email')
     .type('chrille@yo')
     .get('#password')
