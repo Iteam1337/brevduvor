@@ -5,5 +5,5 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
+RUN npm ci --quiet
 CMD npm run dev
