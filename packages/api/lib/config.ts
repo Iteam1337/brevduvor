@@ -2,10 +2,10 @@ const config = require('@iteam/config')({
   file: `${__dirname}/../config.json`,
   defaults: {
     PORT: 4000,
-    DRONE_URL: 'https://drone.brevduvor.iteamdev.se',
+    DRONE_URL: process.env.DRONE_URL || 'http://localhost:3030',
     OSRM_URL: process.env.OSRM_HOST || 'http://localhost:5000',
     ELASTIC_URL: process.env.ELASTIC_HOST || 'http://localhost:9200',
-    WEBHOOK_URL: 'https://api.brevduvor.iteamdev.se/status',
+    WEBHOOK_URL: process.env.WEBHOOK_URL || 'http://localhost:4000/status',
     POSTGRES: {
       USER: 'iteamadmin',
       PASSWORD: process.env.POSTGRES_PASSWORD || 'adminadmin1337',

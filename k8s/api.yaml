@@ -32,6 +32,10 @@ spec:
           env:
             - name: OSRM_HOST
               value: http://osrm.default.svc.cluster.local
+            - name: DRONE_URL
+              value: https://drone.brevduvor.iteamdev.se
+            - name: WEBHOOK_URL
+              value: https://api.brevduvor.iteamdev.se/status
             - name: ELASTIC_HOST
               value: http://10.245.107.10:9200
             - name: POSTGRES_HOST
