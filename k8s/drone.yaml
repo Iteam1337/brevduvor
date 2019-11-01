@@ -4,12 +4,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: drone
-  labels:
-    app.kubernetes.io/name: drone
-    helm.sh/chart: drone-0.1.0
-    app.kubernetes.io/instance: drone
-    app.kubernetes.io/version: '1.0'
-    app.kubernetes.io/managed-by: Tiller
 spec:
   type: ClusterIP
   ports:
@@ -27,12 +21,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: drone
-  labels:
-    app.kubernetes.io/name: drone
-    helm.sh/chart: drone-0.1.0
-    app.kubernetes.io/instance: drone
-    app.kubernetes.io/version: '1.0'
-    app.kubernetes.io/managed-by: Tiller
 spec:
   replicas: 1
   selector:
@@ -64,15 +52,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: drone
-  labels:
-    app.kubernetes.io/name: drone
-    helm.sh/chart: drone-0.1.0
-    app.kubernetes.io/instance: drone
-    app.kubernetes.io/version: '1.0'
-    app.kubernetes.io/managed-by: Tiller
   annotations:
     kubernetes.io/ingress.class: traefik
-
 spec:
   tls:
     - hosts:

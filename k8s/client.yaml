@@ -1,15 +1,8 @@
 ---
-# Source: client/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: client
-  labels:
-    app.kubernetes.io/name: client
-    helm.sh/chart: client-0.1.0
-    app.kubernetes.io/instance: client
-    app.kubernetes.io/version: '1.0'
-    app.kubernetes.io/managed-by: Tiller
 spec:
   type: ClusterIP
   ports:
@@ -20,9 +13,7 @@ spec:
   selector:
     app.kubernetes.io/name: client
     app.kubernetes.io/instance: client
-
 ---
-# Source: client/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,20 +43,12 @@ spec:
           resources: {}
 
 ---
-# Source: client/templates/ingress.yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: client
-  labels:
-    app.kubernetes.io/name: client
-    helm.sh/chart: client-0.1.0
-    app.kubernetes.io/instance: client
-    app.kubernetes.io/version: '1.0'
-    app.kubernetes.io/managed-by: Tiller
   annotations:
     kubernetes.io/ingress.class: traefik
-
 spec:
   tls:
     - hosts:
