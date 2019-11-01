@@ -43,16 +43,8 @@ spec:
     spec:
       containers:
         - name: client
-          image: 'iteam1337/brevduvor-client:latest'
+          image: iteam1337/brevduvor-client:latest
           imagePullPolicy: Always
-          envFrom:
-            - secretRef:
-                name: mapbox-token
-          env:
-            - name: GRAPHQL_API
-              value: https://api.brevduvor.iteamdev.se/graphql
-            - name: GRAPHQL_WS_URI
-              value: ws://api.brevduvor.iteamdev.se/graphql
           ports:
             - name: http
               containerPort: 3000

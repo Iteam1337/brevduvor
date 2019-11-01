@@ -50,7 +50,7 @@
     "@semantic-release/git": "7.0.16",
     "autoprefixer": "9.6.1",
     "bs-jest-dom": "2.0.1",
-    "bs-platform": "5.0.6",
+    "bs-platform": "5.2.1",
     "bs-react-testing-library": "0.6.0",
     "cross-env": "5.2.0",
     "css-loader": "3.2.0",
