@@ -1,4 +1,4 @@
-# Source: api/templates/deployment.yaml
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,7 +59,6 @@ spec:
               value: brevduvor
           command: ['sh', '-c', 'sh bin/migrate.sh']
 ---
-# Source: api/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -75,7 +74,6 @@ spec:
     app.kubernetes.io/name: api
     app.kubernetes.io/instance: api
 ---
-# Source: api/templates/ingress.yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

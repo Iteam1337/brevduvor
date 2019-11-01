@@ -1,5 +1,4 @@
 ---
-# Source: drone/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -16,7 +15,6 @@ spec:
     app.kubernetes.io/instance: drone
 
 ---
-# Source: drone/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +33,7 @@ spec:
     spec:
       containers:
         - name: drone
-          image: 'iteam1337/brevduvor-drone:latest'
+          image: iteam1337/brevduvor-drone:latest
           imagePullPolicy: Always
           env:
             - name: OSRM_HOST
@@ -47,7 +45,6 @@ spec:
           resources: {}
 
 ---
-# Source: drone/templates/ingress.yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
