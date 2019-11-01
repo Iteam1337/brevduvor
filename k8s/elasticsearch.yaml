@@ -1,7 +1,14 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kube-logging
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: elasticsearch
+  namespace: kube-logging
 spec:
   selector:
     matchLabels:
@@ -33,6 +40,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: elasticsearch
+  namespace: kube-logging
   labels:
     service: elasticsearch
 spec:
