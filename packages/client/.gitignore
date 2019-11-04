@@ -24,5 +24,4 @@
 .merlin
 .bsb.lock
 npm-debug.log
-/cypress/videos
 /.graphql_ppx_cache
