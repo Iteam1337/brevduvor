@@ -14,15 +14,9 @@ ENV GRAPHQL_API=$GRAPHQL_API
 ARG GRAPHQL_WS_URI
 ENV GRAPHQL_WS_URI=$GRAPHQL_WS_URI
 
-RUN printf "MAPBOX_TOKEN=$MAPBOX_TOKEN\n" >> .env
-RUN printf "GRAPHQL_API=$GRAPHQL_API\n" >> .env
-RUN printf "GRAPHQL_WS_URI=$GRAPHQL_WS_URI" >> .env
-
-RUN cat .env
-
 RUN npm install --quiet
 RUN npm run build
-RUN npm run webpack:production
+RUN MAPBOX_TOKEN=$MAPBOX_TOKEN GRAPHQL_API=$GRAPHQL_API GRAPHQL_WS_URI=$GRAPHQL_WS_URI npm run webpack:production --
 
 FROM nginx:stable-alpine
 
