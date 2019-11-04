@@ -47,8 +47,7 @@ module MockedLocaleProvider = {
 
 module MockedProvider = {
   [@react.component]
-  let make =
-      (~addTypename=true, ~children, ~mocks=[||], ~locale=I18n.Locale.Swedish) => {
+  let make = (~addTypename=true, ~children, ~mocks=[||], ~locale=`SWEDISH) => {
     <ApolloReactTesting.MockedProvider addTypename mocks>
       <MockedLocaleProvider locale> children </MockedLocaleProvider>
     </ApolloReactTesting.MockedProvider>;

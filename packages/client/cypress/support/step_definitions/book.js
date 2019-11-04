@@ -3,7 +3,7 @@ Given('I login', () => {
 })
 
 Given('I open the boka-resa page', () => {
-  cy.visit('/boka-resa')
+  cy.visit('/')
 })
 
 When('I select {string} as {string}', (input, fieldName) => {
