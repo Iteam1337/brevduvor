@@ -14,7 +14,7 @@ export const osrmInstance = new OsrmAPI()
 export const serverConfig = {
   context: async ({ req }: any) => {
     try {
-      const token = req.headers.authorization || ''
+      const token = (req.headers && req.headers.authorization) || ''
 
       if (token) {
         const user = await verifyTokenAgainstUserRecords(
@@ -25,7 +25,8 @@ export const serverConfig = {
         return { user }
       }
     } catch (error) {
-      console.log(error)
+      // Don't do anything on error
+      // If the user is unauthenticated we get an error from the resolver
     }
   },
   typeDefs: schema.typeDefs,
