@@ -37,7 +37,7 @@ spec:
             - name: WEBHOOK_URL
               value: https://api.brevduvor.iteamdev.se/status
             - name: ELASTIC_HOST
-              value: http://10.245.107.10:9200
+              value: http://10.244.1.140:9200
             - name: POSTGRES_HOST
               value: postgres.default.svc.cluster.local
             - name: POSTGRES_USER
@@ -54,7 +54,7 @@ spec:
             - name: OSRM_HOST
               value: http://osrm.default.svc.cluster.local
             - name: ELASTIC_HOST
-              value: http://10.245.229.112:9200
+              value: http://10.244.1.140:9200
             - name: POSTGRES_HOST
               value: postgres.default.svc.cluster.local
             - name: POSTGRES_USER

@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+COPY /bin ./bin
 COPY /lib ./lib
 COPY /migrations ./migrations
 
@@ -27,6 +28,7 @@ RUN npm install
 
 COPY --from=base /app/build  ./build
 COPY --from=base /app/migrations  ./migrations
+COPY --from=base /app/bin  ./bin
 
 USER $USER
 
