@@ -57,7 +57,7 @@ jobs:
           git config --global user.email ${{ secrets.GITHUB_EMAIL }}
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           echo ${GITHUB_HEAD_REF}
-          git checkout "${$GITHUB_HEAD_REF}"
+          git checkout "${GITHUB_HEAD_REF}"
           git add packages/client/cypress/videos
           git commit -am "test(e2e): submit cypress-videos"
           git push
