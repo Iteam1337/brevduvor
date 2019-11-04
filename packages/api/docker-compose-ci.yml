@@ -96,7 +96,7 @@ services:
   client:
     image: ${CLIENT_DOCKER_IMAGE_ID}
     ports:
-      - '3001:3000'
+      - '3000:3000'
     depends_on:
       - drone-simulator
       - api
