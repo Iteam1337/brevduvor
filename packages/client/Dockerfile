@@ -18,6 +18,8 @@ RUN printf "MAPBOX_TOKEN=$MAPBOX_TOKEN\n" >> .env
 RUN printf "GRAPHQL_API=$GRAPHQL_API\n" >> .env
 RUN printf "GRAPHQL_WS_URI=$GRAPHQL_WS_URI" >> .env
 
+RUN cat .env
+
 RUN npm install --quiet
 RUN npm run build
 RUN npm run webpack:production
@@ -30,7 +32,5 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
 
 EXPOSE 3000
-
-RUN cat .env
 
 CMD ["nginx", "-g", "daemon off;"]
