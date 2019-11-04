@@ -17,6 +17,10 @@ RUN npm ci
 
 COPY ./ /app
 
+ENV MAPBOX_TOKEN=$MAPBOX_TOKEN
+ENV GRAPHQL_API=https://api.brevduvor.iteamdev.se/graphql
+ENV GRAPHQL_WS_URI=wss://api.brevduvor.iteamdev.se/graphql
+
 CMD npm run clean
 CMD npm run build
 CMD npm run webpack:production
