@@ -31,4 +31,6 @@ RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
 
 EXPOSE 3000
 
+RUN cat .env
+
 CMD ["nginx", "-g", "daemon off;"]
