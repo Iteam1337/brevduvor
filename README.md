@@ -43,7 +43,7 @@ cd packages/drone-simulator
 docker-compose up -d
 ```
 
-Starts up the service at `localhost:3030`
+Starts up the service at `localhost:3031`
 
 ### Start Client
 
@@ -56,4 +56,4 @@ cd packages/client
 docker-compose up -d
 ```
 
-Starts up the client at `localhost:3000`
+Starts up the client at `localhost:3001`
