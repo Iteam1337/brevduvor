@@ -29,20 +29,22 @@ spec:
           envFrom:
             - secretRef:
                 name: postgres-password
+            - secretRef:
+                name: jwt-token
           env:
-            - name: OSRM_HOST
+            - name: OSRM_URL
               value: http://osrm
             - name: DRONE_URL
               value: https://drone.brevduvor.iteamdev.se
             - name: WEBHOOK_URL
               value: https://api.brevduvor.iteamdev.se/status
-            - name: ELASTIC_HOST
+            - name: ELASTIC_URL
               value: http://elasticsearch.kube-logging.svc.cluster.local
-            - name: POSTGRES_HOST
+            - name: POSTGRES__HOST
               value: postgres
-            - name: POSTGRES_USER
+            - name: POSTGRES__USER
               value: iteamadmin
-            - name: POSTGRES_DATABASE
+            - name: POSTGRES__DATABASE
               value: brevduvor
       initContainers:
         - name: migrate-api
@@ -51,15 +53,11 @@ spec:
             - secretRef:
                 name: postgres-password
           env:
-            - name: OSRM_HOST
-              value: http://osrm.default.svc.cluster.local
-            - name: ELASTIC_HOST
-              value: http://elasticsearch.kube-logging.svc.cluster.local
-            - name: POSTGRES_HOST
+            - name: POSTGRES__HOST
               value: postgres
-            - name: POSTGRES_USER
+            - name: POSTGRES__USER
               value: iteamadmin
-            - name: POSTGRES_DATABASE
+            - name: POSTGRES__DATABASE
               value: brevduvor
           command: ['sh', '-c', 'sh bin/migrate.sh']
 ---
