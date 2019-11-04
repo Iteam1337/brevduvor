@@ -4,8 +4,8 @@ apiVersion: v1
 metadata:
   name: kube-logging
 ---
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: elasticsearch
   namespace: kube-logging
@@ -13,6 +13,7 @@ spec:
   selector:
     matchLabels:
       component: elasticsearch
+  serviceName: elasticsearch
   template:
     metadata:
       labels:
@@ -28,6 +29,9 @@ spec:
             - containerPort: 9200
               name: http
               protocol: TCP
+          volumeMounts:
+            - name: elasticsearch-data
+              mountPath: 'data'
           resources:
             limits:
               cpu: 500m
@@ -35,6 +39,16 @@ spec:
             requests:
               cpu: 500m
               memory: 4Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: do-block-storage
+        resources:
+          requests:
+            storage: '5Gi'
 ---
 apiVersion: v1
 kind: Service
@@ -44,9 +58,9 @@ metadata:
   labels:
     service: elasticsearch
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     component: elasticsearch
   ports:
-    - port: 9200
+    - port: 80
       targetPort: 9200

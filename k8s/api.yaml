@@ -31,15 +31,15 @@ spec:
                 name: postgres-password
           env:
             - name: OSRM_HOST
-              value: http://osrm.default.svc.cluster.local
+              value: http://osrm
             - name: DRONE_URL
               value: https://drone.brevduvor.iteamdev.se
             - name: WEBHOOK_URL
               value: https://api.brevduvor.iteamdev.se/status
             - name: ELASTIC_HOST
-              value: http://10.244.1.140:9200
+              value: http://elasticsearch.kube-logging.svc.cluster.local
             - name: POSTGRES_HOST
-              value: postgres.default.svc.cluster.local
+              value: postgres
             - name: POSTGRES_USER
               value: iteamadmin
             - name: POSTGRES_DATABASE
@@ -54,9 +54,9 @@ spec:
             - name: OSRM_HOST
               value: http://osrm.default.svc.cluster.local
             - name: ELASTIC_HOST
-              value: http://10.244.1.140:9200
+              value: http://elasticsearch.kube-logging.svc.cluster.local
             - name: POSTGRES_HOST
-              value: postgres.default.svc.cluster.local
+              value: postgres
             - name: POSTGRES_USER
               value: iteamadmin
             - name: POSTGRES_DATABASE
