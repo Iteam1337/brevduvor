@@ -47,7 +47,6 @@ jobs:
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          npm install
           npm run cypress:ci
       - name: Commit & push Cypress-videos
         if: always()
