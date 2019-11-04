@@ -1,37 +1,27 @@
-FROM node:12-alpine AS build
-
-# Need some native dependencies for npm installation process 
-RUN apk --no-cache add --virtual native-deps \
-  g++ gcc libgcc libstdc++ linux-headers autoconf automake make nasm python git && \
-  npm install --quiet node-gyp -g
+FROM node:lts AS builder
+ARG cache=1
 
 WORKDIR /app
 
-# add .bin to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY . .
 
-COPY ./package.json ./package.json
-COPY ./package-lock.json ./package-lock.json
-
-RUN npm ci
-
-COPY ./ /app
-
+ARG MAPBOX_TOKEN
 ENV MAPBOX_TOKEN=$MAPBOX_TOKEN
-ENV GRAPHQL_API=https://api.brevduvor.iteamdev.se/graphql
-ENV GRAPHQL_WS_URI=wss://api.brevduvor.iteamdev.se/graphql
 
-CMD npm run clean
-CMD npm run build
-CMD npm run webpack:production
+ENV GRAPHQL_API=$GRAPHQL_API
+ENV GRAPHQL_WS_URI=$GRAPHQL_WS_URI
 
-# clean native deps
-RUN apk del native-deps
+RUN npm install --quiet
+RUN npm run build
+RUN npm run webpack:production
 
-# Second stage
-FROM nginx
+FROM nginx:stable-alpine
 
-WORKDIR /
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=build ./app/dist/ /usr/share/nginx/html
-COPY --from=build ./app/nginx.conf /etc/nginx/conf.d/default.conf
+RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
+
+EXPOSE 3000
+
+CMD ["nginx", "-g", "daemon off;"]

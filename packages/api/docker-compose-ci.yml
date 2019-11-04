@@ -100,10 +100,10 @@ services:
     depends_on:
       - drone-simulator
       - api
-    environment:
-      - MAPBOX_TOKEN=${MAPBOX_TOKEN}
-      - GRAPHQL_API=${GRAPHQL_API}
-      - GRAPHQL_WS_URI=${GRAPHQL_WS_URI}
+    # environment:
+    #   - MAPBOX_TOKEN=${MAPBOX_TOKEN}
+    #   - GRAPHQL_API=${GRAPHQL_API}
+    #   - GRAPHQL_WS_URI=${GRAPHQL_WS_URI}
 
 volumes:
   postgres11:
