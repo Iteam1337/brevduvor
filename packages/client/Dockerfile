@@ -14,8 +14,6 @@ ENV GRAPHQL_API=$GRAPHQL_API
 ARG GRAPHQL_WS_URI
 ENV GRAPHQL_WS_URI=$GRAPHQL_WS_URI
 
-RUN echo $GRAPHQL_WS_URI
-
 RUN npm install --quiet
 RUN npm run build
 RUN npm run webpack:production
