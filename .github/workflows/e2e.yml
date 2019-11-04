@@ -15,41 +15,41 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.16.3
-      # - name: Build the Drone-simulator image
-      #   id: drone
-      #   run: |
-      #     cd packages/drone-simulator
-      #     docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
-      #     DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
-      #     echo ::set-env name=DRONE_DOCKER_IMAGE_ID::$(echo $DRONE_DOCKER_IMAGE_ID)
-      # - name: Build the API image
-      #   id: api
-      #   run: |
-      #     cd packages/api
-      #     docker build . --iidfile TEMP_API_IMAGE_ID.txt
-      #     API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
-      #     echo ::set-env name=API_DOCKER_IMAGE_ID::$(echo $API_DOCKER_IMAGE_ID)
-      # - name: Build the Client image
-      #   id: client
-      #   run: |
-      #     cd packages/client
-      #     docker build . --iidfile TEMP_CLIENT_IMAGE_ID.txt
-      #     CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)
-      #     echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
-      # - name: Start all services
-      #   run: |
-      #     cd packages/api
-      #     docker-compose -f docker-compose-ci.yml up -d
-      # - name: Bootstrap dependencies
-      #   run: |
-      #     npm install
-      #     npm run bootstrap
-      # - name: Run Cypress-tests
-      #   run: |
-      #     cd packages/client
-      #     npm install
-      #     ls -lah ./node_modules
-      #     npm run cypress:ci
+      - name: Build the Drone-simulator image
+        id: drone
+        run: |
+          cd packages/drone-simulator
+          docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
+          DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
+          echo ::set-env name=DRONE_DOCKER_IMAGE_ID::$(echo $DRONE_DOCKER_IMAGE_ID)
+      - name: Build the API image
+        id: api
+        run: |
+          cd packages/api
+          docker build . --iidfile TEMP_API_IMAGE_ID.txt
+          API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
+          echo ::set-env name=API_DOCKER_IMAGE_ID::$(echo $API_DOCKER_IMAGE_ID)
+      - name: Build the Client image
+        id: client
+        run: |
+          cd packages/client
+          docker build . --iidfile TEMP_CLIENT_IMAGE_ID.txt
+          CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)
+          echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
+      - name: Start all services
+        run: |
+          cd packages/api
+          docker-compose -f docker-compose-ci.yml up -d
+      - name: Bootstrap dependencies
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Run Cypress-tests
+        run: |
+          cd packages/client
+          npm install
+          ls -lah ./node_modules
+          npm run cypress:ci
       - name: Commit & push Cypress-videos
         if: always()
         run: |
