@@ -1,4 +1,4 @@
-FROM node:12 AS builder
+FROM node:lts AS builder
 ARG cache=1
 
 WORKDIR /app

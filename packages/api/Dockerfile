@@ -1,4 +1,4 @@
-FROM node:10.16-alpine as base
+FROM node:lts-alpine as base
 ARG cache=1
 
 WORKDIR /app
@@ -16,7 +16,7 @@ COPY index.ts ./
 
 RUN npm run build
 
-FROM node:10.16.3
+FROM node:lts
 
 ENV USER=api-user
 RUN adduser --disabled-password --gecos "" $USER
