@@ -7,8 +7,6 @@
 # Build folders
 /lib/bs
 /dist
-/cypress/videos/
-/cypress/screenshots/
 
 ## CommonJS setup
 /lib/js/src
