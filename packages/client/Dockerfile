@@ -5,7 +5,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm run clean
+ARG MAPBOX_TOKEN
+ARG GRAPHQL_API
+ARG GRAPHQL_WS_URI
+
 RUN npm install --quiet
 RUN npm run build
 RUN npm run webpack:production

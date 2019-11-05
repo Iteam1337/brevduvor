@@ -28,7 +28,7 @@ let make = (~id, ~handleDroneInitResponse) => {
     ->Future.mapOk(
         (
           result:
-            ReasonApolloHooks.Mutation.controledVariantResult(
+            ReasonApolloHooks.Mutation.controlledVariantResult(
               StartDroneMutationConfig.t,
             ),
         ) =>
