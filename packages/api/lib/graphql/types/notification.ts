@@ -4,7 +4,7 @@ export const typeDefs = gql`
   input NotificationInput {
     sender: String!
     receiver: String!
-    time: String!
+    sentAt: String!
     message: String!
   }
 `

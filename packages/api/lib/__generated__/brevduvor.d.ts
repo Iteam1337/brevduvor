@@ -141,7 +141,7 @@ export type MutationUpdateUserLanguageArgs = {
 export type NotificationInput = {
   sender: Scalars['String']
   receiver: Scalars['String']
-  time: Scalars['String']
+  sentAt: Scalars['String']
   message: Scalars['String']
 }
 

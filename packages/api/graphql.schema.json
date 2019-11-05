@@ -796,7 +796,7 @@
             "defaultValue": null
           },
           {
-            "name": "time",
+            "name": "sentAt",
             "description": null,
             "type": {
               "kind": "NON_NULL",
