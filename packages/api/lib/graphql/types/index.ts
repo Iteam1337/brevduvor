@@ -3,6 +3,7 @@ import * as droneStatus from './droneStatus'
 import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
+import * as auth from './auth'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -36,26 +37,6 @@ const typeDefs = gql`
   type Trip {
     geoJson: Geometry!
     distance: Float!
-  }
-
-  type AuthPayload {
-    id: ID!
-    token: String!
-    email: String!
-    username: String!
-    language: Languages
-  }
-
-  type LogoutResponse {
-    status: String!
-    message: String!
-  }
-
-  input RegisterInput {
-    email: String! @isEmail
-    username: String!
-    password: String!
-    confirmPassword: String!
   }
 
   type Mutation {
@@ -95,4 +76,5 @@ export default [
   destinations.typeDefs,
   startDrone.typeDefs,
   initDrone.typeDefs,
+  auth.typeDefs,
 ]
