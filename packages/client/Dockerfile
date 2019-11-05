@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY . .
 
+RUN npm run clean
 RUN npm install --quiet
 RUN npm run build
 RUN npm run webpack:production
