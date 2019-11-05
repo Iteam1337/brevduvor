@@ -104,6 +104,7 @@ export type Mutation = {
   __typename?: 'Mutation'
   initDrone: InitDroneResponse
   startDrone: StartDroneResponse
+  notification: Scalars['Boolean']
   login: AuthPayload
   register: AuthPayload
   updateUserLanguage: Scalars['Boolean']
@@ -119,6 +120,10 @@ export type MutationStartDroneArgs = {
   id: Scalars['String']
 }
 
+export type MutationNotificationArgs = {
+  input: NotificationInput
+}
+
 export type MutationLoginArgs = {
   email: Scalars['String']
   password: Scalars['String']
@@ -131,6 +136,13 @@ export type MutationRegisterArgs = {
 export type MutationUpdateUserLanguageArgs = {
   email: Scalars['RuleWrapper']
   language: Languages
+}
+
+export type NotificationInput = {
+  sender: Scalars['String']
+  receiver: Scalars['String']
+  time: Scalars['String']
+  message: Scalars['String']
 }
 
 export type Query = {
@@ -297,12 +309,13 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
+  NotificationInput: NotificationInput
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>
   Subscription: ResolverTypeWrapper<{}>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
@@ -327,12 +340,13 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates
   Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
+  NotificationInput: NotificationInput
+  Boolean: Scalars['Boolean']
   AuthPayload: AuthPayload
   ID: Scalars['ID']
   Languages: Languages
   RegisterInput: RegisterInput
   RuleWrapper: Scalars['RuleWrapper']
-  Boolean: Scalars['Boolean']
   LogoutResponse: LogoutResponse
   Subscription: {}
   DroneStatusResponse: DroneStatusResponse
@@ -482,6 +496,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationStartDroneArgs, 'id'>
+  >
+  notification: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationNotificationArgs, 'input'>
   >
   login: Resolver<
     ResolversTypes['AuthPayload'],

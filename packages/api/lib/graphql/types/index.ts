@@ -4,6 +4,7 @@ import * as destinations from './destinations'
 import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 import * as auth from './auth'
+import * as notification from './notification'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -47,6 +48,8 @@ const typeDefs = gql`
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
+    notification(input: NotificationInput!): Boolean! @isAuthenticated
+
     login(email: String!, password: String!): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
@@ -77,4 +80,5 @@ export default [
   startDrone.typeDefs,
   initDrone.typeDefs,
   auth.typeDefs,
+  notification.typeDefs,
 ]
