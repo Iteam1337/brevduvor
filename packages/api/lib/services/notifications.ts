@@ -11,7 +11,7 @@ export async function createNew(notification: NotificationInput) {
   )
 
   return db
-    .one(query)
+    .query(query)
     .then(_n => {
       return true
     })
