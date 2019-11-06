@@ -1,28 +1,28 @@
 version: '3.7'
 
 services:
-  # postgres:
-  #   image: postgres:11.5
-  #   volumes:
-  #     - postgres11:/var/lib/postgresql/data
-  #   ports:
-  #     - 127.0.0.1:${PORTS__POSTGRES:-5432}:5432
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES__USER:-iteamadmin}
-  #     - POSTGRES_PASSWORD=${POSTGRES__PASS:-adminadmin1337}
-  #     - POSTGRES_DB=${POSTGRES__DB:-brevduvor}
-  #     - POSTGRES_INITDB_ARGS=--encoding=utf8
-  #   healthcheck:
-  #     test:
-  #       [
-  #         'CMD',
-  #         'bash',
-  #         '-c',
-  #         "runuser -l postgres -U iteamadmin -c 'pg_isready' || exit 1",
-  #       ]
-  #     interval: 2s
-  #     timeout: 5s
-  #     retries: 3
+  postgres:
+    image: postgres:11.5
+    volumes:
+      - postgres11:/var/lib/postgresql/data
+    ports:
+      - 127.0.0.1:${PORTS__POSTGRES:-5432}:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES__USER:-iteamadmin}
+      - POSTGRES_PASSWORD=${POSTGRES__PASS:-adminadmin1337}
+      - POSTGRES_DB=${POSTGRES__DB:-brevduvor}
+      - POSTGRES_INITDB_ARGS=--encoding=utf8
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'bash',
+          '-c',
+          "runuser -l postgres -U iteamadmin -c 'pg_isready' || exit 1",
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 3
 
   # elasticsearch:
   #   image: 'elasticsearch:7.3.1'
@@ -71,25 +71,29 @@ services:
   #       # start application using extracted data in directory /data
   #       osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
 
-  # drone-simulator:
-  #   image: ${DRONE_DOCKER_IMAGE_ID}
-  #   ports:
-  #     - '3030:3030'
+  drone-simulator:
+    image: brevduvor-drone:ci
+    ports:
+      - '3030:3030'
 
-  # api:
-  #   image: ${API_DOCKER_IMAGE_ID}
-  #   ports:
-  #     - '4000:4000'
-  #   depends_on:
-  #     - postgres
-  #     - osrm-backend
+  api:
+    image: brevduvor-api:ci
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres
+      # - osrm-backend
+    command:
+      - bash
+      - -c
+      - npm run migrate up
 
   client:
     image: brevduvor-client:ci
     ports:
       - '3001:3000'
-    # depends_on:
-    #   - drone-simulator
-    #   - api
-# volumes:
-#   postgres11:
+    depends_on:
+      - drone-simulator
+      - api
+volumes:
+  postgres11:

@@ -15,20 +15,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.16.3
-      # - name: Build the Drone-simulator image
-      #   id: drone
-      #   run: |
-      #     cd packages/drone-simulator
-      #     docker build . --iidfile TEMP_DRONE_IMAGE_ID.txt
-      #     DRONE_DOCKER_IMAGE_ID=$(cat TEMP_DRONE_IMAGE_ID.txt)
-      #     echo ::set-env name=DRONE_DOCKER_IMAGE_ID::$(echo $DRONE_DOCKER_IMAGE_ID)
-      # - name: Build the API image
-      #   id: api
-      #   run: |
-      #     cd packages/api
-      #     docker build . --iidfile TEMP_API_IMAGE_ID.txt
-      #     API_DOCKER_IMAGE_ID=$(cat TEMP_API_IMAGE_ID.txt)
-      #     echo ::set-env name=API_DOCKER_IMAGE_ID::$(echo $API_DOCKER_IMAGE_ID)
+      - name: Build the Drone-simulator image
+        id: drone
+        run: |
+          cd packages/drone-simulator
+          docker build -t brevduvor-drone:ci .
+      - name: Build the API image
+        id: api
+        run: |
+          cd packages/api
+          docker build -t brevduvor-api:ci .
       - name: Build the Client image
         id: client
         run: |
