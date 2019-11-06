@@ -79,12 +79,15 @@ services:
     image: brevduvor-api:ci
     ports:
       - '4000:4000'
+    environment:
+      - POSTGRES__HOST=postgres
+      - JWT_PRIVATE_KEY=${JWT_SECRET_KEY}
     depends_on:
       - postgres
     command:
       - sh
       - -c
-      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up
+      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm start
   client:
     image: brevduvor-client:ci
     ports:
