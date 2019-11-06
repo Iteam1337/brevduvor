@@ -81,7 +81,7 @@ services:
       - '4000:4000'
     environment:
       - POSTGRES__HOST=postgres
-      - JWT_PRIVATE_KEY=${JWT_SECRET_KEY}
+      - JWT_PRIVATE_KEY=definatelyaprivatekey
     depends_on:
       - postgres
     command:
