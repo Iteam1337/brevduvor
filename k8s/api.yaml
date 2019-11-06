@@ -1,0 +1,96 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api
+      app.kubernetes.io/instance: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api
+        app.kubernetes.io/instance: api
+    spec:
+      containers:
+        - name: api
+          image: iteam1337/brevduvor-api:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 4000
+              protocol: TCP
+          resources: {}
+          envFrom:
+            - secretRef:
+                name: postgres-password
+            - secretRef:
+                name: jwt-token
+          env:
+            - name: OSRM_URL
+              value: http://osrm
+            - name: DRONE_URL
+              value: https://drone.brevduvor.iteamdev.se
+            - name: WEBHOOK_URL
+              value: https://api.brevduvor.iteamdev.se/status
+            - name: ELASTIC_URL
+              value: http://elasticsearch.kube-logging.svc.cluster.local
+            - name: POSTGRES__HOST
+              value: postgres
+            - name: POSTGRES__USER
+              value: iteamadmin
+            - name: POSTGRES__DATABASE
+              value: brevduvor
+      initContainers:
+        - name: migrate-api
+          image: iteam1337/brevduvor-api:latest
+          envFrom:
+            - secretRef:
+                name: postgres-password
+          env:
+            - name: POSTGRES__HOST
+              value: postgres
+            - name: POSTGRES__USER
+              value: iteamadmin
+            - name: POSTGRES__DATABASE
+              value: brevduvor
+          command: ['sh', '-c', 'sh bin/migrate.sh']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: api
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api
+  annotations:
+    kubernetes.io/ingress.class: traefik
+
+spec:
+  tls:
+    - hosts:
+        - 'api.brevduvor.iteamdev.se'
+      secretName: api-letsencrypt-prod
+  rules:
+    - host: 'api.brevduvor.iteamdev.se'
+      http:
+        paths:
+          - path: '/'
+            backend:
+              serviceName: api
+              servicePort: http

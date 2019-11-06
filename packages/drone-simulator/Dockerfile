@@ -1,12 +1,9 @@
-FROM node:12-alpine
+FROM node:12
+ARG cache=1
 
 WORKDIR /app
 
-COPY ./package.json ./package.json
-COPY ./package-lock.json ./package-lock.json
+COPY . .
 
-RUN npm ci
-
-COPY ./ /app
-
-CMD npm run start
+RUN npm ci --quiet
+CMD npm run dev

@@ -17,9 +17,11 @@
     "url": "git+https://github.com/Iteam1337/brevduvor.git"
   },
   "scripts": {
-    "start": "tsc && node ./build/index.js",
+    "start": "node ./build/index.js",
     "migrate": "DATABASE_URL=\"postgres://iteamadmin:adminadmin1337@localhost:5432/brevduvor\" node-pg-migrate",
+    "migrate:prod": "node-pg-migrate",
     "generate": "graphql-codegen --config codegen.yml",
+    "build": "tsc",
     "dev": "ts-node-dev --no-notify index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
     "test": "jest --env brevduvor",

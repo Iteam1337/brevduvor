@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  serviceName: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - image: postgres:11.5
+          name: postgres
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: postgres-data
+              mountPath: '/data'
+          envFrom:
+            - secretRef:
+                name: postgres-password
+          env:
+            - name: POSTGRES_DB
+              value: brevduvor
+            - name: POSTGRES_USER
+              value: iteamadmin
+            - name: POSTGRES_INITDB_ARGS
+              value: --encoding=utf8
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: do-block-storage
+        resources:
+          requests:
+            storage: '5Gi'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  ports:
+    - name: '5432'
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: postgres

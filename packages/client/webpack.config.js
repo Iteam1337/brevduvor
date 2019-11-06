@@ -9,7 +9,7 @@ module.exports = {
   mode: isProd ? 'production' : 'development',
   output: {
     path: outputDir,
-    filename: 'index.[hash].js',
+    filename: 'index.js',
     publicPath: '/',
   },
   plugins: [
