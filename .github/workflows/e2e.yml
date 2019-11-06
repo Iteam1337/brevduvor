@@ -33,9 +33,13 @@ jobs:
         id: client
         run: |
           cd packages/client
-          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=${MAPBOX_TOKEN} --build-arg GRAPHQL_API=${GRAPHQL_API} --build-arg GRAPHQL_WS_URI=${GRAPHQL_WS_URI} . 
+          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=$GRAPHQL_API --build-arg GRAPHQL_WS_URI=$GRAPHQL_WS_URI . 
           # CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)
           # echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
+        env:
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+          GRAPHQL_API: http://localhost:4000/graphql
+          GRAPHQL_WS_URI: ws://localhost:4000/graphql
       - name: Start all services
         run: |
           cd packages/api
@@ -62,6 +66,3 @@ jobs:
         env:
           CI: true
           NODE_ENV: production
-          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
-          GRAPHQL_API: http://localhost:4000/graphql
-          GRAPHQL_WS_URI: ws://localhost:4000/graphql
