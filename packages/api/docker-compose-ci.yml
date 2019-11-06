@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres11:/var/lib/postgresql/data
     ports:
-      - 127.0.0.1:${PORTS__POSTGRES:-5432}:5432
+      - '5432:5432'
     environment:
       - POSTGRES_USER=${POSTGRES__USER:-iteamadmin}
       - POSTGRES_PASSWORD=${POSTGRES__PASS:-adminadmin1337}
@@ -75,19 +75,16 @@ services:
     image: brevduvor-drone:ci
     ports:
       - '3030:3030'
-
   api:
     image: brevduvor-api:ci
     ports:
       - '4000:4000'
     depends_on:
       - postgres
-      # - osrm-backend
     command:
-      - bash
+      - sh
       - -c
-      - npm run migrate up
-
+      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up
   client:
     image: brevduvor-client:ci
     ports:
