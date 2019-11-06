@@ -1,3 +1,7 @@
+Given('I register', () => {
+  cy.register().wait(300)
+})
+
 Given('I login', () => {
   cy.login()
 })

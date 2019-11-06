@@ -1,14 +1,41 @@
+const ciUser = {
+  email: 'ci@ci.comss',
+  username: 'ciuser',
+  password: '1234',
+}
+
 Cypress.Commands.add('login', () => {
   cy.visit('/')
     .wait(500)
     .get('#email')
-    .type('chrille@yo')
+    .type(ciUser.email)
     .get('#password')
-    .type('1234hahaha')
+    .type(ciUser.password)
     .get(`[type="submit"]`)
     .click()
     .wait(500)
 })
+
+const host = 'http://localhost:4000'
+
+function registerUser() {
+  const query = {
+    query: `mutation { register(input: { email: "${ciUser.email}", username: "${ciUser.username}", password: "${ciUser.password}", confirmPassword: "${ciUser.password}" }) { id token username } }`,
+  }
+
+  return cy
+    .request({
+      url: `${host}/graphql`,
+      method: 'POST',
+      body: JSON.stringify(query),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => cy.log(JSON.stringify(res)))
+}
+
+Cypress.Commands.add('register', registerUser)
 
 /**
  * Below code slows down execution time by overwriting
