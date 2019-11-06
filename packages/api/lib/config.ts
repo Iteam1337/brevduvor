@@ -25,5 +25,5 @@ export default {
   ELASTIC_URL: config.get('ELASTIC_URL'),
   WEBHOOK_URL: config.get('WEBHOOK_URL'),
   POSTGRES: config.get('POSTGRES'),
-  JWT_SECRET: config.get('jwtPrivateKey'),
+  JWT_SECRET: config.get('JWT_PRIVATE_KEY'),
 }
