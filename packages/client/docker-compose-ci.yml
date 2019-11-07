@@ -95,17 +95,17 @@ services:
     depends_on:
       - drone-simulator
       - api
-  # cypress:
-  #   # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
-  #   image: "cypress/included:3.4.1"
-  #   depends_on:
-  #     - client
-  #   environment:
-  #     # pass base url to test pointing at the web application
-  #     - CYPRESS_baseUrl=http://host.docker.internal:3001
-  #   # share the current folder as volume to avoid copying
-  #   working_dir: /cypress
-  #   volumes:
-  #     - ./:/cypress
+  cypress:
+    # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
+    image: 'cypress/included:3.4.1'
+    depends_on:
+      - client
+    environment:
+      # pass base url to test pointing at the web application
+      - CYPRESS_baseUrl=http://host.docker.internal:3001
+    # share the current folder as volume to avoid copying
+    working_dir: /cypress
+    volumes:
+      - ./:/cypress
 volumes:
   postgres11:
