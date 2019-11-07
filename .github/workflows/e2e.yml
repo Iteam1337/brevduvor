@@ -25,10 +25,6 @@ jobs:
         run: |
           cd packages/api
           docker build -t brevduvor-api:ci .
-      - name: Start all services
-        run: |
-          cd packages/client
-          docker-compose -f docker-compose-ci.yml up -d
       - name: Build the Client image
         id: client
         run: |
@@ -44,6 +40,10 @@ jobs:
       #   run: |
       #     cd packages/client
       #     npm install
+      - name: Start all services
+        run: |
+          cd packages/client
+          docker-compose -f docker-compose-ci.yml up -d
       - name: Run Cypress-tests
         run: |
           cd packages/client
