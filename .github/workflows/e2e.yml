@@ -29,10 +29,10 @@ jobs:
         run: |
           cd packages/client
           docker-compose -f docker-compose-ci.yml up -d
-      - name: Bootstrap dependencies
+      - name: Bootstrap client
         run: |
+          cd packages/client
           npm install
-          npm run bootstrap
       - name: Run Cypress-tests
         run: |
           cd packages/client

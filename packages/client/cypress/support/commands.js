@@ -16,7 +16,7 @@ Cypress.Commands.add('login', () => {
     .wait(500)
 })
 
-const host = 'http://localhost:4000'
+const host = 'http://host.docker.internal:4000'
 
 function registerUser() {
   const query = {
