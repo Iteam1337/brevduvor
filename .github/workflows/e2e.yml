@@ -15,39 +15,40 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.16.3
-      - name: Build the Drone-simulator image
-        id: drone
-        run: |
-          cd packages/drone-simulator
-          docker build -t brevduvor-drone:ci .
-      - name: Build the API image
-        id: api
-        run: |
-          cd packages/api
-          docker build -t brevduvor-api:ci .
-      - name: Build the Client image
-        id: client
-        run: |
-          cd packages/client	
-          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://host.docker.internal:4000/graphql --build-arg GRAPHQL_WS_URI=ws://host.docker.internal:4000/graphql . 	
-          # CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)	
-          # echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
-        env:
-          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
-          GRAPHQL_API: http://host.docker.internal:4000/graphql
-          GRAPHQL_WS_URI: ws://host.docker.internal:4000/graphql
-      # - name: Bootstrap client
+      # - name: Build the Drone-simulator image
+      #   id: drone
+      #   run: |
+      #     cd packages/drone-simulator
+      #     docker build -t brevduvor-drone:ci .
+      # - name: Build the API image
+      #   id: api
+      #   run: |
+      #     cd packages/api
+      #     docker build -t brevduvor-api:ci .
+      # - name: Build the Client image
+      #   id: client
       #   run: |
       #     cd packages/client
-      #     npm install
-      - name: Start all services
-        run: |
-          cd packages/client
-          docker-compose -f docker-compose-ci.yml up -d
+      #     docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://host.docker.internal:4000/graphql --build-arg GRAPHQL_WS_URI=ws://host.docker.internal:4000/graphql .
+      #     # CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)
+      #     # echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
+      #   env:
+      #     MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      #     GRAPHQL_API: http://host.docker.internal:4000/graphql
+      #     GRAPHQL_WS_URI: ws://host.docker.internal:4000/graphql
+      # # - name: Bootstrap client
+      # #   run: |
+      # #     cd packages/client
+      # #     npm install
+      # - name: Start all services
+      #   run: |
+      #     cd packages/client
+      #     docker-compose -f docker-compose-ci.yml up -d
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          docker run -v $PWD:/cypress -w / -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://host.docker.internal:3001 cypress/included:3.4.1
+          echo $PWD
+          # docker run -v $PWD:/cypress -w /cypress -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://host.docker.internal:3001 cypress/included:3.4.1
         # - name: Commit & push Cypress-videos
         #   if: always()
         #   run: |
