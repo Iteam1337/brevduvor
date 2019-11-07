@@ -29,14 +29,25 @@ jobs:
         run: |
           cd packages/client
           docker-compose -f docker-compose-ci.yml up -d
-      - name: Bootstrap client
+      - name: Build the Client image
+        id: client
         run: |
-          cd packages/client
-          npm install
+          cd packages/client	
+          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=$GRAPHQL_API --build-arg GRAPHQL_WS_URI=$GRAPHQL_WS_URI . 	
+          # CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)	
+          # echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
+        env:
+          MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+          GRAPHQL_API: http://host.docker.internal:4000/graphql
+          GRAPHQL_WS_URI: ws://host.docker.internal:4000/graphql
+      # - name: Bootstrap client
+      #   run: |
+      #     cd packages/client
+      #     npm install
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          npm run cypress:run
+          docker run -it -v $PWD:/cypress -w /cypress -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://host.docker.internal:3001 cypress/included:3.4.1
         # - name: Commit & push Cypress-videos
         #   if: always()
         #   run: |
