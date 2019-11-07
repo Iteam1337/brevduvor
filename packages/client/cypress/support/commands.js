@@ -16,7 +16,8 @@ Cypress.Commands.add('login', () => {
     .wait(500)
 })
 
-const host = 'http://host.docker.internal:4000'
+console.log(process.env)
+const host = process.env.API_URL
 
 function registerUser() {
   const query = {
@@ -25,7 +26,7 @@ function registerUser() {
 
   return cy
     .request({
-      url: `${host}/graphql`,
+      url: `http://api:4000/graphql`,
       method: 'POST',
       body: JSON.stringify(query),
       headers: {
