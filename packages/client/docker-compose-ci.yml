@@ -80,6 +80,8 @@ services:
     environment:
       - POSTGRES__HOST=postgres
       - JWT_PRIVATE_KEY=definatelyaprivatekey
+    ports:
+      - '4000:4000'
     depends_on:
       - postgres
     command:

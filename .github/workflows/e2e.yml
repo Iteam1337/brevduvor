@@ -48,7 +48,7 @@ jobs:
       - name: Run Cypresstests
         run: |
           cd packages/client
-          docker run --network=client_internal -t -e CYPRESS_API_URL=http://api:4000 -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
+          docker run --network=client_internal -t -e CYPRESS_API_URL=http://localhost:4000 -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
         # - name: Commit & push Cypress-videos
         #   if: always()
         #   run: |
