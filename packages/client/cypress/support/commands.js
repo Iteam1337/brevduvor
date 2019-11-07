@@ -24,9 +24,11 @@ function registerUser() {
     query: `mutation { register(input: { email: "${ciUser.email}", username: "${ciUser.username}", password: "${ciUser.password}", confirmPassword: "${ciUser.password}" }) { id token username } }`,
   }
 
+  console.log('env', process.env)
+
   return cy
     .request({
-      url: `http://api:4000/graphql`,
+      url: `${host}/graphql`,
       method: 'POST',
       body: JSON.stringify(query),
       headers: {

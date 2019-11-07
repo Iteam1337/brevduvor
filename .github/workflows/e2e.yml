@@ -29,7 +29,7 @@ jobs:
         id: client
         run: |
           cd packages/client	
-          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api.internal:4000/graphql . 	
+          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql . 	
           # CLIENT_DOCKER_IMAGE_ID=$(cat TEMP_CLIENT_IMAGE_ID.txt)	
           # echo ::set-env name=CLIENT_DOCKER_IMAGE_ID::$(echo $CLIENT_DOCKER_IMAGE_ID)
         env:
@@ -45,10 +45,10 @@ jobs:
           cd packages/client
           npm install
           docker-compose -f docker-compose-ci.yml up
-      - name: Run Cypresstests
-        run: |
-          cd packages/client
-          docker run -v $PWD:/cypress -w /cypress -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://client:3001 cypress/included:3.4.1
+        # - name: Run Cypresstests
+        #   run: |
+        #     cd packages/client
+        #     docker run -v $PWD:/cypress -w /cypress -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://client:3001 cypress/included:3.4.1
         # - name: Commit & push Cypress-videos
         #   if: always()
         #   run: |
