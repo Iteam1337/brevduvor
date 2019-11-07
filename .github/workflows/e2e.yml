@@ -47,7 +47,7 @@ jobs:
       - name: Run Cypress-tests
         run: |
           cd packages/client
-          docker run -v $PWD:/cypress -w /cypress -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://host.docker.internal:3001 cypress/included:3.4.1
+          docker run -v $PWD:/cypress -w / -e CYPRESS_VIDEO -e CYPRESS_baseUrl=http://host.docker.internal:3001 cypress/included:3.4.1
         # - name: Commit & push Cypress-videos
         #   if: always()
         #   run: |
