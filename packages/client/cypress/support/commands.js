@@ -16,15 +16,12 @@ Cypress.Commands.add('login', () => {
     .wait(500)
 })
 
-console.log(process.env)
-const host = process.env.API_URL
+const host = Cypress.env('API_URL')
 
 function registerUser() {
   const query = {
     query: `mutation { register(input: { email: "${ciUser.email}", username: "${ciUser.username}", password: "${ciUser.password}", confirmPassword: "${ciUser.password}" }) { id token username } }`,
   }
-
-  console.log('env', process.env)
 
   return cy
     .request({
