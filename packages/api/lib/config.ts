@@ -32,4 +32,5 @@ export default {
   POSTGRES: config.get('POSTGRES'),
   JWT_SECRET: config.get('jwtPrivateKey'),
   REDIS_PASSWORD: config.get('redisPassword'),
+  TWILIO: config.get('TWILIO'),
 }

@@ -1,6 +1,7 @@
 import { queue } from '../adapters/queue'
 import { NotificationInput } from '../__generated__/brevduvor'
 import { Job } from 'kue'
+import { send } from './../adapters/smsclient'
 
 type NotificationType = 'sms' | 'email' | 'push'
 
@@ -14,19 +15,16 @@ export const create = (
     job.attempts(3).backoff({ type: 'exponential' })
 
     job
-      .on('complete', _res => {
-        console.log('DONE')
+      .on('enqueue', () => {
+        console.log('Job enqeueud: ', job.data)
 
+        queue.process('sms', sms)
+      })
+
+      .on('complete', _res => {
         resolve(true)
       })
-      .on('enqueue', () => {
-        console.log('Job enqeueud', job.data)
 
-        queue.process('sms', (job: Job['data'], done: Function) => {
-          console.log('inside processing')
-          console.log(job.data.to, done)
-        })
-      })
       .on('failed attempt', (errorMsg, completedAttempts) => {
         // TODO: add some logger service
         console.log(
@@ -35,8 +33,15 @@ export const create = (
           'Attempts: ' + completedAttempts
         )
       })
+
       .on('failed', (errorMsg: string) => {
         console.log(errorMsg)
         reject(errorMsg)
       })
   })
+
+const sms = (job: Job, doneCb: Function) => {
+  send(job.data.message, job.data.receiver)
+    .then(() => doneCb())
+    .catch(() => doneCb())
+}
