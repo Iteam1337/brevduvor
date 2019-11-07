@@ -1,5 +1,5 @@
 const ciUser = {
-  email: 'ci@ci.comss',
+  email: 'ci@ci.com',
   username: 'ciuser',
   password: '1234',
 }
