@@ -16,17 +16,14 @@ jobs:
         with:
           node-version: 10.16.3
       - name: Build the Drone-simulator image
-        id: drone
         run: |
           cd packages/drone-simulator
           docker build -t brevduvor-drone:ci .
       - name: Build the API image
-        id: api
         run: |
           cd packages/api
           docker build -t brevduvor-api:ci .
       - name: Build the Client image
-        id: client
         run: |
           cd packages/client	
           docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql . 	
@@ -61,5 +58,5 @@ jobs:
         #     git commit -m "test(e2e): submit cypress-videos"
         #     git push
         env:
-          CI: true
+          CI: 'true'
           NODE_ENV: production

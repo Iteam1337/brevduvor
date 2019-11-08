@@ -1,7 +1,7 @@
 const ciUser = {
   email: 'ci@ci.com',
   username: 'ciuser',
-  password: '1234',
+  password: '12341234',
 }
 
 Cypress.Commands.add('login', () => {
