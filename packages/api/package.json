@@ -20,6 +20,7 @@
     "start": "node ./build/index.js",
     "migrate": "DATABASE_URL=\"postgres://iteamadmin:adminadmin1337@localhost:5432/brevduvor\" node-pg-migrate",
     "migrate:prod": "node-pg-migrate",
+    "seed:test": "./node_modules/.bin/knex seed:run --env test",
     "generate": "graphql-codegen --config codegen.yml",
     "build": "tsc",
     "dev": "ts-node-dev --no-notify index.ts",
@@ -72,6 +73,7 @@
     "graphql-type-json": "^0.3.0",
     "jest-environment-brevduvor": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.1",
     "pg": "^7.12.1",
     "pg-promise": "^9.2.1",
     "scrypt-kdf": "^2.0.1"
