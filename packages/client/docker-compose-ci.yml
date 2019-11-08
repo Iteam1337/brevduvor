@@ -80,14 +80,12 @@ services:
     environment:
       - POSTGRES__HOST=postgres
       - JWT_PRIVATE_KEY=definatelyaprivatekey
-    ports:
-      - '4000:4000'
     depends_on:
       - postgres
     command:
       - sh
       - -c
-      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm start
+      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start
     networks:
       - internal
   client:
