@@ -26,7 +26,7 @@ jobs:
       - name: Build the Client image
         run: |
           cd packages/client	
-          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
+          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
         env:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
       - name: Start all services
