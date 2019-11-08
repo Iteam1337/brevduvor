@@ -29,13 +29,7 @@ jobs:
           docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
         env:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
-          GRAPHQL_API: http://api:4000/graphql
-          GRAPHQL_WS_URI: ws://api:4000/graphql
-      # - name: Bootstrap client
-      #   run: |
-      #     cd packages/client
-      #     npm install
-      - name: Start all services and run tests
+      - name: Start all services
         run: |
           cd packages/client
           npm install
@@ -43,18 +37,18 @@ jobs:
       - name: Run Cypresstests
         run: |
           cd packages/client
-          docker run --network=client_internal -t -e CYPRESS_API_URL=http://localhost:4000 -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
-        # - name: Commit & push Cypress-videos
-        #   if: always()
-        #   run: |
-        #     git config --global user.name ${{ secrets.GITHUB_USER }}
-        #     git config --global user.email ${{ secrets.GITHUB_EMAIL }}
-        #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        #     echo ${GITHUB_HEAD_REF}
-        #     git checkout "${GITHUB_HEAD_REF}"
-        #     git add packages/client/cypress/videos
-        #     git commit -m "test(e2e): submit cypress-videos"
-        #     git push
+          docker run --network=client_internal -t -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
+      - name: Commit & push Cypress-videos
+        if: always()
+        run: |
+          git config --global user.name ${{ secrets.GITHUB_USER }}
+          git config --global user.email ${{ secrets.GITHUB_EMAIL }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          echo ${GITHUB_HEAD_REF}
+          git checkout "${GITHUB_HEAD_REF}"
+          git add packages/client/cypress/videos
+          git commit -m "test(e2e): submit cypress-videos"
+          git push
         env:
           CI: 'true'
           NODE_ENV: production
