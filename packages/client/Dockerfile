@@ -13,7 +13,7 @@ RUN npm install --quiet
 RUN npm run build
 RUN npm run webpack:production
 
-FROM nginx:stable-alpine
+FROM nginx:stable
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
