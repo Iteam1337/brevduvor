@@ -2,7 +2,6 @@ import {
   MutationResolvers,
   MutationNotificationArgs,
 } from '../../../__generated__/brevduvor'
-// import * as notifications from './../../../services/notifications'
 import { create } from './../../../services/notificationJob'
 
 export const notification: MutationResolvers['notification'] = async (
