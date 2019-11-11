@@ -14,6 +14,7 @@ export const droneStatus = async (
 
   if (droneStatus.status === 'done') {
     await updateTripStatus(droneStatus.id, droneStatus.status)
+    // TODO: Remove hardcoded values
     await notificationJob.create('sms', {
       receiver: '+46707905582',
       sentAt: new Date(Date.now()).toISOString(),
