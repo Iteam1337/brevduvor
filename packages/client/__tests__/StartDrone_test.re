@@ -109,7 +109,7 @@ describe("StartDrone", () => {
       )
       |> then_(_ =>
            expect(spy |> MockJs.calls)
-           |> toEqual([|"a8cc4a84-98a8-4362-bf29-6a99198a3626"|])
+           |> toEqual([|mockId|])
            |> finish
            |> resolve
          )
