@@ -6,7 +6,7 @@ import { send } from './../adapters/smsclient'
 
 // scheduler for notification jobs
 cron.schedule('* * * * *', () => {
-  queue.process('sms', sms)
+  queue.process('sms', sendSMS)
 })
 
 type NotificationType = 'sms' | 'email' | 'push'
@@ -44,7 +44,7 @@ export const create = (
       })
   })
 
-const sms = (job: Job, doneCb: Function) => {
+const sendSMS = (job: Job, doneCb: Function) => {
   send(job.data.message, job.data.receiver)
     .then(() => doneCb())
     .catch(() => doneCb())
