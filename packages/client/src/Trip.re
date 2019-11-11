@@ -1,8 +1,6 @@
 [@react.component]
 let make = (~id) => {
   let response = DroneSubscription.use(~id, ());
-  let ({errorToString, translationsToString}, _): LocaleContext.t =
-    LocaleContext.use();
 
   <div className="w-full min-h-screen flex">
     {switch (response) {
@@ -22,22 +20,16 @@ let make = (~id) => {
            </>
          )
        ->Belt.Option.getWithDefault(
-           <Typography.Error>
-             NoDataFromServer->errorToString
-           </Typography.Error>,
+           <Typography.Error> NoDataFromServer </Typography.Error>,
          )
      | Loading =>
        <SideMenu>
-         <Typography.P>
-           {translationsToString(DroneStatus_Loading_Position)}
-         </Typography.P>
+         <Alert.Info>
+           I18n.Translations.DroneStatus_Loading_Position
+         </Alert.Info>
        </SideMenu>
-     | NoData =>
-       <Typography.Error> {errorToString(NoDroneWithId)} </Typography.Error>
-     | Error(_) =>
-       <Typography.Error>
-         {errorToString(NoDroneWithIdError)}
-       </Typography.Error>
+     | NoData => <Alert.Error> NoDroneWithId </Alert.Error>
+     | Error(_) => <Alert.Error> NoDroneWithIdError </Alert.Error>
      }}
   </div>;
 };

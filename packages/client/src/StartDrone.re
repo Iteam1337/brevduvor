@@ -13,43 +13,29 @@ module StartDroneMutation =
 
 [@react.component]
 let make = (~id, ~handleDroneInitResponse) => {
-  let ({errorToString, translationsToString}, _changeLocale): LocaleContext.t =
-    LocaleContext.use();
-
-  let (startDroneMutation, _simple, _full) =
-    StartDroneMutation.use(
-      ~variables=StartDroneMutationConfig.make(~id, ())##variables,
-      (),
-    );
+  let (startDroneMutation, simple, _) = StartDroneMutation.use();
 
   let startDrone = _ => {
-    startDroneMutation()
-    ->FutureJs.fromPromise(Js.String.make)
-    ->Future.mapOk(
-        (
-          result:
-            ReasonApolloHooks.Mutation.controlledVariantResult(
-              StartDroneMutationConfig.t,
-            ),
-        ) =>
-        switch (result) {
-        | Data(data) => data##startDrone##id->handleDroneInitResponse
-        | Loading
-        | Called
-        | NoData =>
-          Belt.Result.Error(errorToString(NoDataFromServer))->Js.log
-        | Error(error) => Belt.Result.Error(error##message)->Js.log
-        }
-      )
-    ->Future.mapError(Js.log2("ERROR: Error in StartDroneMutation\n\n"))
-    ->ignore;
+    startDroneMutation(
+      ~variables=StartDroneMutationConfig.make(~id, ())##variables,
+      (),
+    )
+    |> ignore;
   };
 
-  <div>
+  switch (simple) {
+  | Data(data) =>
+    data##startDrone##id->handleDroneInitResponse;
+    <Alert.Info className="mt-5"> BookTrip_Booking_Finished </Alert.Info>;
+  | Loading
+  | Called
+  | NoData =>
     <Button.Primary
-      onClick=startDrone
-      className="mt-4 bg-green-400 hover:bg-green-500  mt-5">
-      {{translationsToString(BookTrip_Button)}->React.string}
+      onClick=startDrone className="mt-4 bg-green-400 hover:bg-green-500 mt-5">
+      I18n.Translations.BookTrip_Button
     </Button.Primary>
-  </div>;
+  | Error(error) =>
+    Belt.Result.Error(error##message)->Js.log;
+    <Alert.Error> I18n.Error.ErrorBookingDrone </Alert.Error>;
+  };
 };

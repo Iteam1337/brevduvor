@@ -29,15 +29,16 @@ module Locale = {
 
 module Error = {
   type t =
-    | NoDataFromServer
     | CouldNotGetAvailableDestinations
-    | NoDroneWithId
-    | NoDroneWithIdError
+    | ErrorBookingDrone
     | FourOFour
     | MissingUser
+    | NoDataFromServer
+    | NoDroneData
+    | NoDroneWithId
+    | NoDroneWithIdError
     | PassIncorrect
     | PasswordFieldsNotMatching
-    | NoDroneData
     | Other(string);
 
   let authErrorFromSignature =
@@ -56,6 +57,9 @@ module Error = {
     switch (locale, error) {
     | (`ENGLISH, NoDataFromServer) => "Looks like we did not receive any data from the server."
     | (`SWEDISH, NoDataFromServer) => {js|Det verkar som att vi inte fick tillbaka någon data från servern.|js}
+
+    | (`ENGLISH, ErrorBookingDrone) => "There was an error while trying to start the drone."
+    | (`SWEDISH, ErrorBookingDrone) => {js|Någonting gick snett drönaren försökte startas|js}
 
     | (`ENGLISH, FourOFour) => "404. Sorry, the page was not found."
     | (`SWEDISH, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till

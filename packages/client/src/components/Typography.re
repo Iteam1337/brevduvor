@@ -10,7 +10,10 @@ module P = {
 
 module Error = {
   [@react.component]
-  let make = (~children) => {
-    <p className="text-red"> children->React.string </p>;
+  let make = (~children: I18n.Error.t) => {
+    let ({errorToString}, _changeLocale): LocaleContext.t =
+      LocaleContext.use();
+
+    <p className="text-red"> {{errorToString(children)}->React.string} </p>;
   };
 };

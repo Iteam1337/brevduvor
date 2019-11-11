@@ -14,7 +14,6 @@ module InitDroneMutation =
 [@react.component]
 let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
-  let ({translationsToString, _}, _): LocaleContext.t = LocaleContext.use();
 
   let initDrone = _ => {
     initDroneMutation(
@@ -32,22 +31,21 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
   <div>
     {switch (simple) {
      | Data(d) =>
-       <div>
-         <Typography.P className="mt-5">
-           {translationsToString(BookTrip_TripPrepared_Message)}
-         </Typography.P>
+       <>
+         <Alert.Info className="mt-5">
+           I18n.Translations.BookTrip_TripPrepared_Message
+         </Alert.Info>
          <StartDrone id=d##initDrone##id handleDroneInitResponse />
-       </div>
+       </>
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
        <Button.Primary onClick=initDrone className="mt-5">
-         {{translationsToString(BookTrip_PrepareTrip_Button)}->React.string}
+         I18n.Translations.BookTrip_PrepareTrip_Button
        </Button.Primary>
      | Error(_) =>
-       <Typography.Error>
-         {translationsToString(BookTrip_PrepareTrip_Button)}
-       </Typography.Error>
+       /* TODO(@all): Use the error-message here */
+       <Alert.Error> I18n.Error.NoDataFromServer </Alert.Error>
      }}
   </div>;
 };

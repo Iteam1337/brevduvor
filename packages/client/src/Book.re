@@ -85,9 +85,9 @@ let make = () => {
          | Loading => <Loader.Inline isLoading=true />
          | NoData
          | Error(_) =>
-           <Typography.Error>
-             {translationsToString(BookTrip_From_Label)}
-           </Typography.Error>
+           <Alert.Error>
+             I18n.Error.CouldNotGetAvailableDestinations
+           </Alert.Error>
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
@@ -101,14 +101,13 @@ let make = () => {
         {switch (droneId) {
          | Some(id) =>
            <>
-             <Typography.P className="mt-5">
-               {translationsToString(BookTrip_Booking_Finished)}
-             </Typography.P>
+             <Alert.Info className="mt-5">
+               BookTrip_Booking_Finished
+             </Alert.Info>
              <Button.Primary
                className="mt-5"
                onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
-               {translationsToString(BookTrip_GoToOverview_Button)
-                ->React.string}
+               BookTrip_GoToOverview_Button
              </Button.Primary>
            </>
          | _ => React.null
