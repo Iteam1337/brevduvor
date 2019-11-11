@@ -37,7 +37,7 @@ describe("Book", () => {
     element |> container |> expect |> toMatchSnapshot;
   });
 
-  testAsync("renders with data", finish => {
+  testAsync("renders dropdown options", finish => {
     open I18n.Translations;
 
     let element =

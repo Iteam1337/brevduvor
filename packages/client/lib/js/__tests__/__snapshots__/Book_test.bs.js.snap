@@ -1,47 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Book renders loading initially 1`] = `
-<div>
-  <div
-    class="w-full min-h-screen flex"
-  >
-    <div
-      class="min-w-350 w-350 bg-white flex flex-row shadow-lg z-10"
-    >
-      <div
-        class="py-6 px-4 bg-blue-400"
-      >
-        <div
-          class="w-full flex flex-col justify-center"
-        >
-          <svg
-            class="fill-current text-gray-100 w-6 h-6 mb-6"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"
-            />
-          </svg>
-        </div>
-      </div>
-      <div
-        class="p-5 w-full"
-      >
-        <button
-          class="w-full text-xs text-white font-semibold
-        py-3 px-4 rounded tracking-wide mt-5 mt-5 bg-gray-400 text-white focus:outline-none"
-          type="button"
-        >
-          Förbered bokning
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Book renders with data 1`] = `
+exports[`Book renders dropdown options 1`] = `
 <div>
   <div
     class="w-full min-h-screen flex"
@@ -157,6 +116,47 @@ exports[`Book renders with data 1`] = `
             </svg>
           </div>
         </div>
+        <button
+          class="w-full text-xs text-white font-semibold
+        py-3 px-4 rounded tracking-wide mt-5 mt-5 bg-gray-400 text-white focus:outline-none"
+          type="button"
+        >
+          Förbered bokning
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Book renders loading initially 1`] = `
+<div>
+  <div
+    class="w-full min-h-screen flex"
+  >
+    <div
+      class="min-w-350 w-350 bg-white flex flex-row shadow-lg z-10"
+    >
+      <div
+        class="py-6 px-4 bg-blue-400"
+      >
+        <div
+          class="w-full flex flex-col justify-center"
+        >
+          <svg
+            class="fill-current text-gray-100 w-6 h-6 mb-6"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="p-5 w-full"
+      >
         <button
           class="w-full text-xs text-white font-semibold
         py-3 px-4 rounded tracking-wide mt-5 mt-5 bg-gray-400 text-white focus:outline-none"
