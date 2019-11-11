@@ -1,0 +1,15 @@
+FROM node:12
+
+WORKDIR /app
+ARG MAPBOX_TOKEN
+ARG GRAPHQL_API
+ARG GRAPHQL_WS_URI
+
+COPY . .
+
+RUN npm ci --quiet
+RUN npm run build
+RUN npm run webpack:production
+
+
+CMD ["sh", "-c", "npx serve --listen 3000 --no-clipboard --single dist"]
