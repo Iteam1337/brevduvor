@@ -38,7 +38,8 @@ jobs:
         run: |
           cd packages/client
           docker ps
-          docker run --network=client_internal -t -e DEBUG=cypress:* -e http_proxy=api -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
+          export NO_PROXY=api
+          docker run --network=client_internal -t -e DEBUG=cypress:* -e NO_PROXY=api -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
       - name: Commit & push Cypress-videos
         if: always()
         run: |
