@@ -18,16 +18,21 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
 
   React.useEffect1(
     () => {
-      switch (simple) {
-      | Data(_d) =>
+      let dispatchNotification = notificationType =>
         notifications.updateNotifications(
           Notifications.Notification.make(
-            ~notificationType=
-              Info(I18n.Translations.BookTrip_TripPrepared_Message),
+            ~notificationType,
             ~timeout=Some(5000),
             (),
           ),
+        );
+
+      switch (simple) {
+      | Data(_d) =>
+        dispatchNotification(
+          Info(I18n.Translations.BookTrip_TripPrepared_Message),
         )
+      | Error(_e) => dispatchNotification(Error(I18n.Error.NoDataFromServer))
       | _ => ()
       };
       None;
@@ -50,9 +55,7 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
 
   <div>
     {switch (simple) {
-     | Data(d) =>
-       Js.log2("InitDrone", d);
-       <StartDrone id=d##initDrone##id handleDroneInitResponse />;
+     | Data(d) => <StartDrone id=d##initDrone##id handleDroneInitResponse />
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
@@ -61,14 +64,7 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
        </Button.Primary>
      | Error(_) =>
        /* TODO(@all): Use the error-message here */
-       notifications.updateNotifications(
-         Notifications.Notification.make(
-           ~notificationType=Error(I18n.Error.NoDataFromServer),
-           ~timeout=Some(5000),
-           (),
-         ),
-       );
-       React.null;
+       React.null
      }}
   </div>;
 };
