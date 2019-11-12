@@ -10,6 +10,7 @@ module Notification = {
     timeout: option(int),
     notificationType,
   };
+
   let make = (~notificationType, ~timeout=None, ~onClick=None, ()) => {
     id: Utils.UUID.make(),
     onClick,
@@ -55,7 +56,7 @@ module Provider = {
         [],
       );
 
-    let updateNotifications = notification => {
+    let updateNotifications = (notification: Notification.t) => {
       dispatch(UpdateNotifications(notification));
     };
 

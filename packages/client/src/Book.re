@@ -33,6 +33,7 @@ module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
 let make = () => {
   let ({translationsToString, _}, _changeLocale): LocaleContext.t =
     LocaleContext.use();
+  let notifications = React.useContext(Notifications.Context.t);
 
   let (state, dispatch) =
     React.useReducer(
@@ -85,9 +86,15 @@ let make = () => {
          | Loading => <Loader.Inline isLoading=true />
          | NoData
          | Error(_) =>
-           <Alert.Error>
-             I18n.Error.CouldNotGetAvailableDestinations
-           </Alert.Error>
+           notifications.updateNotifications(
+             Notifications.Notification.make(
+               ~notificationType=
+                 Error(I18n.Error.CouldNotGetAvailableDestinations),
+               ~timeout=Some(5000),
+               (),
+             ),
+           );
+           React.null;
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
@@ -100,16 +107,18 @@ let make = () => {
          }}
         {switch (droneId) {
          | Some(id) =>
-           <>
-             <Alert.Info className="mt-5">
-               BookTrip_Booking_Finished
-             </Alert.Info>
-             <Button.Primary
-               className="mt-5"
-               onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
-               BookTrip_GoToOverview_Button
-             </Button.Primary>
-           </>
+           notifications.updateNotifications(
+             Notifications.Notification.make(
+               ~notificationType=Success(BookTrip_Booking_Finished),
+               ~timeout=Some(5000),
+               (),
+             ),
+           );
+           <Button.Primary
+             className="mt-5"
+             onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
+             BookTrip_GoToOverview_Button
+           </Button.Primary>;
          | _ => React.null
          }}
       </SideMenu>

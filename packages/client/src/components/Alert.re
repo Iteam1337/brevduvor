@@ -59,6 +59,8 @@ module Info = {
     let ({translationsToString}, _changeLocale): LocaleContext.t =
       LocaleContext.use();
 
+    Js.log("InfoToast");
+
     useTimeout(~timeout, ~onRemove) |> ignore;
 
     <div
@@ -93,6 +95,8 @@ module Success = {
       LocaleContext.use();
 
     useTimeout(~timeout, ~onRemove) |> ignore;
+
+    Js.log("SuccessToast");
 
     <div
       className={Cn.make([

@@ -13,6 +13,7 @@ module InitDroneMutation =
 
 [@react.component]
 let make = (~start, ~stop, ~handleDroneInitResponse) => {
+  let notifications = React.useContext(Notifications.Context.t);
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
 
   let initDrone = _ => {
@@ -31,12 +32,16 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
   <div>
     {switch (simple) {
      | Data(d) =>
-       <>
-         <Alert.Info className="mt-5">
-           I18n.Translations.BookTrip_TripPrepared_Message
-         </Alert.Info>
-         <StartDrone id=d##initDrone##id handleDroneInitResponse />
-       </>
+       Js.log2("InitDrone", d);
+       notifications.updateNotifications(
+         Notifications.Notification.make(
+           ~notificationType=
+             Info(I18n.Translations.BookTrip_TripPrepared_Message),
+           ~timeout=Some(5000),
+           (),
+         ),
+       );
+       <StartDrone id=d##initDrone##id handleDroneInitResponse />;
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
@@ -45,7 +50,14 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
        </Button.Primary>
      | Error(_) =>
        /* TODO(@all): Use the error-message here */
-       <Alert.Error> I18n.Error.NoDataFromServer </Alert.Error>
+       notifications.updateNotifications(
+         Notifications.Notification.make(
+           ~notificationType=Error(I18n.Error.NoDataFromServer),
+           ~timeout=Some(5000),
+           (),
+         ),
+       );
+       React.null;
      }}
   </div>;
 };
