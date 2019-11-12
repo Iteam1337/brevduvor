@@ -60,9 +60,13 @@ module Setup = {
         },
       );
 
+    let alertContextValue = React.useReducer(AlertContext.reducer, []);
+
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
-        <LocaleProvider value=localeContextValue> <App /> </LocaleProvider>
+        <LocaleProvider value=localeContextValue>
+          <AlertProvider value=alertContextValue> <App /> </AlertProvider>
+        </LocaleProvider>
       </ReasonApolloHooks.ApolloProvider>
     </ReasonApollo.Provider>;
   };

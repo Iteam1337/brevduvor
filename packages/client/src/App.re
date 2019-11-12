@@ -4,6 +4,8 @@ let make = () => {
 
   let (_, changeLocale): LocaleContext.t = LocaleContext.use();
 
+  let (_, dispatch) = AlertContext.use();
+
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
@@ -20,12 +22,28 @@ let make = () => {
     );
   };
 
-  loggedIn
-    ? switch (url.path) {
-      | [] => <Book />
-      | ["resor"] => <Trips />
-      | ["resa", id] => <Trip id />
-      | _ => <Typography.Error> FourOFour </Typography.Error>
-      }
-    : <Login onLogin=handleLogin />;
+  React.useEffect0(() => {
+    dispatch(Info(I18n.Translations.BookTrip_GoToOverview_Button));
+    let interval =
+      Js.Global.setTimeout(
+        () => {
+          dispatch(Clear);
+          Js.log("Ey yo");
+        },
+        3000,
+      );
+    Some(() => Js.Global.clearTimeout(interval));
+  });
+
+  <div>
+    {loggedIn
+       ? switch (url.path) {
+         | [] => <Book />
+         | ["resor"] => <Trips />
+         | ["resa", id] => <Trip id />
+         | _ => <Typography.Error> FourOFour </Typography.Error>
+         }
+       : <Login onLogin=handleLogin />}
+    <Toast />
+  </div>;
 };
