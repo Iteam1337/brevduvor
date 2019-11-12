@@ -1,8 +1,32 @@
+let useTimeout = (~timeout, ~onRemove) => {
+  React.useEffect2(
+    () => {
+      let id =
+        switch (timeout, onRemove) {
+        | (Some(t), Some(fn)) => Some(Js.Global.setTimeout(fn, t))
+        | _ => None
+        };
+
+      Some(
+        () =>
+          switch (id) {
+          | Some(id) => Js.Global.clearTimeout(id)
+          | None => ()
+          },
+      );
+    },
+    (timeout, onRemove),
+  );
+};
+
 module Error = {
   [@react.component]
-  let make = (~children: I18n.Error.t, ~heading=?, ~className=?) => {
+  let make =
+      (~children: I18n.Error.t, ~heading=?, ~className=?, ~onRemove, ~timeout) => {
     let ({errorToString}, _changeLocale): LocaleContext.t =
       LocaleContext.use();
+
+    useTimeout(~timeout, ~onRemove) |> ignore;
 
     <div
       className=Cn.(
@@ -24,9 +48,18 @@ module Error = {
 
 module Info = {
   [@react.component]
-  let make = (~children: I18n.Translations.t, ~heading=?, ~className=?) => {
+  let make =
+      (
+        ~children: I18n.Translations.t,
+        ~heading=?,
+        ~className=?,
+        ~onRemove,
+        ~timeout,
+      ) => {
     let ({translationsToString}, _changeLocale): LocaleContext.t =
       LocaleContext.use();
+
+    useTimeout(~timeout, ~onRemove) |> ignore;
 
     <div
       className=Cn.(
@@ -48,9 +81,18 @@ module Info = {
 
 module Success = {
   [@react.component]
-  let make = (~children: I18n.Translations.t, ~heading=?, ~className=?) => {
+  let make =
+      (
+        ~children: I18n.Translations.t,
+        ~heading=?,
+        ~className=?,
+        ~onRemove,
+        ~timeout,
+      ) => {
     let ({translationsToString}, _changeLocale): LocaleContext.t =
       LocaleContext.use();
+
+    useTimeout(~timeout, ~onRemove) |> ignore;
 
     <div
       className={Cn.make([

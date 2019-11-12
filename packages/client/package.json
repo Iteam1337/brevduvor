@@ -41,7 +41,8 @@
     "reason-future": "^2.5.0",
     "reason-react": "0.7.0",
     "tablecloth-bucklescript": "0.0.6",
-    "tailwindcss-transforms": "^2.2.0"
+    "tailwindcss-transforms": "^2.2.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@apollo/react-testing": "^3.1.2",

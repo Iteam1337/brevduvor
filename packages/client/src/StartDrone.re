@@ -14,6 +14,7 @@ module StartDroneMutation =
 [@react.component]
 let make = (~id, ~handleDroneInitResponse) => {
   let (startDroneMutation, simple, _) = StartDroneMutation.use();
+  let notifications = React.useContext(Notifications.Context.t);
 
   let startDrone = _ => {
     startDroneMutation(
@@ -26,7 +27,15 @@ let make = (~id, ~handleDroneInitResponse) => {
   switch (simple) {
   | Data(data) =>
     data##startDrone##id->handleDroneInitResponse;
-    <Alert.Info className="mt-5"> BookTrip_Booking_Finished </Alert.Info>;
+
+    notifications.updateNotifications(
+      Notifications.Notification.make(
+        ~notificationType=Success(BookTrip_Booking_Finished),
+        ~timeout=Some(5000),
+        (),
+      ),
+    );
+    React.null;
   | Loading
   | Called
   | NoData =>
@@ -35,7 +44,14 @@ let make = (~id, ~handleDroneInitResponse) => {
       I18n.Translations.BookTrip_Button
     </Button.Primary>
   | Error(error) =>
+    notifications.updateNotifications(
+      Notifications.Notification.make(
+        ~notificationType=Error(ErrorBookingDrone),
+        ~timeout=Some(5000),
+        (),
+      ),
+    );
     Belt.Result.Error(error##message)->Js.log;
-    <Alert.Error> I18n.Error.ErrorBookingDrone </Alert.Error>;
+    React.null;
   };
 };

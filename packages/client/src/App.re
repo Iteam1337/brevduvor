@@ -4,8 +4,6 @@ let make = () => {
 
   let (_, changeLocale): LocaleContext.t = LocaleContext.use();
 
-  let (_, dispatch) = AlertContext.use();
-
   let url = ReasonReactRouter.useUrl();
 
   let (loggedIn, setLoggedIn) =
@@ -21,11 +19,6 @@ let make = () => {
       ->getWithDefault()
     );
   };
-
-  React.useEffect0(() => {
-    dispatch(Info(I18n.Translations.BookTrip_GoToOverview_Button));
-    None;
-  });
 
   <div>
     {loggedIn

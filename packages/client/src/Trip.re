@@ -1,6 +1,17 @@
 [@react.component]
 let make = (~id) => {
   let response = DroneSubscription.use(~id, ());
+  let notifications = React.useContext(Notifications.Context.t);
+
+  /* curried for less repetition */
+  let dispatchNotification = notificationMessage =>
+    notifications.updateNotifications(
+      Notifications.Notification.make(
+        ~notificationType=notificationMessage,
+        ~timeout=Some(5000),
+        (),
+      ),
+    );
 
   <div className="w-full min-h-screen flex">
     {switch (response) {
@@ -23,13 +34,16 @@ let make = (~id) => {
            <Typography.Error> NoDataFromServer </Typography.Error>,
          )
      | Loading =>
-       <SideMenu>
-         <Alert.Info>
-           I18n.Translations.DroneStatus_Loading_Position
-         </Alert.Info>
-       </SideMenu>
-     | NoData => <Alert.Error> NoDroneWithId </Alert.Error>
-     | Error(_) => <Alert.Error> NoDroneWithIdError </Alert.Error>
+       dispatchNotification(
+         Info(I18n.Translations.DroneStatus_Loading_Position),
+       );
+       React.null;
+     | NoData =>
+       dispatchNotification(Error(I18n.Error.NoDroneWithId));
+       React.null;
+     | Error(_) =>
+       dispatchNotification(Error(I18n.Error.NoDroneWithIdError));
+       React.null;
      }}
   </div>;
 };
