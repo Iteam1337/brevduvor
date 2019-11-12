@@ -15,7 +15,7 @@ export const create = (
   type: NotificationType,
   notification: NotificationInput
 ): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve, _reject) => {
     const job = queue.create(type || 'sms', notification).save()
 
     job.attempts(3).backoff({ type: 'exponential' })
@@ -31,7 +31,7 @@ export const create = (
 
       .on('failed attempt', (errorMsg, completedAttempts) => {
         // TODO: add some logger service
-        console.log(
+        console.error(
           'Failed attempt',
           'Error: ' + errorMsg,
           'Attempts: ' + completedAttempts
@@ -39,12 +39,12 @@ export const create = (
       })
 
       .on('failed', (errorMsg: string) => {
-        console.log(errorMsg)
-        reject(errorMsg)
+        console.error(errorMsg)
+        resolve(false)
       })
   })
 
-const sendSMS = (job: Job, doneCb: Function) => {
+export const sendSMS = (job: Job, doneCb: Function) => {
   send(job.data.message, job.data.receiver)
     .then(() => doneCb())
     .catch(() => doneCb())
