@@ -16,6 +16,25 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let notifications = React.useContext(Notifications.Context.t);
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
 
+  React.useEffect1(
+    () => {
+      switch (simple) {
+      | Data(_d) =>
+        notifications.updateNotifications(
+          Notifications.Notification.make(
+            ~notificationType=
+              Info(I18n.Translations.BookTrip_TripPrepared_Message),
+            ~timeout=Some(5000),
+            (),
+          ),
+        )
+      | _ => ()
+      };
+      None;
+    },
+    [|simple|],
+  );
+
   let initDrone = _ => {
     initDroneMutation(
       ~variables=
@@ -33,14 +52,6 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
     {switch (simple) {
      | Data(d) =>
        Js.log2("InitDrone", d);
-       notifications.updateNotifications(
-         Notifications.Notification.make(
-           ~notificationType=
-             Info(I18n.Translations.BookTrip_TripPrepared_Message),
-           ~timeout=Some(5000),
-           (),
-         ),
-       );
        <StartDrone id=d##initDrone##id handleDroneInitResponse />;
      | Loading => <Loader.Inline isLoading=true />
      | Called

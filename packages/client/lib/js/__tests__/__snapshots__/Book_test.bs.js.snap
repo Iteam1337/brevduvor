@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book renders dropdown options 1`] = `
+<div>
+  <div
+    class="w-full min-h-screen flex"
+  >
+    <div
+      class="min-w-350 w-350 bg-white flex flex-row shadow-lg z-10"
+    >
+      <div
+        class="py-6 px-4 bg-blue-400"
+      >
+        <div
+          class="w-full flex flex-col justify-center"
+        >
+          <svg
+            class="fill-current text-gray-100 w-6 h-6 mb-6"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="p-5 w-full"
+      >
+        <label
+          class="inline-block mt-2"
+          for="select-from"
+        >
+          Från
+        </label>
+        <div
+          class="inline-block relative w-full mt-1"
+        >
+          <select
+            class="block w-full appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            id="select-from"
+            name="select-from"
+          >
+            <option
+              label="Välj alternativ"
+            />
+            <option
+              value="0"
+            >
+              Storuman
+            </option>
+            <option
+              value="1"
+            >
+              Slussfors
+            </option>
+          </select>
+          <div
+            class="pointer-events-none
+      absolute inset-y-0
+      right-0 flex items-center px-2 text-gray-700"
+          >
+            <svg
+              class="fill-current h-4 w-4"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+              />
+            </svg>
+          </div>
+        </div>
+        <label
+          class="inline-block mt-2"
+          for="select-to"
+        >
+          Till
+        </label>
+        <div
+          class="inline-block relative w-full mt-1"
+        >
+          <select
+            class="block w-full appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+            id="select-to"
+            name="select-to"
+          >
+            <option
+              label="Välj alternativ"
+            />
+            <option
+              value="0"
+            >
+              Storuman
+            </option>
+            <option
+              value="1"
+            >
+              Slussfors
+            </option>
+          </select>
+          <div
+            class="pointer-events-none
+      absolute inset-y-0
+      right-0 flex items-center px-2 text-gray-700"
+          >
+            <svg
+              class="fill-current h-4 w-4"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+              />
+            </svg>
+          </div>
+        </div>
+        <button
+          class="w-full text-xs text-white font-semibold
+        py-3 px-4 rounded tracking-wide mt-5 mt-5 bg-gray-400 text-white focus:outline-none"
+          type="button"
+        >
+          Förbered bokning
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Book renders loading initially 1`] = `
+<div>
+  <div
+    class="w-full min-h-screen flex"
+  >
+    <div
+      class="min-w-350 w-350 bg-white flex flex-row shadow-lg z-10"
+    >
+      <div
+        class="py-6 px-4 bg-blue-400"
+      >
+        <div
+          class="w-full flex flex-col justify-center"
+        >
+          <svg
+            class="fill-current text-gray-100 w-6 h-6 mb-6"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm-5.6-4.29a9.95 9.95 0 0 1 11.2 0 8 8 0 1 0-11.2 0zm6.12-7.64l3.02-3.02 1.41 1.41-3.02 3.02a2 2 0 1 1-1.41-1.41z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="p-5 w-full"
+      >
+        <button
+          class="w-full text-xs text-white font-semibold
+        py-3 px-4 rounded tracking-wide mt-5 mt-5 bg-gray-400 text-white focus:outline-none"
+          type="button"
+        >
+          Förbered bokning
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
