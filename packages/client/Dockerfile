@@ -1,5 +1,4 @@
 FROM node:lts AS builder
-ARG cache=1
 
 WORKDIR /app
 

@@ -90,9 +90,6 @@ services:
       - internal
   client:
     image: brevduvor-client:ci
-    depends_on:
-      - drone-simulator
-      - api
     networks:
       - internal
 
