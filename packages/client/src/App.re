@@ -24,15 +24,7 @@ let make = () => {
 
   React.useEffect0(() => {
     dispatch(Info(I18n.Translations.BookTrip_GoToOverview_Button));
-    let interval =
-      Js.Global.setTimeout(
-        () => {
-          dispatch(Clear);
-          Js.log("Ey yo");
-        },
-        3000,
-      );
-    Some(() => Js.Global.clearTimeout(interval));
+    None;
   });
 
   <div>
@@ -44,6 +36,6 @@ let make = () => {
          | _ => <Typography.Error> FourOFour </Typography.Error>
          }
        : <Login onLogin=handleLogin />}
-    <Toast />
+    <Toast.Container />
   </div>;
 };
