@@ -1,7 +1,7 @@
 jobs:
   include:
     - stage: integration-tests
-      language: bash
+      language: node
       env:
         - DOCKER_COMPOSE_VERSION=1.23.2
       before_install:
