@@ -1,0 +1,24 @@
+jobs:
+  include:
+    - stage: integration-tests
+      language: bash
+      env:
+        - DOCKER_COMPOSE_VERSION=1.23.2
+      before_install:
+        - sudo rm /usr/local/bin/docker-compose
+        - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+          -s`-`uname -m` > docker-compose
+        - chmod +x docker-compose
+        - sudo mv docker-compose /usr/local/bin
+      services:
+        - docker
+      script:
+        - |
+          docker build -f ./packages/client/Dockerfile.dev -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=hej --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
+          docker build -f ./packages/drone-simulator/Dockerfile -t brevduvor-drone:ci .
+          docker build -f ./packages/api/Dockerfile -t brevduvor-api:ci .
+          docker-compose -f docker-compose-ci.yml up -d
+          docker run --network=client_internal -t -e DEBUG=cypress:* -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
+
+stages:
+  - integration-tests
