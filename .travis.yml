@@ -15,7 +15,7 @@ jobs:
       script:
         - |
           cd ${TRAVIS_BUILD_DIR}/packages/client
-          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=hej --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
+          docker build -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=hej --build-arg GRAPHQL_API=api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
           cd ${TRAVIS_BUILD_DIR}/packages/drone-simulator
           docker build -t brevduvor-drone:ci .
           cd ${TRAVIS_BUILD_DIR}/packages/api
