@@ -33,7 +33,11 @@ module AllDestinationsQuery = ReasonApolloHooks.Query.Make(AllDestinations);
 let make = () => {
   let ({translationsToString, _}, _changeLocale): LocaleContext.t =
     LocaleContext.use();
-  let notifications = React.useContext(Notifications.Context.t);
+
+  let (availablePositionsResponse, _) = AllDestinationsQuery.use();
+
+  let dispatchNotification =
+    Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
 
   let (state, dispatch) =
     React.useReducer(
@@ -57,9 +61,34 @@ let make = () => {
 
   let handleDroneInitResponse = id => SetDroneId(id)->dispatch;
 
-  let (availablePositionsResponse, _) = AllDestinationsQuery.use();
-
   let {departingPosition, destination, droneId} = state;
+
+  NotificationHook.use(
+    () => {
+      switch (availablePositionsResponse) {
+      | Error(_e) =>
+        dispatchNotification(Error(CouldNotGetAvailableDestinations))
+      | Data(_)
+      | Loading
+      | NoData => ()
+      };
+      None;
+    },
+    [|availablePositionsResponse|],
+  );
+
+  NotificationHook.use(
+    () => {
+      Js.log2("Hook", droneId);
+      switch (droneId) {
+      | Some(_) => dispatchNotification(Success(BookTrip_Booking_Finished))
+      | None => ()
+      };
+      None;
+    },
+    [|droneId|],
+  );
+
   I18n.Translations.(
     <div className="w-full min-h-screen flex">
       <SideMenu>
@@ -85,16 +114,7 @@ let make = () => {
            </>;
          | Loading => <Loader.Inline isLoading=true />
          | NoData
-         | Error(_) =>
-           notifications.updateNotifications(
-             Notifications.Notification.make(
-               ~notificationType=
-                 Error(I18n.Error.CouldNotGetAvailableDestinations),
-               ~timeout=Some(5000),
-               (),
-             ),
-           );
-           React.null;
+         | Error(_) => React.null
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
@@ -107,18 +127,11 @@ let make = () => {
          }}
         {switch (droneId) {
          | Some(id) =>
-           notifications.updateNotifications(
-             Notifications.Notification.make(
-               ~notificationType=Success(BookTrip_Booking_Finished),
-               ~timeout=Some(5000),
-               (),
-             ),
-           );
            <Button.Primary
              className="mt-5"
              onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
              BookTrip_GoToOverview_Button
-           </Button.Primary>;
+           </Button.Primary>
          | _ => React.null
          }}
       </SideMenu>

@@ -109,3 +109,11 @@ let make = () => {
      ->React.array}
   </div>;
 };
+
+module Dispatch = {
+  let make = (notifications: Context.t, ~timeout=5000, notificationType) => {
+    notifications.updateNotifications(
+      Notification.make(~notificationType, ~timeout=Some(timeout), ()),
+    );
+  };
+};

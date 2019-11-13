@@ -1,20 +1,25 @@
 [@react.component]
 let make = (~id) => {
-  let response = DroneSubscription.use(~id, ());
-  let notifications = React.useContext(Notifications.Context.t);
+  let (simple, _full) = DroneSubscription.use(~id, ());
 
-  /* curried for less repetition */
-  let dispatchNotification = notificationMessage =>
-    notifications.updateNotifications(
-      Notifications.Notification.make(
-        ~notificationType=notificationMessage,
-        ~timeout=Some(5000),
-        (),
-      ),
-    );
+  let dispatchNotification =
+    Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
+
+  NotificationHook.use(
+    () => {
+      switch (simple) {
+      | Error(_) => dispatchNotification(Error(NoDroneWithIdError))
+      | NoData => dispatchNotification(Error(NoDroneWithId))
+      | Loading => dispatchNotification(Info(DroneStatus_Loading_Position))
+      | Data(_) => ()
+      };
+      None;
+    },
+    [||],
+  );
 
   <div className="w-full min-h-screen flex">
-    {switch (response) {
+    {switch (simple) {
      | Data(data) =>
        data##droneStatus
        ->Belt.Option.map(Shared.Drone.make)
@@ -33,17 +38,9 @@ let make = (~id) => {
        ->Belt.Option.getWithDefault(
            <Typography.Error> NoDataFromServer </Typography.Error>,
          )
-     | Loading =>
-       dispatchNotification(
-         Info(I18n.Translations.DroneStatus_Loading_Position),
-       );
-       React.null;
-     | NoData =>
-       dispatchNotification(Error(I18n.Error.NoDroneWithId));
-       React.null;
-     | Error(_) =>
-       dispatchNotification(Error(I18n.Error.NoDroneWithIdError));
-       React.null;
+     | Error(_)
+     | Loading
+     | NoData => React.null
      }}
   </div>;
 };
