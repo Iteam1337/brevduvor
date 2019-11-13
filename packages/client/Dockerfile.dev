@@ -11,5 +11,4 @@ RUN npm ci --quiet
 RUN npm run build
 RUN npm run webpack:production
 
-
-CMD ["sh", "-c", "npx serve --listen 3000 --no-clipboard --single dist"]
+CMD sh -c "until curl api:4000; do sleep 1; done && npx serve --listen 3000 --no-clipboard --single dist"
