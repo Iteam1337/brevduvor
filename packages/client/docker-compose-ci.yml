@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.4'
 
 services:
   postgres:
@@ -74,9 +74,12 @@ services:
     environment:
       - POSTGRES__HOST=postgres
       - JWT_PRIVATE_KEY=definatelyaprivatekey
-    command: bash -c "./wait.sh postgres:5432 && export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start"
+    command: export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start
     networks:
       - internal
+    depends_on:
+      postgres:
+        condition: service_healthy
   client:
     image: iteam1337/brevduvor-client:ci
     depends_on:
