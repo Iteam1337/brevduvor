@@ -72,11 +72,11 @@ services:
   #       osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
 
   drone-simulator:
-    image: brevduvor-drone:ci
+    image: iteam1337/brevduvor-drone:ci
     ports:
       - '3030:3030'
   api:
-    image: brevduvor-api:ci
+    image: iteam1337/brevduvor-api:ci
     environment:
       - POSTGRES__HOST=postgres
       - JWT_PRIVATE_KEY=definatelyaprivatekey
@@ -89,9 +89,13 @@ services:
     networks:
       - internal
   client:
-    image: brevduvor-client:ci
+    image: iteam1337/brevduvor-client:ci
     networks:
       - internal
+    command:
+      - sh
+      - -c
+      - until curl http://api:4000; do sleep 1; done && npx serve --listen 3000 --no-clipboard --single dist
 
 networks:
   internal:

@@ -14,13 +14,6 @@ jobs:
         - docker
       script:
         - |
-          cd ${TRAVIS_BUILD_DIR}/packages/client
-          docker build -f Dockerfile.dev -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=hej --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
-          cd ${TRAVIS_BUILD_DIR}/packages/drone-simulator
-          docker build -t brevduvor-drone:ci .
-          cd ${TRAVIS_BUILD_DIR}/packages/api
-          docker build -t brevduvor-api:ci .
-          cd ${TRAVIS_BUILD_DIR}/packages/client
           npm install 
           docker-compose -f docker-compose-ci.yml up -d
           docker run --network=client_internal -t -e DEBUG=cypress:* -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
