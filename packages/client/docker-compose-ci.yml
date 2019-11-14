@@ -74,9 +74,6 @@ services:
     environment:
       - POSTGRES__HOST=postgres
       - JWT_PRIVATE_KEY=definatelyaprivatekey
-    depends_on:
-      postgres:
-        condition: service_healthy
     command: export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start
     networks:
       - internal
