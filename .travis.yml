@@ -16,7 +16,7 @@ jobs:
         - |
           cd packages/client
           npm install 
-          docker-compose -fdocker-compose-ci.yml up
+          docker-compose -f docker-compose-ci.yml up
 
 stages:
   - integration-tests
