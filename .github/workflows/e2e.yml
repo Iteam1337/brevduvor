@@ -50,6 +50,3 @@ jobs:
           git add packages/client/cypress/videos
           git commit -m "test(e2e): submit cypress-videos"
           git push
-        env:
-          CI: 'true'
-          NODE_ENV: production
