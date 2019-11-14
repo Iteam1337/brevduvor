@@ -66,7 +66,7 @@ services:
   #       osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
 
   drone-simulator:
-    image: iteam1337/brevduvor-drone:ci
+    image: brevduvor-drone:ci
     ports:
       - '3030:3030'
   api:
@@ -81,7 +81,7 @@ services:
     networks:
       - internal
   client:
-    image: iteam1337/brevduvor-client:ci
+    image: brevduvor-client:ci
     depends_on:
       - api
     networks:
