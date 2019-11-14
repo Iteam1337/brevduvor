@@ -82,10 +82,7 @@ services:
       - JWT_PRIVATE_KEY=definatelyaprivatekey
     depends_on:
       - postgres
-    command:
-      - sh
-      - -c
-      - export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start
+    command: bash -c "./wait.sh postgres:5432 && export DATABASE_URL="postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor" && npm run migrate:prod up && npm run seed:test && npm start"
     networks:
       - internal
   client:
@@ -98,18 +95,6 @@ services:
       - sh
       - -c
       - until curl http://api:4000; do sleep 1; done && npx serve --listen 3000 --no-clipboard --single dist
-  cypress:
-    # the Docker image to use from https://github.com/cypress-io/cypress-docker-images
-    image: 'cypress/included:3.4.1'
-    environment:
-      # pass base url to test pointing at the web application
-      - CYPRESS_baseUrl=http://client:3000
-    # share the current folder as volume to avoid copying
-    working_dir: /e2e
-    volumes:
-      - ./:/e2e
-    depends_on:
-      - client
 
 networks:
   internal:

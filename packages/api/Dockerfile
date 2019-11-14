@@ -15,6 +15,7 @@ COPY jest.config.js ./
 COPY tsconfig.json ./
 COPY knexfile.js ./
 COPY index.ts ./
+COPY wait.sh ./
 
 RUN npm run build
 
@@ -33,6 +34,8 @@ COPY --from=base /app/migrations ./migrations
 COPY --from=base /app/seeds ./seeds
 COPY --from=base /app/knexfile.js ./knexfile.js
 COPY --from=base /app/bin ./bin
+COPY --from=base /app/wait.sh ./wait.sh
+RUN chmod +x wait.sh
 
 USER $USER
 
