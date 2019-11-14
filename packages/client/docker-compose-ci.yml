@@ -90,6 +90,8 @@ services:
       - internal
   client:
     image: iteam1337/brevduvor-client:ci
+    depends_on:
+      - api
     networks:
       - internal
     command:
