@@ -1,56 +1,55 @@
-# name: E2E
+name: E2E
 
-# on:
-#   # TODO: do this on push to master
-#   pull_request:
-#     branches:
-#       - master
+on:
+  # TODO: do this on push to master
+  pull_request:
+    branches:
+      - master
 
-# jobs:
-#   e2e:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v1
-#       - name: Use Node.js 10.16.3
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 10.16.3
-#       # - name: Build the Drone-simulator image
-#       #   run: |
-#       #     cd packages/drone-simulator
-#       #     docker build -t brevduvor-drone:ci .
-#       # - name: Build the API image
-#       #   run: |
-#       #     cd packages/api
-#       #     docker build -t brevduvor-api:ci .
-#       # - name: Build the Client image
-#       #   run: |
-#       #     cd packages/client
-#       #     docker build -f Dockerfile.dev -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
-#       #   env:
-#       #     MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
-#       - name: Start all services
-#         run: |
-#           cd packages/client
-#           npm install
-#           docker-compose -f docker-compose-ci.yml up -d
-#       - name: Run Cypresstests
-#         run: |
-#           cd packages/client
-#           docker ps
-#           export NO_PROXY=api
-#           docker run --network=client_internal -t -e DEBUG=cypress:* -e NO_PROXY=api -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
-#       - name: Commit & push Cypress-videos
-#         if: always()
-#         run: |
-#           git config --global user.name ${{ secrets.GITHUB_USER }}
-#           git config --global user.email ${{ secrets.GITHUB_EMAIL }}
-#           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-#           echo ${GITHUB_HEAD_REF}
-#           git checkout "${GITHUB_HEAD_REF}"
-#           git add packages/client/cypress/videos
-#           git commit -m "test(e2e): submit cypress-videos"
-#           git push
-#         env:
-#           CI: "true"
-#           NODE_ENV: production
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10.16.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      # - name: Build the Drone-simulator image
+      #   run: |
+      #     cd packages/drone-simulator
+      #     docker build -t brevduvor-drone:ci .
+      # - name: Build the API image
+      #   run: |
+      #     cd packages/api
+      #     docker build -t brevduvor-api:ci .
+      # - name: Build the Client image
+      #   run: |
+      #     cd packages/client
+      #     docker build -f Dockerfile.dev -t brevduvor-client:ci --build-arg MAPBOX_TOKEN=$MAPBOX_TOKEN --build-arg GRAPHQL_API=http://api:4000/graphql --build-arg GRAPHQL_WS_URI=ws://api:4000/graphql .
+      #   env:
+      #     MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      - name: Start all services
+        run: |
+          cd packages/client
+          npm install
+          docker-compose -f docker-compose-ci.yml up -d
+      - name: Run Cypresstests
+        run: |
+          cd packages/client
+          docker ps
+          docker run --network=client_internal -t -e DEBUG=cypress:* -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress -w /cypress  cypress/included:3.4.1
+      - name: Commit & push Cypress-videos
+        if: always()
+        run: |
+          git config --global user.name ${{ secrets.GITHUB_USER }}
+          git config --global user.email ${{ secrets.GITHUB_EMAIL }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          echo ${GITHUB_HEAD_REF}
+          git checkout "${GITHUB_HEAD_REF}"
+          git add packages/client/cypress/videos
+          git commit -m "test(e2e): submit cypress-videos"
+          git push
+        env:
+          CI: 'true'
+          NODE_ENV: production
