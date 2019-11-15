@@ -32,6 +32,7 @@ jobs:
       - name: Start all services
         run: |
           cd packages/client
+          npm i cypress-cucumber-preprocessor
           docker-compose -f docker-compose-ci.yml up -d postgres api client
       - name: Run Cypresstests
         run: |
