@@ -18,53 +18,6 @@ services:
     networks:
       - internal
 
-  # elasticsearch:
-  #   image: 'elasticsearch:7.3.1'
-  #   ports:
-  #     - '9200:9200'
-  #   environment:
-  #     - discovery.type=single-node
-  #   ulimits:
-  #     nproc: 3000
-  #     nofile: 65536
-  #     memlock: -1
-
-  # osrm-backend:
-  #   image: osrm/osrm-backend:v5.22.0
-  #   environment:
-  #     FILE_NAME: data
-  #     OSRM_VERSION: v5.22.0
-  #     TAR_DIRECTORY: data.tar.gz
-  #     DOWNLOAD_URL: https://s3.eu-north-1.amazonaws.com/pm-mapbox-test.iteam.se
-  #   volumes:
-  #     - ./data:/data
-  #   ports:
-  #     - 5000:5000
-  #   command:
-  #     - bash
-  #     - -c
-  #     - |
-  #       # install dependencies
-  #       if [[ ! -f "/data/$${FILE_NAME}.osrm" ]]; then
-  #         # check if tar-directory exists
-  #         if [[ ! -f "/data/$${TAR_DIRECTORY}" ]]; then
-  #           # check if wget exists, else install
-  #           if [[ ! $$(command -v wget) ]]; then
-  #             apt-get update
-  #             apt-get install -y --no-install-recommends wget
-  #             rm -rf /var/lib/apt/lists/*
-  #           fi
-  #           # certificates takes space, ignore them
-  #           wget --no-check-certificate --debug "$${DOWNLOAD_URL}/$${OSRM_VERSION}/$${TAR_DIRECTORY}" -O "/data/$${TAR_DIRECTORY}"
-  #         fi
-  #         # extract pre-compiled data to /data
-  #         tar -C / -xvf "/data/$${TAR_DIRECTORY}"
-  #         # remove tar-directory, since it takes space
-  #         rm -rf "/data/$${TAR_DIRECTORY}"
-  #       fi
-  #       # start application using extracted data in directory /data
-  #       osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
-
   drone-simulator:
     image: brevduvor-drone:ci
     ports:
@@ -90,6 +43,16 @@ services:
       - sh
       - -c
       - until curl http://api:4000; do sleep 1; done && npx serve --listen 3000 --no-clipboard --single dist
+
+  cypress:
+    image: 'cypress/included:3.4.1'
+    networks:
+      - internal
+    environment:
+      - CYPRESS_baseUrl=http://client:3000
+    working_dir: /cypress
+    volumes:
+      - ./:/cypress
 
 networks:
   internal:

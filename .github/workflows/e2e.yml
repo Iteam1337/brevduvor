@@ -32,11 +32,11 @@ jobs:
       - name: Start all services
         run: |
           cd packages/client
-          docker-compose -f docker-compose-ci.yml up -d
+          docker-compose -f docker-compose-ci.yml up -d postgres api client
       - name: Run Cypresstests
         run: |
           cd packages/client
-          docker run --network=client_internal -t -e CYPRESS_baseUrl=http://client:3000 -v $PWD:/cypress  iteam1337/brevduvor-cypress:ci
+          docker-compose -f docker-compose-ci.yml up cypress
       - name: Commit & push Cypress-videos
         if: always()
         run: |
