@@ -42,18 +42,27 @@ services:
     command:
       - sh
       - -c
-      - until curl http://api:4000; do sleep 1; done && npx serve --listen 3000 --no-clipboard --single dist
+      - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
 
   cypress:
-    image: 'cypress/included:3.4.1'
+    command: ./node_modules/.bin/cypress run
+    environment:
+      - TAG=${TAG}
+      - IMAGE_NAME=${IMAGE_NAME}
+      - CYPRESS_baseUrl=http://client:3000/
+      - CYPRESS_videosFolder=/cypress/videos/${TAG}
+    build:
+      context: .
+      dockerfile: ./cypress/Dockerfile
+    volumes:
+      - type: bind
+        source: ./cypress/videos
+        target: /cypress/videos
+      - type: bind
+        source: ./e2e
+        target: /e2e/cypress
     networks:
       - internal
-    environment:
-      - CYPRESS_baseUrl=http://client:3000
-    working_dir: /cypress
-    volumes:
-      - ./:/cypress
-
 networks:
   internal:
 

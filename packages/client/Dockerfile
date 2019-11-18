@@ -19,6 +19,9 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
 
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
