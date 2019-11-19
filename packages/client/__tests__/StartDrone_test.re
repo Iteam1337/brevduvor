@@ -38,62 +38,6 @@ describe("StartDrone", () => {
     element |> container |> expect |> toMatchSnapshot;
   });
 
-  testAsync("shows drone booked message after pressing book", finish => {
-    open I18n.Translations;
-    let element =
-      <TestUtils.MockedProvider mocks>
-        <StartDrone id=mockId handleDroneInitResponse=mockFunction />
-        <Toast.Container />
-      </TestUtils.MockedProvider>
-      |> render;
-
-    element
-    |> ReactTestingLibrary.getByText(
-         ~matcher=
-           `Str(
-             {
-               _toString(`SWEDISH, I18n.Translations.BookTrip_Button);
-             },
-           ),
-       )
-    |> FireEvent.click;
-
-    // Js.Promise.(
-    //   TestUtils.waitForElement(() =>
-    //     element
-    //     |> getByText(
-    //          ~matcher=`Str(_toString(`SWEDISH, BookTrip_Booking_Finished)),
-    //        )
-    //   )
-    //   |> then_(_ =>
-    //        element
-    //        |> container
-    //        |> expect
-    //        |> toMatchSnapshot
-    //        |> finish
-    //        |> resolve
-    //      )
-    //   |> ignore
-    // );
-    Js.Promise.(
-      TestUtils.waitForElement(() =>
-        element
-        |> getByText(
-             ~matcher=`Str(_toString(`SWEDISH, BookTrip_Booking_Finished)),
-           )
-      )
-      |> then_(_ =>
-           element
-           |> container
-           |> expect
-           |> toMatchSnapshot
-           |> finish
-           |> resolve
-         )
-      |> ignore
-    );
-  });
-
   testAsync("calls passed callback with droneId on success", finish => {
     open I18n.Translations;
 
@@ -112,17 +56,16 @@ describe("StartDrone", () => {
          ~matcher=
            `Str(
              {
-               _toString(`SWEDISH, I18n.Translations.BookTrip_Button);
+               _toString(`SWEDISH, BookTrip_Button);
              },
            ),
        )
     |> FireEvent.click;
+
     Js.Promise.(
-      TestUtils.waitForElement(() =>
+      TestUtils.waitForElementToBeRemoved(() =>
         element
-        |> getByText(
-             ~matcher=`Str(_toString(`SWEDISH, BookTrip_Booking_Finished)),
-           )
+        |> getByText(~matcher=`Str(_toString(`SWEDISH, BookTrip_Button)))
       )
       |> then_(_ =>
            expect(spy |> MockJs.calls)

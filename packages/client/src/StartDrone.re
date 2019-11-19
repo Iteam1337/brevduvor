@@ -14,15 +14,14 @@ module StartDroneMutation =
 [@react.component]
 let make = (~id, ~handleDroneInitResponse) => {
   let (startDroneMutation, simple, _) = StartDroneMutation.use();
-
   let dispatchNotification =
     Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
 
   NotificationHook.use(
     () => {
       switch (simple) {
-      | Data(_d) => dispatchNotification(Info(BookTrip_Button))
       | Error(_e) => dispatchNotification(Error(ErrorBookingDrone))
+      | Data(_)
       | Loading
       | Called
       | NoData => ()

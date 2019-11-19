@@ -63,6 +63,9 @@ exports[`App renders 1`] = `
         </form>
       </div>
     </div>
+    <div
+      class="absolute z-10 top-4 right-4"
+    />
   </div>
 </div>
 `;

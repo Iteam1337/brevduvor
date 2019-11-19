@@ -71,3 +71,7 @@ module ReactTestUtils = {
 [@bs.module "@testing-library/react"]
 external waitForElement: (unit => Dom.element) => Js.Promise.t('a) =
   "waitForElement";
+
+[@bs.module "@testing-library/react"]
+external waitForElementToBeRemoved: (unit => Dom.element) => Js.Promise.t('a) =
+  "waitForElementToBeRemoved";

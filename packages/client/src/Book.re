@@ -79,7 +79,6 @@ let make = () => {
 
   NotificationHook.use(
     () => {
-      Js.log2("Hook", droneId);
       switch (droneId) {
       | Some(_) => dispatchNotification(Success(BookTrip_Booking_Finished))
       | None => ()

@@ -146,8 +146,8 @@ module Translations = {
     | (`ENGLISH, UI_Loading) => "Loading"
     | (`SWEDISH, UI_Loading) => {js|Laddar|js}
 
-    | (`ENGLISH, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details."
-    | (`SWEDISH, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
+    | (`ENGLISH, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip."
+    | (`SWEDISH, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa.|js}
 
     | (`ENGLISH, Auth_Email_Label) => "Email"
     | (`SWEDISH, Auth_Email_Label) => {js|E-post|js}
