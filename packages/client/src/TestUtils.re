@@ -45,11 +45,20 @@ module MockedLocaleProvider = {
   };
 };
 
+module MockedNotificationProvider = {
+  [@react.component]
+  let make = (~children) => {
+    <Notifications.Provider> children </Notifications.Provider>;
+  };
+};
+
 module MockedProvider = {
   [@react.component]
   let make = (~addTypename=true, ~children, ~mocks=[||], ~locale=`SWEDISH) => {
     <ApolloReactTesting.MockedProvider addTypename mocks>
-      <MockedLocaleProvider locale> children </MockedLocaleProvider>
+      <MockedLocaleProvider locale>
+        <MockedNotificationProvider> children </MockedNotificationProvider>
+      </MockedLocaleProvider>
     </ApolloReactTesting.MockedProvider>;
   };
 };

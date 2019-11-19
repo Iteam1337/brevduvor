@@ -43,6 +43,7 @@ describe("StartDrone", () => {
     let element =
       <TestUtils.MockedProvider mocks>
         <StartDrone id=mockId handleDroneInitResponse=mockFunction />
+        <Toast.Container />
       </TestUtils.MockedProvider>
       |> render;
 
@@ -57,6 +58,23 @@ describe("StartDrone", () => {
        )
     |> FireEvent.click;
 
+    // Js.Promise.(
+    //   TestUtils.waitForElement(() =>
+    //     element
+    //     |> getByText(
+    //          ~matcher=`Str(_toString(`SWEDISH, BookTrip_Booking_Finished)),
+    //        )
+    //   )
+    //   |> then_(_ =>
+    //        element
+    //        |> container
+    //        |> expect
+    //        |> toMatchSnapshot
+    //        |> finish
+    //        |> resolve
+    //      )
+    //   |> ignore
+    // );
     Js.Promise.(
       TestUtils.waitForElement(() =>
         element
@@ -99,7 +117,6 @@ describe("StartDrone", () => {
            ),
        )
     |> FireEvent.click;
-
     Js.Promise.(
       TestUtils.waitForElement(() =>
         element

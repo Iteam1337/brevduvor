@@ -1,4 +1,4 @@
-let useTimeout = (~timeout, ~onRemove) => {
+let useTimeout = (~timeout, ~onRemove) =>
   React.useEffect2(
     () => {
       let id =
@@ -17,7 +17,6 @@ let useTimeout = (~timeout, ~onRemove) => {
     },
     (timeout, onRemove),
   );
-};
 
 module Error = {
   [@react.component]
@@ -38,7 +37,7 @@ module Error = {
       role="alert">
       {heading->Belt.Option.mapWithDefault(React.null, heading =>
          <p className="font-bold">
-           {{errorToString(heading)}->React.string}
+           {errorToString(heading)->React.string}
          </p>
        )}
       <p> {{errorToString(children)}->React.string} </p>
@@ -73,7 +72,7 @@ module Info = {
       role="alert">
       {heading->Belt.Option.mapWithDefault(React.null, heading =>
          <p className="font-bold">
-           {{translationsToString(heading)}->React.string}
+           {translationsToString(heading)->React.string}
          </p>
        )}
       <p> {{translationsToString(children)}->React.string} </p>
@@ -104,11 +103,14 @@ module Success = {
         Cn.unpack(className),
       ])}
       role="alert">
-      {heading->Belt.Option.mapWithDefault(React.null, heading =>
-         <p className="font-bold">
-           {{translationsToString(heading)}->React.string}
-         </p>
-       )}
+      {heading->Belt.Option.mapWithDefault
+      (
+        React.null,
+        heading =>
+          <p className="font-bold">
+            {translationsToString(heading)->React.string}
+          </p>,
+      )}
       <p> {{translationsToString(children)}->React.string} </p>
     </div>;
   };

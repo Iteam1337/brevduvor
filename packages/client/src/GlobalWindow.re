@@ -22,10 +22,39 @@ module Navigator = {
         let coords = coordinatesFromJs(positionAsRecord.coords);
         cb(coords);
       },
-      Js.log2("Navigator.GeoLocation"),
+      Js.log2("Navigator.GeoLocation"), /* TODO: error logging service */
       geoOptions(~enableHighAccuracy=true),
     );
   };
 
   [@bs.scope "navigator"] [@bs.val] external language: string = "language";
+};
+
+module Document = {
+  type document;
+  [@bs.val] external doc: document = "document";
+
+  /* body */
+  [@bs.scope "document"] [@bs.val] external body: Dom.element = "body";
+
+  /* create element */
+  [@bs.send]
+  external _createElement: (document, string) => Dom.element = "createElement";
+
+  let createElement = _createElement(doc);
+
+  /* append node */
+  [@bs.send]
+  external _appendChild: (Dom.element, Dom.element) => Dom.element =
+    "appendChild";
+
+  let appendChild = _appendChild;
+
+  /* set attribute */
+  [@bs.send]
+  external setAttribute: (Dom.element, string, string) => Dom.element =
+    "setAttribute";
+
+  /* remove */
+  [@bs.send] external remove: Dom.element => unit = "remove";
 };
