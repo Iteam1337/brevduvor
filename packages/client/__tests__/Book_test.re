@@ -28,28 +28,6 @@ let mocks = [|
   },
 |];
 
-let mockId = "a8cc4a84-98a8-4362-bf29-6a99198a3626";
-let mutationMock = [|
-  {
-    "request": {
-      "query":
-        StartDrone.StartDroneMutation.gql(.
-          StartDrone.StartDroneMutationConfig.query,
-        ),
-      "variables":
-        StartDrone.StartDroneMutationConfig.make(~id=mockId, ())##variables,
-    },
-    "result": {
-      "data": {
-        "startDrone": {
-          "id": mockId,
-          "__typename": "StartDroneResponse",
-        },
-      },
-    },
-  },
-|];
-
 describe("Book", () => {
   test("renders loading initially", () => {
     let element =
