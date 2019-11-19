@@ -1,4 +1,4 @@
-FROM cypress/base:8 as e2eBuild
+FROM cypress/base:10 as e2eBuild
 
 # Copy NPM & Install
 COPY ./cypress/package.json /tmp/package.json

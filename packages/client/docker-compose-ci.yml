@@ -45,15 +45,13 @@ services:
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
 
   cypress:
+    image: iteam1337/brevduvor-cypress:latest
     command: ./node_modules/.bin/cypress run
     environment:
       - TAG=${TAG}
       - IMAGE_NAME=${IMAGE_NAME}
       - CYPRESS_baseUrl=http://client:3000/
       - CYPRESS_videosFolder=/cypress/videos/${TAG}
-    build:
-      context: .
-      dockerfile: ./cypress/Dockerfile
     volumes:
       - type: bind
         source: ./cypress/videos

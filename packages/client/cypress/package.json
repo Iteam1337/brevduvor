@@ -7,7 +7,7 @@
     "test": "."
   },
   "devDependencies": {
-    "cypress": "^3.1.2",
+    "cypress": "^3.6.1",
     "cypress-cucumber-preprocessor": "^1.16.2"
   },
   "keywords": [],
