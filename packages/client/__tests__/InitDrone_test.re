@@ -1,7 +1,7 @@
 open Jest;
 open Expect;
 open ReactTestingLibrary;
-
+let resultReturned = ref(false);
 let mockStart =
   {
     "alias": "Storuman",
@@ -13,7 +13,7 @@ let mockStart =
 
 let mockEnd =
   {
-    "alias": "Storuman",
+    "alias": "Slussfors",
     "lat": 13.333337,
     "lon": 16.666666,
     "__typename": "Destination",
@@ -34,13 +34,17 @@ let mocks = [|
           (),
         )##variables,
     },
-    "result": {
-      "data": {
-        "initDrone": {
-          "id": "a8cc4a84-98a8-4362-bf29-6a99198a3626",
-          "__typename": "InitDroneResponse",
+    "result": () => {
+      resultReturned := true;
+
+      {
+        "data": {
+          "initDrone": {
+            "id": "a8cc4a84-98a8-4362-bf29-6a99198a3626",
+            "__typename": "InitDroneResponse",
+          },
         },
-      },
+      };
     },
   },
 |];

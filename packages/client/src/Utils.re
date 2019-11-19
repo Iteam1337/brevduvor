@@ -17,3 +17,17 @@ module UUID: {
 
   let toString = id => id;
 };
+
+module Spread = {
+  [@react.component]
+  let make = (~props, ~children) =>
+    ReasonReact.cloneElement(children, ~props, [||]);
+};
+
+let withTestID = (~testID=?, element) => {
+  switch (testID) {
+  | Some(testID) =>
+    ReasonReact.cloneElement(element, ~props={"data-testid": testID}, [||])
+  | None => element
+  };
+};

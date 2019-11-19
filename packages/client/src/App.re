@@ -1,3 +1,5 @@
+type h = {msg: string};
+
 [@react.component]
 let make = () => {
   open Shared;
@@ -20,6 +22,8 @@ let make = () => {
     );
   };
 
+  let s = {"className": "hey"};
+
   <div>
     {loggedIn
        ? switch (url.path) {
@@ -29,6 +33,6 @@ let make = () => {
          | _ => <Typography.Error> FourOFour </Typography.Error>
          }
        : <Login onLogin=handleLogin />}
-    <Toast.Container />
+    <Utils.Spread props=s> <Toast.Container /> </Utils.Spread>
   </div>;
 };

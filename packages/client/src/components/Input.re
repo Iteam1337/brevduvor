@@ -29,42 +29,51 @@ module Text = {
 module GeoSelect = {
   [@react.component]
   let make =
-      (~selectOptions: list(Shared.GeoPosition.t), ~onChange, ~name, ~label) => {
+      (
+        ~selectOptions: list(Shared.GeoPosition.t),
+        ~onChange,
+        ~name,
+        ~label,
+        ~testId,
+      ) => {
     let ({LocaleContext.translationsToString, _}, _) = LocaleContext.use();
     <>
       <label htmlFor=name className="inline-block mt-2">
         {label->translationsToString->React.string}
       </label>
       <div className="inline-block relative w-full mt-1">
-        <select
-          name
-          id=name
-          onChange={event => {
-            let selectedDestination =
-              selectOptions->Belt.List.get(
-                ReactEvent.Form.target(event)##value->int_of_string,
-              );
+        <Utils.Spread props={"data-testid": testId}>
+          <select
+            name
+            id=name
+            onChange={event => {
+              let selectedDestination =
+                selectOptions->Belt.List.get(
+                  ReactEvent.Form.target(event)##value->int_of_string,
+                );
 
-            switch (selectedDestination) {
-            | Some(destination) => onChange(destination)
-            | None => ()
-            };
-          }}
-          className="block w-full appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-          <option
-            label={translationsToString(BookTrip_Choose_DropdownLabel)}
-          />
-          {selectOptions
-           ->Belt.List.mapWithIndex((index, dest) =>
-               <option
-                 value={string_of_int(index)}
-                 key={string_of_int(index) ++ "_" ++ dest.alias}>
-                 dest.alias->React.string
-               </option>
-             )
-           ->Belt.List.toArray
-           ->React.array}
-        </select>
+              switch (selectedDestination) {
+              | Some(destination) => onChange(destination)
+              | None => ()
+              };
+            }}
+            className="block w-full appearance-none bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+            <option>
+              {{translationsToString(BookTrip_Choose_DropdownLabel)}
+               ->React.string}
+            </option>
+            {selectOptions
+             ->Belt.List.mapWithIndex((index, dest) =>
+                 <option
+                   value={string_of_int(index)}
+                   key={string_of_int(index) ++ "_" ++ dest.alias}>
+                   dest.alias->React.string
+                 </option>
+               )
+             ->Belt.List.toArray
+             ->React.array}
+          </select>
+        </Utils.Spread>
         <div
           className="pointer-events-none
       absolute inset-y-0

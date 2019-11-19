@@ -53,8 +53,10 @@ let make = () => {
       initialState,
     );
 
-  let handleDestinationSelect = destination =>
+  let handleDestinationSelect = destination => {
+    Js.log("changed");
     SetDestination(destination)->dispatch;
+  };
 
   let handleDepartingPositionSelect = pos =>
     SetDepartingPosition(pos)->dispatch;
@@ -103,12 +105,14 @@ let make = () => {
                name="select-from"
                onChange=handleDepartingPositionSelect
                selectOptions
+               testId="select-from"
              />
              <Input.GeoSelect
                label=BookTrip_To_Label
                name="select-to"
                onChange=handleDestinationSelect
                selectOptions
+               testId="select-to"
              />
            </>;
          | Loading => <Loader.Inline isLoading=true />
@@ -128,7 +132,11 @@ let make = () => {
          | Some(id) =>
            <Button.Primary
              className="mt-5"
-             onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
+             onClick={_ => {
+               Js.log("clicked");
+
+               ReasonReactRouter.push("/resa/" ++ id);
+             }}>
              BookTrip_GoToOverview_Button
            </Button.Primary>
          | _ => React.null
