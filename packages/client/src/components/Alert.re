@@ -36,9 +36,7 @@ module Error = {
       )
       role="alert">
       {heading->Belt.Option.mapWithDefault(React.null, heading =>
-         <p className="font-bold">
-           {errorToString(heading)->React.string}
-         </p>
+         <p className="font-bold"> {errorToString(heading)->React.string} </p>
        )}
       <p> {{errorToString(children)}->React.string} </p>
     </div>;
@@ -57,8 +55,6 @@ module Info = {
       ) => {
     let ({translationsToString}, _changeLocale): LocaleContext.t =
       LocaleContext.use();
-
-    Js.log("InfoToast");
 
     useTimeout(~timeout, ~onRemove) |> ignore;
 
@@ -95,22 +91,17 @@ module Success = {
 
     useTimeout(~timeout, ~onRemove) |> ignore;
 
-    Js.log("SuccessToast");
-
     <div
       className={Cn.make([
         "bg-green-100 border-l-4 border-green-500 text-green-700 p-4",
         Cn.unpack(className),
       ])}
       role="alert">
-      {heading->Belt.Option.mapWithDefault
-      (
-        React.null,
-        heading =>
-          <p className="font-bold">
-            {translationsToString(heading)->React.string}
-          </p>,
-      )}
+      {heading->Belt.Option.mapWithDefault(React.null, heading =>
+         <p className="font-bold">
+           {translationsToString(heading)->React.string}
+         </p>
+       )}
       <p> {{translationsToString(children)}->React.string} </p>
     </div>;
   };
