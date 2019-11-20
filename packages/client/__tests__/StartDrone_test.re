@@ -2,8 +2,6 @@ open Jest;
 open Expect;
 open ReactTestingLibrary;
 
-let resultReturned = ref(false);
-
 let mockId = "a8cc4a84-98a8-4362-bf29-6a99198a3626";
 
 let mocks = [|
@@ -17,15 +15,12 @@ let mocks = [|
         StartDrone.StartDroneMutationConfig.make(~id=mockId, ())##variables,
     },
     "result": {
-      resultReturned := true;
-      {
-        "data": {
-          "startDrone": {
-            "id": mockId,
-            "__typename": "StartDroneResponse",
-          },
+      "data": {
+        "startDrone": {
+          "id": mockId,
+          "__typename": "StartDroneResponse",
         },
-      };
+      },
     },
   },
 |];

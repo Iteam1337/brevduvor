@@ -1,7 +1,7 @@
 open Jest;
 open Expect;
 open ReactTestingLibrary;
-let resultReturned = ref(false);
+
 let mockStart =
   {
     "alias": "Storuman",
@@ -35,8 +35,6 @@ let mocks = [|
         )##variables,
     },
     "result": () => {
-      resultReturned := true;
-
       {
         "data": {
           "initDrone": {
