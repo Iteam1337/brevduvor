@@ -35,7 +35,7 @@ jobs:
       - name: Run Cypresstests
         run: |
           cd packages/client
-          IMAGE_NAME=client TAG=ci docker-compose -f docker-compose-ci.yml up cypress
+          docker-compose -f docker-compose-ci.yml up cypress
       - name: Commit & push Cypress-videos
         if: always()
         run: |
