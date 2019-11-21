@@ -19,7 +19,7 @@ exports.up = knex => {
         table.string('language', 8)
       })
     })
-    .then(_ => console.log('users migration OK!'))
+    .then(_ => console.log('***users migration OK!***'))
 }
 
 exports.down = knex => {
