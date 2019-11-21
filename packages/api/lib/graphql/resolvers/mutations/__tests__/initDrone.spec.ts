@@ -32,7 +32,7 @@ describe('#initDrone', () => {
 
     expect(insertDroneTrip).toBeCalledWith({
       drone_id: dronePostResponse.body.id,
-      status: 'initating',
+      status: 'initiating',
       start: `(${dronePostResponse.body.start.lat}, ${dronePostResponse.body.start.lon})`,
       stop: `(${dronePostResponse.body.stop.lat}, ${dronePostResponse.body.stop.lon})`,
       finished: false,
