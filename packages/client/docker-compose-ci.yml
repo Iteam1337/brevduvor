@@ -46,7 +46,7 @@ services:
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
 
   cypress:
-    image: iteam1337/brevduvor-cypress:latest
+    image: iteam1337/brevduvor-cypress:ci
     command: ./node_modules/.bin/cypress run
     environment:
       - TAG=ci
