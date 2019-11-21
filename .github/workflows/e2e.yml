@@ -31,7 +31,7 @@ jobs:
       - name: Start all services
         run: |
           cd packages/client
-          docker-compose -f docker-compose-ci.yml up -d postgres api client
+          docker-compose -f docker-compose-ci.yml up  postgres api client cypress
       - name: Run Cypresstests
         run: |
           cd packages/client
