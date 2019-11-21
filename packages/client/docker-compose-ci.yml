@@ -58,7 +58,7 @@ services:
         source: ./cypress/videos
         target: /cypress/videos
       - type: bind
-        source: ./e2e
+        source: ./cypress
         target: /e2e/cypress
     networks:
       - internal
