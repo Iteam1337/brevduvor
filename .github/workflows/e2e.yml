@@ -1,7 +1,6 @@
 name: E2E
 
 on:
-  # TODO: do this on push to master
   pull_request:
     branches:
       - master

@@ -32,6 +32,8 @@ spec:
               value: iteamadmin
             - name: POSTGRES_INITDB_ARGS
               value: --encoding=utf8
+            - name: DB_ENV
+              value: prod
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
