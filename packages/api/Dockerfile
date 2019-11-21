@@ -4,7 +4,7 @@ ARG cache=1
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY /bin ./bin
 COPY /lib ./lib
@@ -26,7 +26,7 @@ RUN adduser --disabled-password --gecos "" $USER
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production
 
 COPY --from=base /app/build ./build
 COPY --from=base /app/migrations ./migrations
