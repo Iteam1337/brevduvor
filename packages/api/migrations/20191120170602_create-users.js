@@ -1,9 +1,8 @@
 exports.up = knex => {
-  return knex.schema
-    .dropTableIfExists('users')
-    .then(() => {
-      knex.raw('create extension if not exists "uuid-ossp"')
-      return knex.schema.createTable('users', table => {
+  return knex
+    .raw('create extension if not exists "uuid-ossp"')
+    .then(_ =>
+      knex.schema.createTable('users', table => {
         table
           .uuid('id')
           .primary()
@@ -18,7 +17,7 @@ exports.up = knex => {
           .notNullable()
         table.string('language', 8)
       })
-    })
+    )
     .then(_ => console.log('***users migration OK!***'))
 }
 
