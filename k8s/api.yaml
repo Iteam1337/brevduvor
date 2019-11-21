@@ -57,6 +57,8 @@ spec:
               value: iteamadmin
             - name: POSTGRES__DATABASE
               value: brevduvor
+            - name: DB_ENV
+              value: prod
           command: ['sh', '-c', 'sh bin/migrate.sh']
 ---
 apiVersion: v1

@@ -30,7 +30,6 @@ services:
       - POSTGRES__PASSWORD=adminadmin1337
       - POSTGRES__DATABASE=brevduvor
       - DB_ENV=test
-      - DATABASE_URL=postgres://iteamadmin:adminadmin1337@postgres:5432/brevduvor
       - JWT_PRIVATE_KEY=definatelyaprivatekey
     command: bash -c "./bin/wait-for-it.sh postgres:5432 && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
     networks:
