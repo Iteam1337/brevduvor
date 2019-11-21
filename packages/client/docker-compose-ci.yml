@@ -48,10 +48,10 @@ services:
     image: iteam1337/brevduvor-cypress:latest
     command: ./node_modules/.bin/cypress run
     environment:
-      - TAG=${TAG}
-      - IMAGE_NAME=${IMAGE_NAME}
+      - TAG=ci
+      - IMAGE_NAME=client
       - CYPRESS_baseUrl=http://client:3000/
-      - CYPRESS_videosFolder=/cypress/videos/${TAG}
+      - CYPRESS_videosFolder=/cypress/videos/ci
     volumes:
       - type: bind
         source: ./cypress/videos
