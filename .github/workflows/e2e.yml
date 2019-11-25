@@ -36,13 +36,3 @@ jobs:
         run: |
           cd packages/client
           docker-compose -f docker-compose-ci.yml up cypress
-      - name: Commit & push Cypress-videos
-        if: always()
-        run: |
-          git config --global user.name ${{ secrets.GITHUB_USER }}
-          git config --global user.email ${{ secrets.GITHUB_EMAIL }}
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout "${GITHUB_HEAD_REF}"
-          git add packages/client/cypress/videos
-          git commit -m "test(e2e): submit cypress-videos"
-          git push
