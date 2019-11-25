@@ -1,9 +1,9 @@
 name: E2E
 
 on:
-  pull_request:
+  push:
     branches:
-      - master
+      - chore/e2e-ci
 
 jobs:
   e2e:
