@@ -19,8 +19,6 @@ services:
       - internal
   drone-simulator:
     image: brevduvor-drone:ci
-    ports:
-      - '3030:3030'
     networks:
       - internal
   api:
@@ -31,6 +29,8 @@ services:
       - POSTGRES__PASSWORD=adminadmin1337
       - POSTGRES__DATABASE=brevduvor
       - DB_ENV=test
+      - DRONE_URL=http://drone-simulator:3030
+      - WEBHOOK_URL=http://api:4000/status
       - JWT_PRIVATE_KEY=definatelyaprivatekey
     command: bash -c "./bin/wait-for-it.sh postgres:5432 && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
     networks:
@@ -45,7 +45,6 @@ services:
       - sh
       - -c
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
-
   cypress:
     image: iteam1337/brevduvor-cypress:ci
     command: ./node_modules/.bin/cypress run

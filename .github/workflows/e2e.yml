@@ -30,8 +30,7 @@ jobs:
           MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
       - name: Start all services
         run: |
-          cd packages/client
-          docker-compose -f docker-compose-ci.yml up -d postgres api client
+          docker-compose -f docker-compose.e2e.yml up -d postgres api client
       - name: Run Cypresstests
         run: |
-          docker-compose -f docker-compose-ci.yml up cypress
+          docker-compose -f docker-compose.e2e.yml up cypress
