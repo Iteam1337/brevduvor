@@ -3,10 +3,10 @@ open Expect;
 open ReactTestingLibrary;
 
 describe("App", () =>
-  test("renders", () => {
+  test("renders login screen initially", () => {
     let component =
-      <TestUtils.MockedProvider> <App /> </TestUtils.MockedProvider>;
+      <TestUtils.MockedProvider> <App /> </TestUtils.MockedProvider> |> render;
 
-    component |> render |> container |> expect |> toMatchSnapshot;
+    component |> container |> expect |> toMatchSnapshot;
   })
 );

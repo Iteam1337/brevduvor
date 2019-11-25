@@ -1,11 +1,25 @@
 [@react.component]
 let make = (~id) => {
-  let response = DroneSubscription.use(~id, ());
-  let ({errorToString, translationsToString}, _): LocaleContext.t =
-    LocaleContext.use();
+  let (simple, _full) = DroneSubscription.use(~id, ());
+
+  let dispatchNotification =
+    Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
+
+  NotificationHook.use(
+    () => {
+      switch (simple) {
+      | Error(_) => dispatchNotification(Error(NoDroneWithIdError))
+      | NoData => dispatchNotification(Error(NoDroneWithId))
+      | Loading => dispatchNotification(Info(DroneStatus_Loading_Position))
+      | Data(_) => ()
+      };
+      None;
+    },
+    [||],
+  );
 
   <div className="w-full min-h-screen flex">
-    {switch (response) {
+    {switch (simple) {
      | Data(data) =>
        data##droneStatus
        ->Belt.Option.map(Shared.Drone.make)
@@ -22,22 +36,11 @@ let make = (~id) => {
            </>
          )
        ->Belt.Option.getWithDefault(
-           <Typography.Error>
-             NoDataFromServer->errorToString
-           </Typography.Error>,
+           <Typography.Error> NoDataFromServer </Typography.Error>,
          )
-     | Loading =>
-       <SideMenu>
-         <Typography.P>
-           {translationsToString(DroneStatus_Loading_Position)}
-         </Typography.P>
-       </SideMenu>
-     | NoData =>
-       <Typography.Error> {errorToString(NoDroneWithId)} </Typography.Error>
-     | Error(_) =>
-       <Typography.Error>
-         {errorToString(NoDroneWithIdError)}
-       </Typography.Error>
+     | Error(_)
+     | Loading
+     | NoData => React.null
      }}
   </div>;
 };

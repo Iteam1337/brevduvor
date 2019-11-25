@@ -14,7 +14,23 @@ module InitDroneMutation =
 [@react.component]
 let make = (~start, ~stop, ~handleDroneInitResponse) => {
   let (initDroneMutation, simple, _full) = InitDroneMutation.use();
-  let ({translationsToString, _}, _): LocaleContext.t = LocaleContext.use();
+
+  let dispatchNotification =
+    Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
+
+  NotificationHook.use(
+    () => {
+      switch (simple) {
+      | Data(_d) => dispatchNotification(Info(BookTrip_TripPrepared_Message))
+      | Error(_e) => dispatchNotification(Error(NoDataFromServer))
+      | Loading
+      | Called
+      | NoData => ()
+      };
+      None;
+    },
+    [|simple|],
+  );
 
   let initDrone = _ => {
     initDroneMutation(
@@ -31,23 +47,16 @@ let make = (~start, ~stop, ~handleDroneInitResponse) => {
 
   <div>
     {switch (simple) {
-     | Data(d) =>
-       <div>
-         <Typography.P className="mt-5">
-           {translationsToString(BookTrip_TripPrepared_Message)}
-         </Typography.P>
-         <StartDrone id=d##initDrone##id handleDroneInitResponse />
-       </div>
+     | Data(d) => <StartDrone id=d##initDrone##id handleDroneInitResponse />
      | Loading => <Loader.Inline isLoading=true />
      | Called
      | NoData =>
        <Button.Primary onClick=initDrone className="mt-5">
-         {{translationsToString(BookTrip_PrepareTrip_Button)}->React.string}
+         I18n.Translations.BookTrip_PrepareTrip_Button
        </Button.Primary>
      | Error(_) =>
-       <Typography.Error>
-         {translationsToString(BookTrip_PrepareTrip_Button)}
-       </Typography.Error>
+       /* TODO(@all): Provide error recovery (link to start again or similar) */
+       React.null
      }}
   </div>;
 };

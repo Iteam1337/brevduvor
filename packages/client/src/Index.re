@@ -62,7 +62,9 @@ module Setup = {
 
     <ReasonApollo.Provider client>
       <ReasonApolloHooks.ApolloProvider client>
-        <LocaleProvider value=localeContextValue> <App /> </LocaleProvider>
+        <LocaleProvider value=localeContextValue>
+          <Notifications.Provider> <App /> </Notifications.Provider>
+        </LocaleProvider>
       </ReasonApolloHooks.ApolloProvider>
     </ReasonApollo.Provider>;
   };
