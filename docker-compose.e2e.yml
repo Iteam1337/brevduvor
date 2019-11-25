@@ -1,6 +1,41 @@
 version: '3.7'
 
 services:
+  osrm:
+    image: osrm/osrm-backend:v5.22.0
+    environment:
+      FILE_NAME: data
+      OSRM_VERSION: v5.22.0
+      TAR_DIRECTORY: data.tar.gz
+      DOWNLOAD_URL: https://s3.eu-north-1.amazonaws.com/pm-mapbox-test.iteam.se
+    volumes:
+      - ./data:/data
+    command:
+      - bash
+      - -c
+      - |
+        # install dependencies
+        if [[ ! -f "/data/$${FILE_NAME}.osrm" ]]; then
+          # check if tar-directory exists
+          if [[ ! -f "/data/$${TAR_DIRECTORY}" ]]; then
+            # check if wget exists, else install
+            if [[ ! $$(command -v wget) ]]; then
+              apt-get update
+              apt-get install -y --no-install-recommends wget
+              rm -rf /var/lib/apt/lists/*
+            fi
+            # certificates takes space, ignore them
+            wget --no-check-certificate --debug "$${DOWNLOAD_URL}/$${OSRM_VERSION}/$${TAR_DIRECTORY}" -O "/data/$${TAR_DIRECTORY}"
+          fi
+          # extract pre-compiled data to /data
+          tar -C / -xvf "/data/$${TAR_DIRECTORY}"
+          # remove tar-directory, since it takes space
+          rm -rf "/data/$${TAR_DIRECTORY}"
+        fi
+        # start application using extracted data in directory /data
+        osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
+    networks:
+      - internal
   postgres:
     image: postgres:11.5
     volumes:
@@ -19,6 +54,8 @@ services:
       - internal
   drone-simulator:
     image: brevduvor-drone:ci
+    environment:
+      - OSRM=http://osrm:5000
     networks:
       - internal
   api:
@@ -31,8 +68,9 @@ services:
       - DB_ENV=test
       - DRONE_URL=http://drone-simulator:3030
       - WEBHOOK_URL=http://api:4000/status
+      - OSRM_URL=http://osrm:5000
       - JWT_PRIVATE_KEY=definatelyaprivatekey
-    command: bash -c "./bin/wait-for-it.sh postgres:5432 && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
+    command: bash -c "./bin/wait-for-it.sh postgres:5432 && until curl http://osrm:5000; do sleep 1; done && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
     networks:
       - internal
   client:
