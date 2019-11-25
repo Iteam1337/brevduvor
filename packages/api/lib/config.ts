@@ -15,11 +15,7 @@ const config = require('@iteam/config')({
       MAX: 20,
       timeout: 30000,
     },
-    REDIS: {
-      HOST: 'localhost',
-      PORT: 6379,
-      PASSWORD: 'lg565ABwjvZw4TgAQC6R',
-    },
+    JWT_PRIVATE_KEY: 'jwtdevkey',
   },
 })
 
@@ -31,6 +27,6 @@ export default {
   WEBHOOK_URL: config.get('WEBHOOK_URL'),
   POSTGRES: config.get('POSTGRES'),
   JWT_SECRET: config.get('jwtPrivateKey'),
-  REDIS_PASSWORD: config.get('redisPassword'),
+  REDIS: config.get('REDIS'),
   TWILIO: config.get('TWILIO'),
 }

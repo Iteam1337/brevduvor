@@ -3,6 +3,6 @@ import config from './../config'
 
 export const queue = kue.createQueue({
   redis: {
-    auth: config.REDIS_PASSWORD,
+    auth: config.REDIS.password,
   },
 })

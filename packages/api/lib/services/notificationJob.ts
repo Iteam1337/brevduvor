@@ -1,13 +1,7 @@
-import cron from 'node-cron'
 import { queue } from '../adapters/queue'
 import { NotificationInput } from '../__generated__/brevduvor'
 import { Job } from 'kue'
 import { send } from './../adapters/smsclient'
-
-// scheduler for notification jobs
-cron.schedule('* * * * *', () => {
-  queue.process('sms', sendSMS)
-})
 
 type NotificationType = 'sms' | 'email' | 'push'
 
@@ -23,6 +17,7 @@ export const create = (
     job
       .on('enqueue', () => {
         console.log('Job enqeueud: ', job.data)
+        queue.process('sms', sendSMS)
       })
 
       .on('complete', _res => {
