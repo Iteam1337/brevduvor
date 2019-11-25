@@ -49,10 +49,7 @@ services:
     image: iteam1337/brevduvor-cypress:ci
     command: ./node_modules/.bin/cypress run
     environment:
-      - TAG=ci
-      - IMAGE_NAME=client
       - CYPRESS_baseUrl=http://client:3000/
-      - CYPRESS_videosFolder=/cypress/videos/ci
     volumes:
       - type: bind
         source: ./packages/client/cypress
