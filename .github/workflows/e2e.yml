@@ -3,7 +3,7 @@ name: E2E
 on:
   pull_request:
     branches:
-      - chore/e2e-ci
+      - master
 
 jobs:
   e2e:
