@@ -42,7 +42,7 @@ describe('Notification job', () => {
       })
     })
     const result = await create('sms', {
-      receiver: '+46707905582',
+      receiver: '+10000000',
       sentAt: new Date(Date.now()).toISOString(),
       sender: 'Storuman lasarett',
       message: 'The eagle has landed',
@@ -61,7 +61,7 @@ describe('Notification job', () => {
     })
 
     const result = await create('sms', {
-      receiver: '+46707905582',
+      receiver: '+10000000',
       sentAt: new Date(Date.now()).toISOString(),
       sender: 'Storuman lasarett',
       message: 'The eagle has landed',
