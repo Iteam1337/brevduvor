@@ -18,7 +18,8 @@
   },
   "scripts": {
     "start": "node ./build/index.js",
-    "migrate": "knex migrate:latest --env dev",
+    "migrate:up": "knex migrate:latest --env dev",
+    "migrate:down": "knex migrate:rollback --all --env dev",
     "seed": "knex seed:run --env dev",
     "generate": "graphql-codegen --config codegen.yml",
     "build": "tsc",

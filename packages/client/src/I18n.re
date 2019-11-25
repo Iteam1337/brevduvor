@@ -29,15 +29,16 @@ module Locale = {
 
 module Error = {
   type t =
-    | NoDataFromServer
     | CouldNotGetAvailableDestinations
-    | NoDroneWithId
-    | NoDroneWithIdError
+    | ErrorBookingDrone
     | FourOFour
     | MissingUser
+    | NoDataFromServer
+    | NoDroneData
+    | NoDroneWithId
+    | NoDroneWithIdError
     | PassIncorrect
     | PasswordFieldsNotMatching
-    | NoDroneData
     | Other(string);
 
   let authErrorFromSignature =
@@ -56,6 +57,9 @@ module Error = {
     switch (locale, error) {
     | (`ENGLISH, NoDataFromServer) => "Looks like we did not receive any data from the server."
     | (`SWEDISH, NoDataFromServer) => {js|Det verkar som att vi inte fick tillbaka någon data från servern.|js}
+
+    | (`ENGLISH, ErrorBookingDrone) => "There was an error while trying to start the drone."
+    | (`SWEDISH, ErrorBookingDrone) => {js|Någonting gick snett drönaren försökte startas|js}
 
     | (`ENGLISH, FourOFour) => "404. Sorry, the page was not found."
     | (`SWEDISH, FourOFour) => {js|404. Det verkar som att sidan ej kunde hittas. Prova att gå till
@@ -142,8 +146,8 @@ module Translations = {
     | (`ENGLISH, UI_Loading) => "Loading"
     | (`SWEDISH, UI_Loading) => {js|Laddar|js}
 
-    | (`ENGLISH, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip. Click here to overview trip details."
-    | (`SWEDISH, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa. Klicka här för se resedetaljer.|js}
+    | (`ENGLISH, BookTrip_Booking_Finished) => "Your drone is now booked and has started its trip."
+    | (`SWEDISH, BookTrip_Booking_Finished) => {js|Din drönare har nu bokats och påbörjat sin resa.|js}
 
     | (`ENGLISH, Auth_Email_Label) => "Email"
     | (`SWEDISH, Auth_Email_Label) => {js|E-post|js}

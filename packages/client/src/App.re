@@ -1,8 +1,10 @@
+type h = {msg: string};
+
 [@react.component]
 let make = () => {
   open Shared;
 
-  let ({errorToString}, changeLocale): LocaleContext.t = LocaleContext.use();
+  let (_, changeLocale): LocaleContext.t = LocaleContext.use();
 
   let url = ReasonReactRouter.useUrl();
 
@@ -20,12 +22,17 @@ let make = () => {
     );
   };
 
-  loggedIn
-    ? switch (url.path) {
-      | [] => <Book />
-      | ["resor"] => <Trips />
-      | ["resa", id] => <Trip id />
-      | _ => <Typography.Error> {errorToString(FourOFour)} </Typography.Error>
-      }
-    : <Login onLogin=handleLogin />;
+  let s = {"className": "hey"};
+
+  <div>
+    {loggedIn
+       ? switch (url.path) {
+         | [] => <Book />
+         | ["resor"] => <Trips />
+         | ["resa", id] => <Trip id />
+         | _ => <Typography.Error> FourOFour </Typography.Error>
+         }
+       : <Login onLogin=handleLogin />}
+    <Utils.Spread props=s> <Toast.Container /> </Utils.Spread>
+  </div>;
 };

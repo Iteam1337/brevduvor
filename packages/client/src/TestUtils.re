@@ -11,6 +11,30 @@ module ApolloReactTesting = {
       "MockedProvider";
   };
 
+  module MockedProvider2 = {
+    [@bs.module "@apollo/react-testing"] [@react.component]
+    external make:
+      (
+        ~children: React.element,
+        ~mocks: (Js.t('mocksA), Js.t('mocksB)),
+        ~addTypename: bool
+      ) =>
+      React.element =
+      "MockedProvider";
+  };
+
+  module MockedProvider3 = {
+    [@bs.module "@apollo/react-testing"] [@react.component]
+    external make:
+      (
+        ~children: React.element,
+        ~mocks: (Js.t('mocksA), Js.t('mocksB), Js.t('mocksC)),
+        ~addTypename: bool
+      ) =>
+      React.element =
+      "MockedProvider";
+  };
+
   module MockLink = {
     [@bs.module "@apollo/react-testing"] [@bs.new]
     external make:
@@ -45,13 +69,49 @@ module MockedLocaleProvider = {
   };
 };
 
+module MockedNotificationProvider = {
+  [@react.component]
+  let make = (~children) => {
+    <Notifications.Provider> children </Notifications.Provider>;
+  };
+};
+
 module MockedProvider = {
   [@react.component]
   let make = (~addTypename=true, ~children, ~mocks=[||], ~locale=`SWEDISH) => {
     <ApolloReactTesting.MockedProvider addTypename mocks>
-      <MockedLocaleProvider locale> children </MockedLocaleProvider>
+      <MockedLocaleProvider locale>
+        <MockedNotificationProvider> children </MockedNotificationProvider>
+      </MockedLocaleProvider>
     </ApolloReactTesting.MockedProvider>;
   };
+};
+
+module MockedProvider2 = {
+  [@react.component]
+  let make =
+      (~addTypename=true, ~children, ~mocks: ('a, 'b)=?, ~locale=`SWEDISH) =>
+    <ApolloReactTesting.MockedProvider2 addTypename mocks>
+      <MockedLocaleProvider locale>
+        <MockedNotificationProvider> children </MockedNotificationProvider>
+      </MockedLocaleProvider>
+    </ApolloReactTesting.MockedProvider2>;
+};
+
+module MockedProvider3 = {
+  [@react.component]
+  let make =
+      (
+        ~addTypename=true,
+        ~children,
+        ~mocks: ('a, 'b, 'c)=?,
+        ~locale=`SWEDISH,
+      ) =>
+    <ApolloReactTesting.MockedProvider3 addTypename mocks>
+      <MockedLocaleProvider locale>
+        <MockedNotificationProvider> children </MockedNotificationProvider>
+      </MockedLocaleProvider>
+    </ApolloReactTesting.MockedProvider3>;
 };
 
 module ReactTestUtils = {
@@ -62,3 +122,7 @@ module ReactTestUtils = {
 [@bs.module "@testing-library/react"]
 external waitForElement: (unit => Dom.element) => Js.Promise.t('a) =
   "waitForElement";
+
+[@bs.module "@testing-library/react"]
+external waitForElementToBeRemoved: (unit => Dom.element) => Js.Promise.t('a) =
+  "waitForElementToBeRemoved";

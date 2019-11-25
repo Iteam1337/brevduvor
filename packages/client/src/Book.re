@@ -34,6 +34,11 @@ let make = () => {
   let ({translationsToString, _}, _changeLocale): LocaleContext.t =
     LocaleContext.use();
 
+  let (availablePositionsResponse, _) = AllDestinationsQuery.use();
+
+  let dispatchNotification =
+    Notifications.Dispatch.make(React.useContext(Notifications.Context.t));
+
   let (state, dispatch) =
     React.useReducer(
       (state, action) =>
@@ -48,17 +53,43 @@ let make = () => {
       initialState,
     );
 
-  let handleDestinationSelect = destination =>
+  let handleDestinationSelect = destination => {
+    Js.log("changed");
     SetDestination(destination)->dispatch;
+  };
 
   let handleDepartingPositionSelect = pos =>
     SetDepartingPosition(pos)->dispatch;
 
   let handleDroneInitResponse = id => SetDroneId(id)->dispatch;
 
-  let (availablePositionsResponse, _) = AllDestinationsQuery.use();
-
   let {departingPosition, destination, droneId} = state;
+
+  NotificationHook.use(
+    () => {
+      switch (availablePositionsResponse) {
+      | Error(_e) =>
+        dispatchNotification(Error(CouldNotGetAvailableDestinations))
+      | Data(_)
+      | Loading
+      | NoData => ()
+      };
+      None;
+    },
+    [|availablePositionsResponse|],
+  );
+
+  NotificationHook.use(
+    () => {
+      switch (droneId) {
+      | Some(_) => dispatchNotification(Success(BookTrip_Booking_Finished))
+      | None => ()
+      };
+      None;
+    },
+    [|droneId|],
+  );
+
   I18n.Translations.(
     <div className="w-full min-h-screen flex">
       <SideMenu>
@@ -74,20 +105,19 @@ let make = () => {
                name="select-from"
                onChange=handleDepartingPositionSelect
                selectOptions
+               testId="select-from"
              />
              <Input.GeoSelect
                label=BookTrip_To_Label
                name="select-to"
                onChange=handleDestinationSelect
                selectOptions
+               testId="select-to"
              />
            </>;
          | Loading => <Loader.Inline isLoading=true />
          | NoData
-         | Error(_) =>
-           <Typography.Error>
-             {translationsToString(BookTrip_From_Label)}
-           </Typography.Error>
+         | Error(_) => React.null
          }}
         {switch (departingPosition, destination, droneId) {
          | (Some(start), Some(stop), None) =>
@@ -100,17 +130,15 @@ let make = () => {
          }}
         {switch (droneId) {
          | Some(id) =>
-           <>
-             <Typography.P className="mt-5">
-               {translationsToString(BookTrip_Booking_Finished)}
-             </Typography.P>
-             <Button.Primary
-               className="mt-5"
-               onClick={_ => ReasonReactRouter.push("/resa/" ++ id)}>
-               {translationsToString(BookTrip_GoToOverview_Button)
-                ->React.string}
-             </Button.Primary>
-           </>
+           <Button.Primary
+             className="mt-5"
+             onClick={_ => {
+               Js.log("clicked");
+
+               ReasonReactRouter.push("/resa/" ++ id);
+             }}>
+             BookTrip_GoToOverview_Button
+           </Button.Primary>
          | _ => React.null
          }}
       </SideMenu>

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StartDrone shows book button initially 1`] = `
+<div>
+  <button
+    class="w-full text-xs bg-blue-400 hover:bg-blue-500 text-white font-semibold
+        py-3 px-4 rounded tracking-wide border border-blue-400 hover:border-blue-500 mt-5 mt-4 bg-green-400 hover:bg-green-500 mt-5"
+    type="button"
+  >
+    Boka resa
+  </button>
+</div>
+`;

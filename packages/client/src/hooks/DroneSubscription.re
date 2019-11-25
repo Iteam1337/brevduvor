@@ -28,7 +28,7 @@ module DroneStatusSubscription =
   ReasonApolloHooks.Subscription.Make(DroneStatusSubscriptionConfig);
 
 let use = (~id=?, ()) => {
-  let (simple, _full) =
+  let (simple, full) =
     DroneStatusSubscription.use(
       ~variables=
         DroneStatusSubscriptionConfig.make(
@@ -38,5 +38,5 @@ let use = (~id=?, ()) => {
       (),
     );
 
-  simple;
+  (simple, full);
 };
