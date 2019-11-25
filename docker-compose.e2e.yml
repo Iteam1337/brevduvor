@@ -55,9 +55,6 @@ services:
       - CYPRESS_videosFolder=/cypress/videos/ci
     volumes:
       - type: bind
-        source: ./packages/client/cypress/videos
-        target: /cypress/videos
-      - type: bind
         source: ./packages/client/cypress
         target: /e2e/cypress
     networks:
