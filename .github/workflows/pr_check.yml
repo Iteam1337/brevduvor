@@ -30,5 +30,8 @@ jobs:
       - name: Test
         run: npm run test
         env:
+          TWILIO__ACCOUNT: 'Test'
+          TWILIO__TOKEN": 'test123'
+          REDIS__PASSWORD: lg565ABwjvZw4TgAQC6R
           JWT_PRIVATE_KEY: 'MYSECRETKEY'
           CI: 'true'
