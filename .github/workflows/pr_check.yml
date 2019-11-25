@@ -32,6 +32,7 @@ jobs:
         env:
           TWILIO__ACCOUNT: ${{ secrets.TWILIO__ACCOUNT }}
           TWILIO__TOKEN": ${{ secrets.TWILIO__TOKEN }}
+          TWILIO__SENDER: '+15005550006'
           REDIS__PASSWORD: ${{ secrets.REDIS__PASSWORD }}
           JWT_PRIVATE_KEY: 'MYSECRETKEY'
           CI: 'true'

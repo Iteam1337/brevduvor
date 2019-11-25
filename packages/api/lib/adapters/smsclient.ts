@@ -1,6 +1,8 @@
 import twilio from 'twilio'
 import config from './../config'
 
+console.log('smsclient config -->', config)
+
 export const client = twilio(config.TWILIO.account, config.TWILIO.token)
 
 export const send = (message: string, receiver: string) => {
