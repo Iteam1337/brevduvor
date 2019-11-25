@@ -17,11 +17,12 @@ services:
       retries: 3
     networks:
       - internal
-
   drone-simulator:
     image: brevduvor-drone:ci
     ports:
       - '3030:3030'
+    networks:
+      - internal
   api:
     image: brevduvor-api:ci
     environment:
@@ -55,10 +56,10 @@ services:
       - CYPRESS_videosFolder=/cypress/videos/ci
     volumes:
       - type: bind
-        source: ./cypress/videos
+        source: ./packages/client/cypress/videos
         target: /cypress/videos
       - type: bind
-        source: ./cypress
+        source: ./packages/client/cypress
         target: /e2e/cypress
     networks:
       - internal

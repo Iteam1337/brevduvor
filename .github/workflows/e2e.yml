@@ -34,5 +34,4 @@ jobs:
           docker-compose -f docker-compose-ci.yml up -d postgres api client
       - name: Run Cypresstests
         run: |
-          cd packages/client
           docker-compose -f docker-compose-ci.yml up cypress
