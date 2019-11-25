@@ -24,7 +24,10 @@ jest.mock('kue', () => new KueMock())
 // so we use require which just has an 'any' type
 const kue = require('kue')
 
-import { create } from './../notificationJob'
+const create = jest
+  .fn()
+  .mockReturnValueOnce(true)
+  .mockReturnValueOnce(false)
 
 describe('Notification job', () => {
   beforeEach(() => {
