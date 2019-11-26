@@ -15,7 +15,10 @@ jobs:
         with:
           node-version: 12.13.0
       - name: Start Osrm and Redis services
-        run: docker-compose -f docker-compose.e2e.yml up redis
+        run: |
+          mkdir redis
+          sudo chown -R 1001:1001 redis
+          docker-compose -f docker-compose.e2e.yml up redis
       - name: Build the Drone-simulator image
         run: |
           cd packages/drone-simulator
