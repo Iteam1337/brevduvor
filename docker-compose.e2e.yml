@@ -45,6 +45,11 @@ services:
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
     networks:
       - internal
+    healthcheck:
+      - test: ['CMD', 'curl', 'http://redis:6379']
+      - interval: 30s
+      - timeout: 2s
+      - retries: 3
   postgres:
     image: postgres:11.5
     volumes:
@@ -100,7 +105,7 @@ services:
     image: iteam1337/brevduvor-cypress:ci
     command: ./node_modules/.bin/cypress run
     environment:
-      - CYPRESS_baseUrl=http://client:3000/
+      - CYPRESS_baseUrl=http://client:80/
     volumes:
       - type: bind
         source: ./packages/client/cypress
