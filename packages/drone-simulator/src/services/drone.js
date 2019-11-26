@@ -112,7 +112,7 @@ async function start({ body: { webhookUrl, id } }, res) {
   }
 }
 
-async function init({ body: { start, stop } }, res) {
+async function init({ body: { start, stop } }, res, next) {
   try {
     const osrmTrip = await osrm.generate(start, stop)
     const coords = [
@@ -148,6 +148,7 @@ async function init({ body: { start, stop } }, res) {
 
     res.send(droneData)
   } catch (err) {
+    next(err)
     console.log(err)
   }
 }

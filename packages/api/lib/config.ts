@@ -15,6 +15,17 @@ const config = require('@iteam/config')({
       MAX: 20,
       timeout: 30000,
     },
+    JWT_PRIVATE_KEY: 'jwtdevkey',
+    TWILIO: {
+      ACCOUNT: 'AC78b43ca91ef8515a245071c63a4336ca',
+      TOKEN: 'fdc5528aeeb0494d58265ad5587b2d54',
+      SENDER: '+15005550006',
+    },
+    REDIS: {
+      HOST: 'localhost',
+      PORT: 6379,
+      PASSWORD: 'lg565ABwjvZw4TgAQC6R',
+    },
   },
 })
 
@@ -25,5 +36,7 @@ export default {
   ELASTIC_URL: config.get('ELASTIC_URL'),
   WEBHOOK_URL: config.get('WEBHOOK_URL'),
   POSTGRES: config.get('POSTGRES'),
-  JWT_SECRET: config.get('JWT_PRIVATE_KEY'),
+  JWT_SECRET: config.get('jwtPrivateKey'),
+  REDIS: config.get('REDIS'),
+  TWILIO: config.get('TWILIO'),
 }

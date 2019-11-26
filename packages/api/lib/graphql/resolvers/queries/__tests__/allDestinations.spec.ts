@@ -1,3 +1,4 @@
+export {} // TypeScript diagnostics
 const { ApolloServer } = require('apollo-server-express')
 const { createTestClient } = require('apollo-server-testing')
 const { gql } = require('apollo-server-express')

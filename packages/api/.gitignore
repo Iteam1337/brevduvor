@@ -14,6 +14,7 @@ dist
 lib/bs
 lib/js
 data
+redis
 
 # Dependency directories
 node_modules

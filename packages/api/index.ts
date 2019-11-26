@@ -6,7 +6,6 @@ import { createServer } from 'http'
 import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
-
 import { verifyTokenAgainstUserRecords } from './lib/services/auth'
 
 export const osrmInstance = new OsrmAPI()
