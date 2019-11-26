@@ -45,6 +45,7 @@ services:
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
     networks:
       - internal
+    command: /run.sh --maxmemory 2mb
   postgres:
     image: postgres:11.5
     volumes:
