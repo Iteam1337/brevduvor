@@ -6,7 +6,7 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - ./redis:/bitnami/redis/data
+      - redis:/bitnami/redis/data
     environment:
       - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG # Disable these for security reasons
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
@@ -82,3 +82,4 @@ services:
         osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
 volumes:
   postgres11:
+  redis:
