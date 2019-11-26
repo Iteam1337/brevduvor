@@ -39,7 +39,7 @@ services:
   redis:
     image: bitnami/redis:latest
     volumes:
-      - ./redis:/bitnami/redis/data
+      - redis:/bitnami/redis/data
     environment:
       - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG # Disable these for security reasons
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
@@ -108,3 +108,4 @@ networks:
 
 volumes:
   postgres11:
+  redis:
