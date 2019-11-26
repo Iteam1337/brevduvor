@@ -17,8 +17,8 @@ const config = require('@iteam/config')({
     },
     JWT_PRIVATE_KEY: 'jwtdevkey',
     TWILIO: {
-      ACCOUNT: 'AC78b43ca91ef8515a245071c63a4336ca',
-      TOKEN: 'fdc5528aeeb0494d58265ad5587b2d54',
+      ACCOUNT: 'AC7b5ec4c1eacd5d014f77373fca7858c2',
+      TOKEN: '79395512941b59749ca4ad656132f63e',
       SENDER: '+15005550006',
     },
     REDIS: {

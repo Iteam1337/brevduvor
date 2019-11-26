@@ -36,6 +36,15 @@ services:
         osrm-routed --algorithm mld "/data/$${FILE_NAME}.osrm"
     networks:
       - internal
+  redis:
+    image: 'bitnami/redis:latest'
+    volumes:
+      - ./redis:/bitnami/redis/data
+    environment:
+      - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG # Disable these for security reasons
+      - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
+    networks:
+      - internal
   postgres:
     image: postgres:11.5
     volumes:
@@ -61,6 +70,7 @@ services:
   api:
     image: brevduvor-api:ci
     environment:
+      - REDIS__HOST=redis
       - POSTGRES__HOST=postgres
       - POSTGRES__USER=iteamadmin
       - POSTGRES__PASSWORD=adminadmin1337
@@ -73,6 +83,7 @@ services:
     command: bash -c "./bin/wait-for-it.sh postgres:5432 && until curl http://osrm:5000; do sleep 1; done && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
     depends_on:
       - drone-simulator
+      - redis
     networks:
       - internal
   client:
