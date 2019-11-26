@@ -16,6 +16,16 @@ const config = require('@iteam/config')({
       timeout: 30000,
     },
     JWT_PRIVATE_KEY: 'jwtdevkey',
+    TWILIO: {
+      ACCOUNT: 'AC78b43ca91ef8515a245071c63a4336ca',
+      TOKEN: 'fdc5528aeeb0494d58265ad5587b2d54',
+      SENDER: '+15005550006',
+    },
+    REDIS: {
+      HOST: 'localhost',
+      PORT: 6379,
+      PASSWORD: 'lg565ABwjvZw4TgAQC6R',
+    },
   },
 })
 
