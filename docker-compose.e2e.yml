@@ -60,10 +60,10 @@ services:
       - POSTGRES_DB=${POSTGRES__DB:-brevduvor}
       - POSTGRES_INITDB_ARGS=--encoding=utf8
     healthcheck:
-      test: ['CMD', 'pg_isready', '-q', '-d', 'brevduvor', '-U', 'iteamadmin']
-      interval: 2s
-      timeout: 5s
-      retries: 3
+      - test: ['CMD', 'pg_isready', '-q', '-d', 'brevduvor', '-U', 'iteamadmin']
+      - interval: 2s
+      - timeout: 5s
+      - retries: 3
     networks:
       - internal
   drone-simulator:
