@@ -1,6 +1,6 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
 import { dronePost } from '../../../adapters/drone'
-import { insertDroneTrip, Status } from '../../../services/drones'
+import { insertDroneTrip } from '../../../services/drones'
 
 export const initDrone: MutationResolvers['initDrone'] = async (
   _,
@@ -13,7 +13,7 @@ export const initDrone: MutationResolvers['initDrone'] = async (
 
     await insertDroneTrip({
       drone_id: body.id,
-      status: 'initating' as Status,
+      status: 'initiating',
       start: `(${body.start.lat}, ${body.start.lon})`,
       stop: `(${body.stop.lat}, ${body.stop.lon})`,
       allowed_spectators: [],

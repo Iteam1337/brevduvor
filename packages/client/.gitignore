@@ -7,8 +7,6 @@
 # Build folders
 /lib/bs
 /dist
-/cypress/videos/
-/cypress/screenshots/
 
 ## CommonJS setup
 /lib/js/src
@@ -24,3 +22,5 @@
 .bsb.lock
 npm-debug.log
 /.graphql_ppx_cache
+cypress/videos
+cypress/screenshots

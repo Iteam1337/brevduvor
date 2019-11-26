@@ -31,4 +31,4 @@ jobs:
         run: npm run test
         env:
           JWT_PRIVATE_KEY: 'MYSECRETKEY'
-          CI: true
+          CI: 'true'
