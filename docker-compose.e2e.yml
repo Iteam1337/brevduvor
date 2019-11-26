@@ -37,7 +37,7 @@ services:
     networks:
       - internal
   redis:
-    image: 'bitnami/redis:latest'
+    image: bitnami/redis:latest
     volumes:
       - ./redis:/bitnami/redis/data
     environment:
@@ -85,7 +85,7 @@ services:
       - WEBHOOK_URL=http://api:4000/status
       - OSRM_URL=http://osrm:5000
       - JWT_PRIVATE_KEY=definatelyaprivatekey
-    command: bash -c "./bin/wait-for-it.sh postgres:5432 && until curl http://osrm:5000; do sleep 1; done && ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
+    command: bash -c "./bin/wait-for-it.sh postgres:5432 -- ./bin/wait-for-it.sh redis:6379 -- ./bin/wait-for-it.sh osrm:5000 -- ./bin/migrate.sh && ./bin/seed-ci.sh && npm start"
     depends_on:
       - drone-simulator
       - redis
@@ -103,7 +103,7 @@ services:
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
   cypress:
     image: iteam1337/brevduvor-cypress:ci
-    command: ./node_modules/.bin/cypress run
+    command: bash -c "until curl http://client:3000; do sleep 1; done && ./node_modules/.bin/cypress run"
     environment:
       - CYPRESS_baseUrl=http://client:80/
     volumes:
