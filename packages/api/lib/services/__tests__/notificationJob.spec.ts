@@ -1,25 +1,3 @@
-import { EventEmitter } from 'events'
-
-class KueMock extends EventEmitter {
-  createQueue() {
-    return this
-  }
-  create() {
-    return this
-  }
-  save() {
-    return this
-  }
-  attempts() {
-    return this
-  }
-  backoff() {
-    return this
-  }
-}
-
-jest.mock('kue', () => new KueMock())
-
 // typescript complains about type when extending it with eventemitter,
 // so we use require which just has an 'any' type
 const kue = require('kue')
