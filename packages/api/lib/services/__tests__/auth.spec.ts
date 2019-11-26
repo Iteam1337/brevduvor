@@ -6,22 +6,22 @@ jest.mock('../users', () => ({
   createUser() {
     return Promise.resolve({
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
-      email: 'hello2@me',
-      name: 'ElGato_aka_TheCat-O',
+      email: 'test@iteam.se',
+      name: 'iteamtestuser',
     })
   },
   getUserByEmail() {
     return Promise.resolve({
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
-      email: 'hello2@me',
-      name: 'ElGato_aka_TheCat-O',
+      email: 'test@iteam.se',
+      name: 'iteamtestuser',
     })
   },
   getUserById() {
     return Promise.resolve({
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
-      email: 'hello2@me',
-      name: 'ElGato_aka_TheCat-O',
+      email: 'test@iteam.se',
+      name: 'iteamtestuser',
     })
   },
 }))
@@ -59,8 +59,8 @@ describe.only('authentication', () => {
 
       expect(user).resolves.toStrictEqual({
         id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
-        email: 'hello2@me',
-        name: 'ElGato_aka_TheCat-O',
+        email: 'test@iteam.se',
+        name: 'iteamtestuser',
       })
     })
   })
@@ -71,13 +71,18 @@ describe.only('authentication', () => {
 
   it("rejects a registration when password fields don't match", () => {
     expect(
-      authService.register('hello@me', 'TestUser', 'Password!', 'NO MATCH')
+      authService.register('newuser@me', 'TestUser', 'Password!', 'NO MATCH')
     ).rejects.toThrow()
   })
 
   it('rejects when the user already exists', () => {
     expect(
-      authService.register('hello2@me', 'TestUser', 'Password!', 'Password!')
+      authService.register(
+        'test@iteam.se',
+        'TestUser',
+        'Password!',
+        'Password!'
+      )
     ).rejects.toThrow()
   })
 
