@@ -94,9 +94,9 @@ services:
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
   cypress:
     image: iteam1337/brevduvor-cypress:ci
-    command: bash -c "until curl http://client:3000; do sleep 1; done && ./node_modules/.bin/cypress run"
+    command: bash -c "./node_modules/.bin/cypress run"
     environment:
-      - CYPRESS_baseUrl=http://client:80/
+      - CYPRESS_baseUrl=http://client:3000/
     volumes:
       - type: bind
         source: ./packages/client/cypress
