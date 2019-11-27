@@ -14,8 +14,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.13.0
-      - name: Start Osrm service
-        run: docker-compose -f docker-compose.e2e.yml up -d osrm
+      - name: Start Osrm and Redis services
+        run: docker-compose -f docker-compose.e2e.yml up -d osrm redis
       - name: Build the Drone-simulator image
         run: |
           cd packages/drone-simulator

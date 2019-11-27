@@ -1,59 +1,59 @@
-const { ApolloServer } = require('apollo-server-express')
-const { createTestClient } = require('apollo-server-testing')
-const { gql } = require('apollo-server-express')
+export {} // TypeScript diagnostics
+// const { ApolloServer } = require('apollo-server-express')
+// const { createTestClient } = require('apollo-server-testing')
 const { getRoute } = require('../index')
 const { osrmInstance } = require('../../../../../index')
-const schema = require('../../../schema')
+// const schema = require('../../../schema')
 
-const mockTypeDefs = [
-  `
-    scalar JSON
-    scalar JSONObject
+// const mockTypeDefs = [
+//   `
+//     scalar JSON
+//     scalar JSONObject
 
-    type Geometry {
-      type: String!
-      coordinates: JSON!
-    }
+//     type Geometry {
+//       type: String!
+//       coordinates: JSON!
+//     }
 
-    type Route {
-      trips: [Trip!]!
-    }
+//     type Route {
+//       trips: [Trip!]!
+//     }
 
-    type Trip {
-      geoJson: Geometry!
-      distance: Float!
-    }
+//     type Trip {
+//       geoJson: Geometry!
+//       distance: Float!
+//     }
 
-    type Destination {
-      alias: String!
-      lat: Float!
-      lon: Float!
-    }
+//     type Destination {
+//       alias: String!
+//       lat: Float!
+//       lon: Float!
+//     }
 
-    input DestinationInput {
-      alias: String!
-      lat: Float!
-      lon: Float!
-    }
+//     input DestinationInput {
+//       alias: String!
+//       lat: Float!
+//       lon: Float!
+//     }
 
-    type Query {
-      allDestinations: [Destination!]!
-      getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
-    }
-  `,
-]
+//     type Query {
+//       allDestinations: [Destination!]!
+//       getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
+//     }
+//   `,
+// ]
 
 // Setup
-const serverConfig = {
-  typeDefs: mockTypeDefs,
-  resolvers: schema.resolvers,
-  schemaDirectives: schema.directives,
-  dataSources: () => ({
-    osrm: osrmInstance,
-  }),
-}
+// const serverConfig = {
+//   typeDefs: mockTypeDefs,
+//   resolvers: schema.resolvers,
+//   schemaDirectives: schema.directives,
+//   dataSources: () => ({
+//     osrm: osrmInstance,
+//   }),
+// }
 
-const { query } = createTestClient(new ApolloServer(serverConfig))
+// const { query } = createTestClient(new ApolloServer(serverConfig))
 
 // Mock api call
 osrmInstance.getTrip = jest.fn(() => {

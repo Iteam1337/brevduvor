@@ -1,3 +1,5 @@
+export {} // TypeScript diagnostics
+
 import { startDrone } from '../startDrone'
 import { dronePost } from '../../../../adapters/drone'
 import { updateTripStatus } from '../../../../services/drones'
