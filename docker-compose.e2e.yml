@@ -37,15 +37,12 @@ services:
     networks:
       - internal
   redis:
-    image: bitnami/redis:latest
-    volumes:
-      - redis:/bitnami/redis/data
+    image: redis:5.0
     environment:
       - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG # Disable these for security reasons
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
     networks:
       - internal
-    command: /run.sh --maxmemory 2mb
   postgres:
     image: postgres:11.5
     volumes:
@@ -94,7 +91,7 @@ services:
       - until curl http://api:4000; do sleep 1; done && exec nginx -g 'daemon off;'
   cypress:
     image: iteam1337/brevduvor-cypress:ci
-    command: bash -c "./node_modules/.bin/cypress run"
+    command: bash -c "until curl http://client:3000; do sleep 1; done && ./node_modules/.bin/cypress run"
     environment:
       - CYPRESS_baseUrl=http://client:3000/
     volumes:
@@ -108,4 +105,3 @@ networks:
 
 volumes:
   postgres11:
-  redis:

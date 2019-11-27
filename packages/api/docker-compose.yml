@@ -10,6 +10,7 @@ services:
     environment:
       - DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG # Disable these for security reasons
       - REDIS_PASSWORD=${REDIS__PASSWORD:-lg565ABwjvZw4TgAQC6R}
+      - APPEND_ONLY=yes
   postgres:
     image: postgres:11.5
     volumes:
