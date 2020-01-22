@@ -8,21 +8,21 @@ import {
   ApolloClient,
   InMemoryCache,
   getMainDefinition,
+  split,
+  HttpLink,
 } from '@apollo/client'
-import { split } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
-import { WebSocketLink } from 'apollo-link-ws'
+
+import { WebSocketLink } from '@apollo/link-ws'
+
+const httpLink = new HttpLink({
+  uri: process.env.REACT_APP_GRAPHQL_URI,
+})
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_WS_URI,
   options: {
     reconnect: true,
   },
-  onError: _ => null,
-})
-
-const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
 })
 
 const link = split(
@@ -40,7 +40,6 @@ const link = split(
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  // @ts-ignore
   link,
 })
 
@@ -51,7 +50,4 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister()
