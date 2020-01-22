@@ -6,6 +6,14 @@ Mono-repo for the Brevduvor-project.
 
 A web client for initialising and consuming transports.
 
+## [Drone Sender](packages/drone-sender/)
+
+A client for initialising transports.
+
+## [Drone Receiver](packages/drone-receiver/)
+
+A client for receiving transports.
+
 ## [API](packages/api/)
 
 A server for communicating with the client.
