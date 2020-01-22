@@ -1,5 +1,5 @@
 {
-  "name": "receiver",
+  "name": "drone-receiver",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
