@@ -6,27 +6,27 @@ import { createServer } from 'http'
 import OsrmAPI from './lib/datasources/osrm'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
-import { verifyTokenAgainstUserRecords } from './lib/services/auth'
+// import { verifyTokenAgainstUserRecords } from './lib/services/auth'
 
 export const osrmInstance = new OsrmAPI()
 
 export const serverConfig = {
-  context: async ({ req }: any) => {
-    try {
-      const token = req.headers.authorization || ''
+  // context: async ({ req }: any) => {
+  //   try {
+  //     const token = req.headers.authorization || ''
 
-      if (token) {
-        const user = await verifyTokenAgainstUserRecords(
-          token,
-          config.JWT_SECRET
-        )
+  //     if (token) {
+  //       const user = await verifyTokenAgainstUserRecords(
+  //       token,
+  //         config.JWT_SECRET
+  //       )
 
-        return { user }
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  },
+  //       return { user }
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // },
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
   schemaDirectives: schema.directives,

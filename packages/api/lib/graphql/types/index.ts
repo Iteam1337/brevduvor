@@ -5,6 +5,7 @@ import * as startDrone from './startDrone'
 import * as initDrone from './initDrone'
 import * as auth from './auth'
 import * as notification from './notification'
+import * as hasStartedNotification from './hasStartedNotification'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -41,10 +42,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    initDrone(
-      start: DestinationInput!
-      stop: DestinationInput!
-    ): InitDroneResponse! @isAuthenticated
+    initDrone(start: DestinationInput!, stop: DestinationInput!): String!
 
     startDrone(id: String!): StartDroneResponse! @isAuthenticated
 
@@ -70,6 +68,7 @@ const typeDefs = gql`
   type Subscription {
     dronePosition(id: String!): InitDroneResponse! @isAuthenticated
     droneStatus(id: String!): DroneStatusResponse
+    hasStarted: String!
   }
 `
 
@@ -81,4 +80,5 @@ export default [
   initDrone.typeDefs,
   auth.typeDefs,
   notification.typeDefs,
+  hasStartedNotification.typeDefs,
 ]

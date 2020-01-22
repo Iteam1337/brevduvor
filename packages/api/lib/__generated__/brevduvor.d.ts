@@ -76,6 +76,11 @@ export type Geometry = {
   coordinates: Scalars['JSON']
 }
 
+export type HasStartedResponse = {
+  __typename?: 'hasStartedResponse'
+  id: Scalars['String']
+}
+
 export type InitDroneResponse = {
   __typename?: 'InitDroneResponse'
   id: Scalars['String']
@@ -102,7 +107,7 @@ export type LogoutResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation'
-  initDrone: InitDroneResponse
+  initDrone: Scalars['String']
   startDrone: StartDroneResponse
   notification: Scalars['Boolean']
   login: AuthPayload
@@ -178,6 +183,7 @@ export type Subscription = {
   __typename?: 'Subscription'
   dronePosition: InitDroneResponse
   droneStatus: Maybe<DroneStatusResponse>
+  hasStarted: Scalars['String']
 }
 
 export type SubscriptionDronePositionArgs = {
@@ -305,9 +311,6 @@ export type ResolversTypes = {
   Geometry: ResolverTypeWrapper<Geometry>
   JSON: ResolverTypeWrapper<Scalars['JSON']>
   Mutation: ResolverTypeWrapper<{}>
-  InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
-  Coordinates: ResolverTypeWrapper<Coordinates>
-  Int: ResolverTypeWrapper<Scalars['Int']>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   NotificationInput: NotificationInput
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
@@ -318,8 +321,12 @@ export type ResolversTypes = {
   RuleWrapper: ResolverTypeWrapper<Scalars['RuleWrapper']>
   LogoutResponse: ResolverTypeWrapper<LogoutResponse>
   Subscription: ResolverTypeWrapper<{}>
+  InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
+  Coordinates: ResolverTypeWrapper<Coordinates>
+  Int: ResolverTypeWrapper<Scalars['Int']>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
   CacheControlScope: CacheControlScope
+  hasStartedResponse: ResolverTypeWrapper<HasStartedResponse>
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
   Upload: ResolverTypeWrapper<Scalars['Upload']>
 }
@@ -336,9 +343,6 @@ export type ResolversParentTypes = {
   Geometry: Geometry
   JSON: Scalars['JSON']
   Mutation: {}
-  InitDroneResponse: InitDroneResponse
-  Coordinates: Coordinates
-  Int: Scalars['Int']
   StartDroneResponse: StartDroneResponse
   NotificationInput: NotificationInput
   Boolean: Scalars['Boolean']
@@ -349,8 +353,12 @@ export type ResolversParentTypes = {
   RuleWrapper: Scalars['RuleWrapper']
   LogoutResponse: LogoutResponse
   Subscription: {}
+  InitDroneResponse: InitDroneResponse
+  Coordinates: Coordinates
+  Int: Scalars['Int']
   DroneStatusResponse: DroneStatusResponse
   CacheControlScope: CacheControlScope
+  hasStartedResponse: HasStartedResponse
   JSONObject: Scalars['JSONObject']
   Upload: Scalars['Upload']
 }
@@ -448,6 +456,13 @@ export type GeometryResolvers<
   coordinates: Resolver<ResolversTypes['JSON'], ParentType, ContextType>
 }
 
+export type HasStartedResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['hasStartedResponse'] = ResolversParentTypes['hasStartedResponse']
+> = {
+  id: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
 export type InitDroneResponseResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['InitDroneResponse'] = ResolversParentTypes['InitDroneResponse']
@@ -486,7 +501,7 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   initDrone: Resolver<
-    ResolversTypes['InitDroneResponse'],
+    ResolversTypes['String'],
     ParentType,
     ContextType,
     RequireFields<MutationInitDroneArgs, 'start' | 'stop'>
@@ -579,6 +594,12 @@ export type SubscriptionResolvers<
     ContextType,
     RequireFields<SubscriptionDroneStatusArgs, 'id'>
   >
+  hasStarted: SubscriptionResolver<
+    ResolversTypes['String'],
+    'hasStarted',
+    ParentType,
+    ContextType
+  >
 }
 
 export type TripResolvers<
@@ -600,6 +621,7 @@ export type Resolvers<ContextType = any> = {
   Destination: DestinationResolvers<ContextType>
   DroneStatusResponse: DroneStatusResponseResolvers<ContextType>
   Geometry: GeometryResolvers<ContextType>
+  hasStartedResponse: HasStartedResponseResolvers<ContextType>
   InitDroneResponse: InitDroneResponseResolvers<ContextType>
   JSON: GraphQLScalarType
   JSONObject: GraphQLScalarType
