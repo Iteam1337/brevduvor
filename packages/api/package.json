@@ -23,7 +23,7 @@
     "seed": "knex seed:run --env dev",
     "generate": "graphql-codegen --config codegen.yml",
     "build": "tsc",
-    "dev": "ts-node-dev --no-notify index.ts",
+    "dev": "ts-node-dev --respawn --transpileOnly --ignore-watch node_modules index.ts",
     "lint": "eslint 'lib/**/*.{ts,tsx}'",
     "test": "jest --env brevduvor",
     "test:watch": "jest --env brevduvor --watchAll"
