@@ -10,7 +10,11 @@
   "devDependencies": {
     "husky": "^3.0.5",
     "lerna": "^3.16.4",
+    "lint-staged": "^10.0.2",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1"
+  },
+  "lint-staged": {
+    "*": "npm run lint"
   }
 }
