@@ -19,6 +19,8 @@ const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URI,
 })
 
+console.log('test')
+
 const wsLink = new WebSocketLink({
   uri: process.env.REACT_APP_GRAPHQL_WS_URI,
   options: {
