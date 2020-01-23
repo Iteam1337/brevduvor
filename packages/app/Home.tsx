@@ -13,7 +13,7 @@ const storuman = {
 }
 
 const slussfors = {
-  alias: 'Slussfors',
+  alias: 'Slussfors2',
   lat: 65.4308053,
   lon: 16.2569718,
 }
