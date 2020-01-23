@@ -15,7 +15,8 @@
     "graphql": "^14.5.8",
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "subscriptions-transport-ws": "^0.9.16"
+    "subscriptions-transport-ws": "^0.9.16",
+    "react-native-dotenv": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -35,7 +36,6 @@
     "eslint-plugin-react": "^7.18.0",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
-    "react-native-dotenv": "^0.2.0",
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0",
     "typescript": "^3.7.3"
