@@ -5,7 +5,7 @@
 import { AppRegistry } from 'react-native'
 import App from './App'
 import { name as appName } from './app.json'
-
+import React from 'react'
 import {
   ApolloProvider,
   ApolloClient,
@@ -16,13 +16,14 @@ import {
 } from '@apollo/client'
 
 import { WebSocketLink } from '@apollo/link-ws'
+import { GRAPHQL_URI, GRAPHQL_WS_URI } from 'react-native-dotenv'
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI,
+  uri: GRAPHQL_URI,
 })
 
 const wsLink = new WebSocketLink({
-  uri: process.env.REACT_APP_GRAPHQL_WS_URI,
+  uri: GRAPHQL_WS_URI,
   options: {
     reconnect: true,
   },
@@ -46,4 +47,10 @@ const client = new ApolloClient({
   link,
 })
 
-AppRegistry.registerComponent(appName, () => App)
+const Apollo = () => (
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+)
+
+AppRegistry.registerComponent(appName, () => Apollo)
