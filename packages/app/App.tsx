@@ -1,12 +1,16 @@
 import React from 'react'
 import { ApolloProvider } from '@apollo/client'
+import { ThemeProvider } from 'styled-components/native'
 import client from './graphql/apolloClient'
 import Home from './Home'
+import theme from './styles/theme'
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Home />
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
     </ApolloProvider>
   )
 }
