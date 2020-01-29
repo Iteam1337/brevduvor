@@ -18,7 +18,11 @@ declare module 'styled-components' {
     typography: {
       heading: string
       paragraph: string
-      sizes: { small: string; medium: string }
+      sizes: { sm: string; md: string }
+    }
+    spacing: {
+      sm: string
+      lg: string
     }
   }
 }
@@ -40,7 +44,11 @@ const theme: DefaultTheme = {
   typography: {
     heading: 'NunitoSans-Bold',
     paragraph: 'NunitoSans-Regular',
-    sizes: { small: '14px', medium: '18px' },
+    sizes: { sm: '14px', md: '16px' },
+  },
+  spacing: {
+    sm: '12px',
+    lg: '24px',
   },
 }
 
