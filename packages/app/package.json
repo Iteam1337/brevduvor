@@ -13,7 +13,6 @@
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.24",
     "@apollo/link-ws": "^2.0.0-beta.3",
-    "babel-plugin-styled-components": "^1.10.6",
     "graphql": "^14.5.8",
     "react": "16.9.0",
     "react-native": "0.61.5",
@@ -22,6 +21,7 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6",
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
     "@graphql-codegen/cli": "^1.11.2",

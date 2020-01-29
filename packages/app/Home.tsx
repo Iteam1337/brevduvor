@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { SafeAreaView, Button } from 'react-native'
+import { SafeAreaView } from 'react-native'
 
 import { useMutation } from '@apollo/client'
 import { INIT_DRONE } from './graphql/mutations'
 import { MutationInitDroneArgs, Mutation } from '__generated__/app'
+import styled from 'styled-components/native'
 
 const storuman = {
   alias: 'Storuman',
@@ -28,9 +29,24 @@ const Home = () => {
 
   return (
     <SafeAreaView>
-      <Button onPress={() => initDrone()} title="submit" />
+      <ButtonContainer onPress={() => initDrone()}>
+        <ButtonText>Send drone</ButtonText>
+      </ButtonContainer>
     </SafeAreaView>
   )
 }
 
+const ButtonContainer = styled.TouchableOpacity`
+  width: 100px;
+  height: 40px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.black};
+`
+
+const ButtonText = styled.Text`
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.black};
+  text-align: center;
+`
 export default Home
