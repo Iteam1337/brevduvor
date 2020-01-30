@@ -1,6 +1,6 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
-// import { dronePost } from '../../../adapters/drone'
-// import { insertDroneTrip } from '../../../services/drones'
+import got from 'got'
+import pubsub from '../../../adapters/pubsub'
 
 export const initDrone: MutationResolvers['initDrone'] = async (
   _,
@@ -9,7 +9,12 @@ export const initDrone: MutationResolvers['initDrone'] = async (
   _resolvers
 ) => {
   try {
-    // const { body } = await dronePost('/init', { start, stop })
+    pubsub.publish('hasStarded', {
+      hasStarted: {
+        id: 1,
+      },
+    })
+    got.post(`http://8a7d6697.ngrok.io/drone/take_off`)
 
     return JSON.stringify({ start, stop })
   } catch (err) {
