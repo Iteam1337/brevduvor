@@ -1,11 +1,13 @@
 import React from 'react'
-import { useMutation } from '@apollo/client'
+import { useMutation, useSubscription } from '@apollo/client'
 import { INIT_DRONE } from '../graphql/mutations'
 import { MutationInitDroneArgs, Mutation } from '__generated__/app'
 import PrimaryButton from '../components/Button'
 import TextInput from '../components/form/Input'
 import Label from '../components/form/Label'
 import ScrollableLayout from '../components/ScrollableLayout'
+import { HAS_STARTED } from '../graphql/subscriptions'
+import { Text } from 'react-native'
 
 const backgroundImage = require('../assets/background-topo.png')
 
@@ -28,6 +30,8 @@ const Home = () => {
       variables: { start: storuman, stop: slussfors },
     }
   )
+  const { data, loading } = useSubscription(HAS_STARTED)
+
   return (
     <ScrollableLayout image={backgroundImage}>
       <Label value="Från" />
@@ -42,6 +46,7 @@ const Home = () => {
         placeholder="write something"
         callback={console.log}
       />
+      {!loading && <Text>{data.id} drone has started</Text>}
 
       <PrimaryButton callback={() => initDrone()} text="Boka" />
       <PrimaryButton
