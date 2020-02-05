@@ -5,6 +5,7 @@ import { Text } from 'react-native'
 interface ParagraphProps {
   text: string
 }
+
 const Paragraph = styled(Text)`
   font-family: ${({ theme }) => theme.typography.paragraph};
   font-size: ${({ theme }) => theme.typography.sizes.md};

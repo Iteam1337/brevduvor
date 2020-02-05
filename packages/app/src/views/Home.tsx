@@ -1,13 +1,13 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
-import { INIT_DRONE } from '../graphql/mutations'
-import { MutationInitDroneArgs, Mutation } from '../../__generated__/app'
-import PrimaryButton from '../components/Button'
-import TextInput from '../components/form/Input'
-import Label from '../components/form/Label'
-import ScrollableLayout from '../components/ScrollableLayout'
+import { INIT_DRONE } from '~/graphql/mutations'
+import { MutationInitDroneArgs, Mutation } from '~/__generated__/app'
+import PrimaryButton from '~/components/Button'
+import TextInput from '~/components/form/Input'
+import Label from '~/components/form/Label'
+import ScrollableLayout from '~/components/ScrollableLayout'
 
-const backgroundImage = require('../../assets/background-topo.png')
+const backgroundImage = require('~/../assets/background-topo.png')
 
 const storuman = {
   alias: 'Storuman',
