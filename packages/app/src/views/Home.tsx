@@ -1,7 +1,7 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
-import { INIT_DRONE } from '~/graphql/mutations'
 import { MutationInitDroneArgs, Mutation } from '~/__generated__/app'
+import { INIT_DRONE } from '~/graphql/mutations'
 import PrimaryButton from '~/components/Button'
 import TextInput from '~/components/form/Input'
 import Label from '~/components/form/Label'
