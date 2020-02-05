@@ -48,6 +48,7 @@ class Drone_Move_To_Position(Resource):
 api.add_resource(Drone_Take_Off, '/drone/take_off')
 api.add_resource(Drone_Land, '/drone/land')
 api.add_resource(Drone_Gps_Data, '/drone/gps_data')
+api.add_resource(Drone_Move_To_Position, '/drone/move_to_position')
 
 
 if __name__ == '__main__':
