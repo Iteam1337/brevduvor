@@ -1,10 +1,15 @@
 import airsim
-from flask import Flask, Response
-from flask_restful import Resource, Api
+from flask import Flask, Response, request
+from flask_restful import Resource, Api,
 from json import dumps
 from flask_jsonpify import jsonify
+from airsimgeo import AirSimGeoClient
 
-client = airsim.MultirotorClient()
+srid = 'EPSG:5555'
+origin = (16.0740589, 61.8295161, 0.0)
+
+
+client = AirSimGeoClient(srid=srid, origin=origin)
 client.confirmConnection()
 client.enableApiControl(True)
 client.armDisarm(True)
@@ -30,6 +35,12 @@ class Drone_Gps_Data(Resource):
             "latitude": result.latitude,
             "longitude": result.longitude
         })
+class Drone_Move_To_Position(Resource):
+    def post(self):
+        lat = request.args.latitude
+        lon = request.args.longitude
+        client.moveToPositionAsyncGeo(gps=(lon, lat, 15))
+        return Response(status = 204)
 
 
 
