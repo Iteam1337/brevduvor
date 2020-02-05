@@ -42,9 +42,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    initDrone(start: DestinationInput!, stop: DestinationInput!): String!
+    initDrone(
+      start: DestinationInput!
+      stop: DestinationInput!
+    ): InitDroneResponse!
 
-    startDrone(id: String!): StartDroneResponse! @isAuthenticated
+    startDrone(id: String!): StartDroneResponse!
 
     notification(input: NotificationInput!): Boolean! @isAuthenticated
 
