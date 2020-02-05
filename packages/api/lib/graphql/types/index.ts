@@ -71,7 +71,7 @@ const typeDefs = gql`
   type Subscription {
     dronePosition(id: String!): InitDroneResponse! @isAuthenticated
     droneStatus(id: String!): DroneStatusResponse
-    hasStarted: String!
+    hasStarted: HasStartedResponse!
   }
 `
 

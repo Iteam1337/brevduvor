@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express'
 
 export const typeDefs = gql`
-  type hasStartedResponse {
+  type HasStartedResponse {
     id: String!
   }
 `
