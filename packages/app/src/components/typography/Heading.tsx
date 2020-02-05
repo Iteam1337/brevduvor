@@ -6,6 +6,7 @@ interface HeadingProps {
   text: string
   inColor?: boolean
 }
+
 const Heading = styled(Text)<{ inColor: HeadingProps['inColor'] }>`
   font-family: ${({ theme }) => theme.typography.heading};
   font-size: ${({ theme }) => theme.typography.sizes.md};
