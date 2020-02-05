@@ -5,7 +5,78 @@ import Home from '~/views/Home'
 import theme from '~/styles/theme'
 import client from '~/graphql/apolloClient'
 
+import firebase from 'react-native-firebase'
+import { AsyncStorage } from 'react-native'
+
+const getToken = async () => {
+  let fcmToken = await AsyncStorage.getItem('fcmToken')
+
+  if (!fcmToken) {
+    fcmToken = await firebase.messaging().getToken()
+    if (fcmToken) {
+      await AsyncStorage.setItem('fcmToken', fcmToken)
+    }
+  }
+}
+
+const checkPermission = async () => {
+  const enabled = await firebase.messaging().hasPermission()
+
+  if (enabled) {
+    getToken()
+  } else {
+    requestPermission()
+  }
+}
+
+const requestPermission = async () => {
+  try {
+    await firebase.messaging().requestPermission()
+    getToken()
+  } catch (error) {
+    console.log('permission rejected')
+  }
+}
+
+const onSubscribeMessageListener = () =>
+  firebase.messaging().onMessage(msg => {
+    console.log({ msg })
+  })
+
+const onSubscribeNotificationListener = function subscribe() {
+  firebase.notifications().onNotification(notification => {
+    firebase
+      .notifications()
+      .displayNotification(notification)
+      .catch(err => {
+        console.log({ err })
+      })
+  })
+}
+
+const notificationOpenedListener = function subscribe() {
+  firebase.notifications().onNotificationOpened(notificationOpen => {
+    // const { title, body } = notificationOpen.notification
+    console.log({ notificationOpen })
+  })
+}
+
 const App = () => {
+  React.useEffect(() => {
+    console.log('subscribing')
+    checkPermission()
+    onSubscribeNotificationListener()
+    onSubscribeMessageListener()
+    notificationOpenedListener()
+
+    return () => {
+      console.log('unsubscribing')
+      onSubscribeNotificationListener()
+      // onSubscribeMessageListener()
+      notificationOpenedListener()
+    }
+  }, [])
+
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>

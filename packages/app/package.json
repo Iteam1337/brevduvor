@@ -17,6 +17,7 @@
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-dotenv": "^0.2.0",
+    "react-native-firebase": "^5.6.0",
     "styled-components": "^5.0.0",
     "subscriptions-transport-ws": "^0.9.16"
   },
@@ -28,6 +29,7 @@
     "@graphql-codegen/typescript": "^1.11.2",
     "@graphql-codegen/typescript-resolvers": "^1.11.2",
     "@react-native-community/eslint-config": "^0.0.5",
+    "@react-native-firebase/app-types": "^6.3.0",
     "@types/jest": "^24.0.24",
     "@types/react-native": "^0.60.25",
     "@types/react-native-dotenv": "^0.2.0",
