@@ -1,6 +1,6 @@
 import airsim
-from flask import Flask, Response, request
-from flask_restful import Resource, Api
+from flask import Flask, Response
+from flask_restful import Resource, Api, reqparse
 from json import dumps
 from flask_jsonpify import jsonify
 from airsimgeo import AirSimGeoClient
@@ -17,6 +17,8 @@ client.armDisarm(True)
 
 app = Flask(__name__)
 api = Api(app)
+
+parser = reqparse.RequestParser()
 
 class Drone_Take_Off(Resource):
     def post(self):
@@ -35,11 +37,13 @@ class Drone_Gps_Data(Resource):
             "latitude": result.latitude,
             "longitude": result.longitude
         })
+
 class Drone_Move_To_Position(Resource):
     def post(self):
-        lat = request.args.latitude
-        lon = request.args.longitude
-        client.moveToPositionAsyncGeo(gps=(lon, lat, 15))
+        parser.add_argument('latitude', type=float)
+        parser.add_argument('longitude', type=float)
+        args = parser.parse_args
+        client.moveToPositionAsyncGeo(gps=(args.longitude, args.latitude, 15), velocity=10)
         return Response(status = 204)
 
 
