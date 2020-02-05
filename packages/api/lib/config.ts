@@ -3,7 +3,7 @@ const config = require('@iteam/config')({
   defaults: {
     PORT: 4000,
     DRONE_URL: 'http://localhost:3030',
-    OSRM_URL: 'http://localhost:5000',
+    OSRM_URL: 'http://osrm.pm.iteamdev.se',
     ELASTIC_URL: 'http://localhost:9200',
     WEBHOOK_URL: 'http://localhost:4000/status',
     POSTGRES: {
