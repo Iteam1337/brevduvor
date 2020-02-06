@@ -10,7 +10,7 @@ import { AsyncStorage } from 'react-native'
 
 const getToken = async () => {
   let fcmToken = await AsyncStorage.getItem('fcmToken')
-
+  console.log(fcmToken)
   if (!fcmToken) {
     fcmToken = await firebase.messaging().getToken()
     if (fcmToken) {
@@ -38,13 +38,14 @@ const requestPermission = async () => {
   }
 }
 
-const onSubscribeMessageListener = () =>
-  firebase.messaging().onMessage(msg => {
-    console.log({ msg })
-  })
+// const onSubscribeMessageListener = () =>
+//   firebase.messaging().onMessage(msg => {
+//     console.log({ msg })
+//   })
 
-const onSubscribeNotificationListener = function subscribe() {
-  firebase.notifications().onNotification(notification => {
+const onSubscribeNotificationListener = firebase
+  .notifications()
+  .onNotification(notification => {
     firebase
       .notifications()
       .displayNotification(notification)
@@ -52,27 +53,27 @@ const onSubscribeNotificationListener = function subscribe() {
         console.log({ err })
       })
   })
-}
 
-const notificationOpenedListener = function subscribe() {
-  firebase.notifications().onNotificationOpened(notificationOpen => {
+const notificationOpenedListener = firebase
+  .notifications()
+  .onNotificationOpened(notificationOpen => {
     // const { title, body } = notificationOpen.notification
     console.log({ notificationOpen })
   })
-}
 
+console.log(notificationOpenedListener)
 const App = () => {
   React.useEffect(() => {
     console.log('subscribing')
     checkPermission()
-    onSubscribeNotificationListener()
-    onSubscribeMessageListener()
-    notificationOpenedListener()
+    // onSubscribeNotificationListener()
+    // onSubscribeMessageListener()
+    // notificationOpenedListener()
 
     return () => {
       console.log('unsubscribing')
       onSubscribeNotificationListener()
-      // onSubscribeMessageListener()
+
       notificationOpenedListener()
     }
   }, [])
