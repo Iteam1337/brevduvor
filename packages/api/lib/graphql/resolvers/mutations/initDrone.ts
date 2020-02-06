@@ -19,7 +19,8 @@ export const initDrone: MutationResolvers['initDrone'] = async (
       allowed_spectators: [],
       finished: false,
     })
-    return body
+
+    return { ...body, status: 'initiating' }
   } catch (err) {
     throw new Error(`Error in initDrone: ${err}`)
   }
