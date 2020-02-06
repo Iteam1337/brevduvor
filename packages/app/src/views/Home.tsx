@@ -1,55 +1,44 @@
 import React from 'react'
-import { useMutation } from '@apollo/client'
-import { MutationInitDroneArgs, Mutation } from '~/__generated__/app'
-import { INIT_DRONE } from '~/graphql/mutations'
 import PrimaryButton from '~/components/Button'
-import TextInput from '~/components/form/Input'
-import Label from '~/components/form/Label'
-import ScrollableLayout from '~/components/ScrollableLayout'
+import Heading from '~/components/typography/Heading'
+import Layout from '~/components/Layout'
+import styled from 'styled-components/native'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
-const storuman = {
-  alias: 'Storuman',
-  lat: 65.1014345,
-  lon: 17.0984889,
+const Content = styled.View`
+  height: 30%;
+  align-self: center;
+`
+
+const Container = styled.View`
+  height: 100%;
+`
+
+const InfoText = styled.View`
+  height: 80%;
+  align-items: center;
+  justify-content: center;
+`
+interface HomeProps {
+  navigation: any
 }
 
-const slussfors = {
-  alias: 'Slussfors2',
-  lat: 65.4308053,
-  lon: 16.2569718,
-}
-
-const Home = () => {
-  const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
-    INIT_DRONE,
-    {
-      variables: { start: storuman, stop: slussfors },
-    }
-  )
+const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <Label value="Från" />
-      <TextInput
-        value="input1"
-        placeholder="write something"
-        callback={console.log}
-      />
-      <Label value="Till" />
-      <TextInput
-        value="input2"
-        placeholder="write something"
-        callback={console.log}
-      />
-
-      <PrimaryButton callback={() => initDrone()} text="Boka" />
-      <PrimaryButton
-        isCancel={true}
-        callback={() => console.log('do something')}
-        text="Boka"
-      />
-    </ScrollableLayout>
+    <Layout image={backgroundImage}>
+      <Container>
+        <InfoText>
+          <Heading text="Du har just nu inga pågående transporter" />
+        </InfoText>
+        <Content>
+          <PrimaryButton
+            text="Ny Bokning"
+            callback={() => navigation.navigate('Book')}
+          />
+        </Content>
+      </Container>
+    </Layout>
   )
 }
 
