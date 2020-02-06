@@ -5,11 +5,11 @@ export const typeDefs = gql`
     id: String!
     start: Coordinates!
     stop: Coordinates!
-    currentPos: Coordinates!
-    bearing: Int!
     status: String!
-    batteryStatus: Int!
-    departure: String!
-    eta: String!
+    # currentPos: Coordinates!
+    # bearing: Int!
+    # batteryStatus: Int!
+    # departure: String!
+    # eta: String!
   }
 `
