@@ -2,7 +2,13 @@ import React from 'react'
 import styled from 'styled-components/native'
 import { SafeAreaView, ImageURISource } from 'react-native'
 
-const Container = styled.ScrollView`
+const Container = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+}))`
   padding: ${({ theme }) => theme.spacing.sm};
 `
 
