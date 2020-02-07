@@ -1,7 +1,13 @@
 import React from 'react'
-import { useMutation } from '@apollo/client'
-import { MutationInitDroneArgs, Mutation } from '~/__generated__/app'
+import { useMutation, useQuery } from '@apollo/client'
+import {
+  MutationInitDroneArgs,
+  Mutation,
+  Destination,
+  Query,
+} from '~/__generated__/app'
 import { INIT_DRONE } from '~/graphql/mutations'
+import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
 import { Picker } from 'react-native'
 import Label from '~/components/form/Label'
@@ -36,7 +42,9 @@ const PickerStyle = styled.Picker`
 
 const Book: React.FC<BookProps> = ({ navigation }) => {
   const [fromValue, setFromValue] = React.useState('Slussfors')
-  const [toValue, setToValue] = React.useState('Storuman')
+  const { data, loading } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
+  const [startValue, setStartValue] = React.useState('')
+
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
     {
@@ -48,18 +56,21 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
     <ScrollableLayout image={backgroundImage}>
       <Label value="Till" />
       <PickerStyle
-        selectedValue={toValue}
-        style={{ width: 100 }}
-        onValueChange={itemValue => setToValue(itemValue)}
+        selectedValue={startValue}
+        onValueChange={itemValue => {
+          setStartValue(itemValue)
+        }}
       >
-        <Picker.Item label="Slussfors" value="slussfors" />
-        <Picker.Item label="Storuman" value="storuman" />
+        {!loading &&
+          data &&
+          data.allDestinations.map((destination: Destination) => (
+            <Picker.Item label={destination.alias} value={destination} />
+          ))}
       </PickerStyle>
 
       <Label value="Från" />
       <PickerStyle
         selectedValue={fromValue}
-        style={{ width: 100 }}
         onValueChange={itemValue => setFromValue(itemValue)}
       >
         <Picker.Item label="Slussfors" value="slussfors" />
