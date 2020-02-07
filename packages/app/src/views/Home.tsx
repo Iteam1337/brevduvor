@@ -1,8 +1,8 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
-import Layout from '~/components/Layout'
 import styled from 'styled-components/native'
+import ScrollableLayout from '~/components/ScrollableLayout'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -26,7 +26,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
-    <Layout image={backgroundImage}>
+    <ScrollableLayout image={backgroundImage}>
       <Container>
         <InfoText>
           <Heading text="Du har just nu inga pågående transporter" />
@@ -38,7 +38,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           />
         </Content>
       </Container>
-    </Layout>
+    </ScrollableLayout>
   )
 }
 

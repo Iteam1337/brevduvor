@@ -1,9 +1,9 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
-import Layout from '~/components/Layout'
 import styled from 'styled-components/native'
 import Heading from '~/components/typography/Heading'
 import Package from '~/assets/Package'
+import ScrollableLayout from '~/components/ScrollableLayout'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -17,7 +17,7 @@ interface BookingPackingProps {
 
 const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
   return (
-    <Layout image={backgroundImage}>
+    <ScrollableLayout image={backgroundImage}>
       <Heading text="Packa ditt paket" />
       <Package />
       <ButtonGroup>
@@ -30,7 +30,7 @@ const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
           callback={() => navigation.navigate('BookingSend')}
         />
       </ButtonGroup>
-    </Layout>
+    </ScrollableLayout>
   )
 }
 

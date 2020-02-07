@@ -1,9 +1,9 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
-import Layout from '~/components/Layout'
 import styled from 'styled-components/native'
 import Heading from '~/components/typography/Heading'
 import Send from '~/assets/Send'
+import ScrollableLayout from '~/components/ScrollableLayout'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -17,7 +17,7 @@ interface BookingSendProps {
 
 const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
   return (
-    <Layout image={backgroundImage}>
+    <ScrollableLayout image={backgroundImage}>
       <Heading text="Skicka din drönare" />
       <Send />
       <ButtonGroup>
@@ -30,7 +30,7 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
           callback={() => navigation.navigate('Home')}
         />
       </ButtonGroup>
-    </Layout>
+    </ScrollableLayout>
   )
 }
 

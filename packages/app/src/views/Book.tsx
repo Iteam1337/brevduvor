@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/client'
 import { MutationInitDroneArgs, Mutation } from '~/__generated__/app'
 import { INIT_DRONE } from '~/graphql/mutations'
 import PrimaryButton from '~/components/Button'
-import Layout from '~/components/Layout'
 import { Picker } from 'react-native'
 import Label from '~/components/form/Label'
 import styled from 'styled-components/native'
+import ScrollableLayout from '~/components/ScrollableLayout'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -45,7 +45,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   )
 
   return (
-    <Layout image={backgroundImage}>
+    <ScrollableLayout image={backgroundImage}>
       <Label value="Till" />
       <PickerStyle
         selectedValue={toValue}
@@ -78,7 +78,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
           }}
         />
       </ButtonGroup>
-    </Layout>
+    </ScrollableLayout>
   )
 }
 
