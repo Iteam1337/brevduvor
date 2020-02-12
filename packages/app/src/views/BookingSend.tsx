@@ -1,16 +1,13 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
-import styled from 'styled-components/native'
 import Heading from '~/components/typography/Heading'
 import Send from '~/assets/Send'
 import ScrollableLayout from '~/components/ScrollableLayout'
+import ContentWrapper from '~/components/ContentWrapper'
+import ButtonWrapper from '~/components/ButtonWrapper'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
-const ButtonGroup = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-`
 interface BookingSendProps {
   navigation: any
 }
@@ -18,9 +15,11 @@ interface BookingSendProps {
 const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
   return (
     <ScrollableLayout image={backgroundImage}>
-      <Heading text="Skicka din drönare" />
-      <Send />
-      <ButtonGroup>
+      <ContentWrapper>
+        <Heading text="Skicka din drönare" />
+        <Send />
+      </ContentWrapper>
+      <ButtonWrapper>
         <PrimaryButton
           text="Avbryt"
           callback={() => navigation.navigate('Home')}
@@ -29,7 +28,7 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
           text="Nästa"
           callback={() => navigation.navigate('Home')}
         />
-      </ButtonGroup>
+      </ButtonWrapper>
     </ScrollableLayout>
   )
 }
