@@ -6,6 +6,8 @@ import Send from '~/assets/Send'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
+import { START_DRONE } from '~/graphql/mutations'
+import { useMutation } from '@apollo/client'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -14,6 +16,10 @@ interface BookingSendProps {
 }
 
 const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
+  const [startDrone] = useMutation(START_DRONE, {
+    variables: { id: 'b229e5ac-488e-4dd4-98ad-4420012fd6bf' },
+    onCompleted: () => navigation.navigate('Home'),
+  })
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
@@ -29,7 +35,9 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
         />
         <PrimaryButton
           text="Bekräfta"
-          callback={() => navigation.navigate('Home')}
+          callback={() => {
+            startDrone()
+          }}
         />
       </ButtonWrapper>
     </ScrollableLayout>
