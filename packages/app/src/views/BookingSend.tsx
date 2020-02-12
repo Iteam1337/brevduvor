@@ -8,6 +8,7 @@ import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import { START_DRONE } from '~/graphql/mutations'
 import { useMutation } from '@apollo/client'
+import { Mutation, MutationStartDroneArgs } from '~/__generated__/app'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -16,7 +17,10 @@ interface BookingSendProps {
 }
 
 const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
-  const [startDrone] = useMutation(START_DRONE, {
+  const [startDrone] = useMutation<
+    Mutation['startDrone'],
+    MutationStartDroneArgs
+  >(START_DRONE, {
     variables: { id: 'b229e5ac-488e-4dd4-98ad-4420012fd6bf' },
     onCompleted: () => navigation.navigate('Home'),
   })
