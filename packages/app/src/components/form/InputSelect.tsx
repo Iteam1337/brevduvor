@@ -53,7 +53,7 @@ const PickerStyle = StyleSheet.create({
     fontFamily: theme.typography.paragraph,
     fontSize: 16,
     paddingLeft: 4,
-    marginBottom: theme.spacing.sm,
+    marginBottom: 12,
     justifyContent: 'center',
   },
 
