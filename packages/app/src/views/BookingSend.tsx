@@ -1,6 +1,7 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
+import Paragraph from '~/components/typography/Paragraph'
 import Send from '~/assets/Send'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
@@ -18,6 +19,8 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
       <ContentWrapper>
         <Heading text="Skicka din drönare" />
         <Send />
+        <Paragraph text="Drönaren är nu förberedd och redo för avfärd." />
+        <Paragraph text="Bekräfta för att starta färd" />
       </ContentWrapper>
       <ButtonWrapper>
         <PrimaryButton
@@ -25,7 +28,7 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
           callback={() => navigation.navigate('Home')}
         />
         <PrimaryButton
-          text="Nästa"
+          text="Bekräfta"
           callback={() => navigation.navigate('Home')}
         />
       </ButtonWrapper>

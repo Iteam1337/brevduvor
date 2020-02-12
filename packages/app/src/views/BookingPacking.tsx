@@ -1,6 +1,7 @@
 import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
+import Paragraph from '~/components/typography/Paragraph'
 import Package from '~/assets/Package'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
@@ -18,6 +19,7 @@ const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
       <ContentWrapper>
         <Heading text="Packa ditt paket" />
         <Package />
+        <Paragraph text="Märk dina varor och paketera dem väl. Kom ihåg att..." />
       </ContentWrapper>
 
       <ButtonWrapper>
