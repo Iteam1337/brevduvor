@@ -10,7 +10,7 @@ import { AsyncStorage } from 'react-native'
 
 const getToken = async () => {
   let fcmToken = await AsyncStorage.getItem('fcmToken')
-  console.log(fcmToken)
+
   if (!fcmToken) {
     fcmToken = await firebase.messaging().getToken()
     if (fcmToken) {
