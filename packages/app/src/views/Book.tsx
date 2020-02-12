@@ -39,6 +39,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   const [startValue, setStartValue] = React.useState(
     data && data?.allDestinations[0].alias
   )
+
   const [stopValue, setStopValue] = React.useState('Ange slutmål')
 
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
@@ -58,30 +59,33 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
         <Label value="Från" />
         <InputSelect
           name={startValue}
-          select={data?.allDestinations}
+          placeholder="Välj från"
+          selectOptions={data?.allDestinations}
           callback={setStartValue}
         />
+
         <Label value="Till" />
         <InputSelect
           name={stopValue}
-          select={data?.allDestinations}
+          selectOptions={data?.allDestinations}
           callback={setStopValue}
+          placeholder="Välj till"
         />
-      </ContentWrapper>
 
-      <ButtonWrapper>
-        <PrimaryButton
-          text="Avbryt"
-          callback={() => navigation.navigate('Home')}
-        />
-        <PrimaryButton
-          text="Nästa"
-          callback={() => {
-            initDrone()
-            navigation.navigate('BookingEta')
-          }}
-        />
-      </ButtonWrapper>
+        <ButtonWrapper>
+          <PrimaryButton
+            text="Avbryt"
+            callback={() => navigation.navigate('Home')}
+          />
+          <PrimaryButton
+            text="Nästa"
+            callback={() => {
+              initDrone()
+              navigation.navigate('BookingEta')
+            }}
+          />
+        </ButtonWrapper>
+      </ContentWrapper>
     </ScrollableLayout>
   )
 }
