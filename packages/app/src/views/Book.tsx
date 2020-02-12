@@ -9,10 +9,10 @@ import {
 import { INIT_DRONE } from '~/graphql/mutations'
 import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
-import { Picker } from 'react-native'
 import Label from '~/components/form/Label'
 import styled from 'styled-components/native'
 import ScrollableLayout from '~/components/ScrollableLayout'
+import InputSelect from '~/components/form/InputSelect'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -36,14 +36,12 @@ interface BookProps {
   navigation: any
 }
 
-const PickerStyle = styled.Picker`
-  width: 100%;
-`
-
 const Book: React.FC<BookProps> = ({ navigation }) => {
-  const [fromValue, setFromValue] = React.useState('Slussfors')
-  const { data, loading } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
-  const [startValue, setStartValue] = React.useState('')
+  const { data } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
+  const [startValue, setStartValue] = React.useState(
+    data?.allDestinations[0].alias
+  )
+  const [stopValue, setStopValue] = React.useState('Ange slutmål')
 
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
@@ -54,28 +52,19 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
 
   return (
     <ScrollableLayout image={backgroundImage}>
-      <Label value="Till" />
-      <PickerStyle
-        selectedValue={startValue}
-        onValueChange={itemValue => {
-          setStartValue(itemValue)
-        }}
-      >
-        {!loading &&
-          data &&
-          data.allDestinations.map((destination: Destination) => (
-            <Picker.Item label={destination.alias} value={destination} />
-          ))}
-      </PickerStyle>
-
       <Label value="Från" />
-      <PickerStyle
-        selectedValue={fromValue}
-        onValueChange={itemValue => setFromValue(itemValue)}
-      >
-        <Picker.Item label="Slussfors" value="slussfors" />
-        <Picker.Item label="Storuman" value="storuman" />
-      </PickerStyle>
+      <InputSelect
+        name={startValue}
+        select={data?.allDestinations}
+        callback={setStartValue}
+      />
+      <Label value="Till" />
+      <InputSelect
+        name={stopValue}
+        select={data?.allDestinations}
+        callback={setStopValue}
+      />
+
       <ButtonGroup>
         <PrimaryButton
           text="Avbryt"
