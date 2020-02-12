@@ -14,6 +14,7 @@ import ScrollableLayout from '~/components/ScrollableLayout'
 import InputSelect from '~/components/form/InputSelect'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
+import Trip from '~/assets/Trip'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -53,6 +54,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper toLeft={true}>
+        <Trip />
         <Label value="Från" />
         <InputSelect
           name={startValue}
