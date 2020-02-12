@@ -1,6 +1,6 @@
 import React from 'react'
 import { Picker } from 'react-native'
-import Heading from '~/components/typography/Heading'
+import Paragraph from '~/components/typography/Paragraph'
 import { Destination } from '~/__generated__/app'
 
 interface InputSelectProps {
@@ -16,7 +16,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
 }) => {
   return (
     <>
-      <Heading text={name} />
+      <Paragraph text={name} />
       <Picker
         selectedValue={name}
         onValueChange={itemValue => {
