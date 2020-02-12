@@ -17,11 +17,13 @@ declare module 'styled-components' {
     borderRadius: { sm: string; lg: string }
     typography: {
       heading: string
+      button: string
       paragraph: string
-      sizes: { sm: string; md: string }
+      sizes: { sm: string; md: string; lg: string }
     }
     spacing: {
       sm: string
+      m: string
       lg: string
     }
   }
@@ -42,13 +44,15 @@ const theme: DefaultTheme = {
   },
   borderRadius: { sm: '4px', lg: '8px' },
   typography: {
-    heading: 'NunitoSans-Bold',
+    heading: 'NunitoSans-Regular',
+    button: 'NunitoSans-Bold',
     paragraph: 'NunitoSans-Regular',
-    sizes: { sm: '14px', md: '16px' },
+    sizes: { sm: '14px', md: '18px', lg: '24px' },
   },
   spacing: {
     sm: '12px',
-    lg: '24px',
+    m: '24px',
+    lg: '47px',
   },
 }
 

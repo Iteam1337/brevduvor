@@ -9,7 +9,7 @@ interface HeadingProps {
 
 const Heading = styled(Text)<{ inColor: HeadingProps['inColor'] }>`
   font-family: ${({ theme }) => theme.typography.heading};
-  font-size: ${({ theme }) => theme.typography.sizes.md};
+  font-size: ${({ theme }) => theme.typography.sizes.lg};
   color: ${({ theme, inColor }) =>
     inColor ? theme.colors.blue1 : theme.colors.NGrey1};
 `

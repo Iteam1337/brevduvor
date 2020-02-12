@@ -10,9 +10,10 @@ import { INIT_DRONE } from '~/graphql/mutations'
 import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
 import Label from '~/components/form/Label'
-import styled from 'styled-components/native'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import InputSelect from '~/components/form/InputSelect'
+import ButtonWrapper from '~/components/ButtonWrapper'
+import ContentWrapper from '~/components/ContentWrapper'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -28,11 +29,6 @@ const slussfors = {
   lon: 16.2569718,
 }
 
-const ButtonGroup = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-`
-
 interface BookProps {
   navigation: any
 }
@@ -40,7 +36,7 @@ interface BookProps {
 const Book: React.FC<BookProps> = ({ navigation }) => {
   const { data } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
   const [startValue, setStartValue] = React.useState(
-    data?.allDestinations[0].alias
+    data && data?.allDestinations[0].alias
   )
 
   const [stopValue, setStopValue] = React.useState('Ange slutmål')
@@ -48,41 +44,46 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
     {
-      variables: { start: storuman, stop: slussfors },
+      variables: {
+        start: storuman,
+        stop: slussfors,
+      },
     }
   )
 
   return (
     <ScrollableLayout image={backgroundImage}>
-      <Label value="Från" />
-      <InputSelect
-        name={startValue}
-        placeholder="Välj från"
-        selectOptions={data?.allDestinations}
-        callback={setStartValue}
-      />
-
-      <Label value="Till" />
-      <InputSelect
-        name={stopValue}
-        selectOptions={data?.allDestinations}
-        callback={setStopValue}
-        placeholder="Välj till"
-      />
-
-      <ButtonGroup>
-        <PrimaryButton
-          text="Avbryt"
-          callback={() => navigation.navigate('Home')}
+      <ContentWrapper toLeft={true}>
+        <Label value="Från" />
+        <InputSelect
+          name={startValue}
+          placeholder="Välj från"
+          selectOptions={data?.allDestinations}
+          callback={setStartValue}
         />
-        <PrimaryButton
-          text="Nästa"
-          callback={() => {
-            initDrone()
-            navigation.navigate('BookingEta')
-          }}
+
+        <Label value="Till" />
+        <InputSelect
+          name={stopValue}
+          selectOptions={data?.allDestinations}
+          callback={setStopValue}
+          placeholder="Välj till"
         />
-      </ButtonGroup>
+
+        <ButtonWrapper>
+          <PrimaryButton
+            text="Avbryt"
+            callback={() => navigation.navigate('Home')}
+          />
+          <PrimaryButton
+            text="Nästa"
+            callback={() => {
+              initDrone()
+              navigation.navigate('BookingEta')
+            }}
+          />
+        </ButtonWrapper>
+      </ContentWrapper>
     </ScrollableLayout>
   )
 }
