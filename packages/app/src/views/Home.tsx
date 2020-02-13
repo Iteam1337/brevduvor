@@ -22,7 +22,7 @@ const slussfors = {
 }
 
 const Home = () => {
-  const [] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
+  const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
     {
       variables: { start: storuman, stop: slussfors },
@@ -43,7 +43,7 @@ const Home = () => {
         callback={console.log}
       />
 
-      <PrimaryButton callback={() => console.log('do something')} text="Boka" />
+      <PrimaryButton callback={() => initDrone()} text="Boka" />
       <PrimaryButton
         isCancel={true}
         callback={() => console.log('do something')}
