@@ -1,12 +1,25 @@
 import React from 'react'
 import Svg, { Path } from 'react-native-svg'
+import styled from 'styled-components'
 
-function Clock(props: any) {
+interface ClockProps {
+  invert?: boolean
+  small?: boolean
+}
+
+const SVG = styled(Svg)<{
+  small: ClockProps['small']
+}>`
+  width: ${({ small }) => (small ? '24px' : '81px')};
+  height: ${({ small }) => (small ? '24px' : '81px')};
+`
+
+const Clock: React.FC<ClockProps> = ({ invert = false, small = false }) => {
   return (
-    <Svg width={81} height={81} viewBox="0 0 81 81" fill="none" {...props}>
+    <SVG small={small} viewBox="0 0 81 81" fill="none">
       <Path
         d="M40.5 74.25c18.64 0 33.75-15.11 33.75-33.75S59.14 6.75 40.5 6.75 6.75 21.86 6.75 40.5 21.86 74.25 40.5 74.25z"
-        fill="#000"
+        fill={invert ? '#fff' : '#000'}
         stroke="#000"
         strokeWidth={2}
         strokeLinecap="round"
@@ -14,12 +27,12 @@ function Clock(props: any) {
       />
       <Path
         d="M40.5 20.25V40.5L54 47.25"
-        stroke="#fff"
+        stroke={invert ? '#000' : '#fff'}
         strokeWidth={6}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </Svg>
+    </SVG>
   )
 }
 
