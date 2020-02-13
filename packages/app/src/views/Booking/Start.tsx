@@ -20,18 +20,6 @@ import styled from 'styled-components/native'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
-const storuman = {
-  alias: 'Storuman',
-  lat: 65.1014345,
-  lon: 17.0984889,
-}
-
-const slussfors = {
-  alias: 'Slussfors2',
-  lat: 65.4308053,
-  lon: 16.2569718,
-}
-
 interface BookProps {
   navigation: any
 }
@@ -42,21 +30,24 @@ const SelectContainer = styled.View`
 
 const Book: React.FC<BookProps> = ({ navigation }) => {
   const { data } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
-  const [startValue, setStartValue] = React.useState(
-    data && data?.allDestinations[0].alias
-  )
+  const [startValue, setStartValue] = React.useState<string>('')
 
-  const [stopValue, setStopValue] = React.useState('Ange slutmål')
+  const [stopValue, setStopValue] = React.useState<string>('')
 
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
     {
-      variables: {
-        start: storuman,
-        stop: slussfors,
-      },
+      onCompleted: () => navigation.navigate('BookingEta'),
     }
   )
+
+  const handleDestination = () => {
+    const start = data?.allDestinations.filter(a => a.alias === startValue)
+    const stop = data?.allDestinations.filter(b => b.alias === stopValue)
+    if (start && stop) {
+      initDrone({ variables: { start: start[0], stop: stop[0] } })
+    }
+  }
 
   return (
     <ScrollableLayout image={backgroundImage}>
@@ -91,8 +82,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
         <PrimaryButton
           text="Nästa"
           callback={() => {
-            initDrone()
-            navigation.navigate('BookingEta')
+            handleDestination()
           }}
         />
       </ButtonWrapper>
