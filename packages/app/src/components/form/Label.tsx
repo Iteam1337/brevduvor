@@ -9,6 +9,7 @@ interface LabelProps {
 const Label = styled.Text`
   font-family: ${({ theme }) => theme.typography.paragraph};
   font-size: ${({ theme }) => theme.typography.sizes.md};
+  padding-left: 7px;
 `
 const Component: React.FC<LabelProps> = ({ value }) => <Label>{value}</Label>
 
