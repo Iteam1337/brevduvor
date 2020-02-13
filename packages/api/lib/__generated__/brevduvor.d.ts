@@ -33,6 +33,23 @@ export type AuthPayload = {
   language: Maybe<Languages>
 }
 
+export type Booking = {
+  __typename?: 'Booking'
+  id: Scalars['String']
+  start: Destination
+  stop: Destination
+  eta: Scalars['String']
+  events: Array<Scalars['String']>
+  status: Scalars['String']
+}
+
+export enum BookingEvent {
+  Booked = 'BOOKED',
+  Packed = 'PACKED',
+  Sent = 'SENT',
+  RecipentNotified = 'RECIPENT_NOTIFIED',
+}
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE',
@@ -155,6 +172,7 @@ export type Query = {
   allDestinations: Array<Destination>
   getRoute: Route
   drones: Array<Scalars['String']>
+  bookings: Maybe<Array<Maybe<Booking>>>
 }
 
 export type QueryGetRouteArgs = {
@@ -310,6 +328,7 @@ export type ResolversTypes = {
   Trip: ResolverTypeWrapper<Trip>
   Geometry: ResolverTypeWrapper<Geometry>
   JSON: ResolverTypeWrapper<Scalars['JSON']>
+  Booking: ResolverTypeWrapper<Booking>
   Mutation: ResolverTypeWrapper<{}>
   StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
   NotificationInput: NotificationInput
@@ -325,6 +344,7 @@ export type ResolversTypes = {
   Coordinates: ResolverTypeWrapper<Coordinates>
   Int: ResolverTypeWrapper<Scalars['Int']>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
+  BookingEvent: BookingEvent
   CacheControlScope: CacheControlScope
   hasStartedResponse: ResolverTypeWrapper<HasStartedResponse>
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
@@ -342,6 +362,7 @@ export type ResolversParentTypes = {
   Trip: Trip
   Geometry: Geometry
   JSON: Scalars['JSON']
+  Booking: Booking
   Mutation: {}
   StartDroneResponse: StartDroneResponse
   NotificationInput: NotificationInput
@@ -357,6 +378,7 @@ export type ResolversParentTypes = {
   Coordinates: Coordinates
   Int: Scalars['Int']
   DroneStatusResponse: DroneStatusResponse
+  BookingEvent: BookingEvent
   CacheControlScope: CacheControlScope
   hasStartedResponse: HasStartedResponse
   JSONObject: Scalars['JSONObject']
@@ -414,6 +436,18 @@ export type AuthPayloadResolvers<
     ParentType,
     ContextType
   >
+}
+
+export type BookingResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']
+> = {
+  id: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  start: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
+  stop: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
+  eta: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  events: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  status: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type CoordinatesResolvers<
@@ -555,6 +589,11 @@ export type QueryResolvers<
     RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
   >
   drones: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  bookings: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Booking']>>>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type RouteResolvers<
@@ -617,6 +656,7 @@ export interface UploadScalarConfig
 
 export type Resolvers<ContextType = any> = {
   AuthPayload: AuthPayloadResolvers<ContextType>
+  Booking: BookingResolvers<ContextType>
   Coordinates: CoordinatesResolvers<ContextType>
   Destination: DestinationResolvers<ContextType>
   DroneStatusResponse: DroneStatusResponseResolvers<ContextType>
