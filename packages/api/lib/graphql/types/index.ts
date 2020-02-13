@@ -6,6 +6,7 @@ import * as initDrone from './initDrone'
 import * as auth from './auth'
 import * as notification from './notification'
 import * as hasStartedNotification from './hasStartedNotification'
+import * as booking from './booking'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -63,6 +64,7 @@ const typeDefs = gql`
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
       @isAuthenticated
     drones: [String!]!
+    bookings: [Booking]
   }
 
   type Subscription {
@@ -81,4 +83,5 @@ export default [
   auth.typeDefs,
   notification.typeDefs,
   hasStartedNotification.typeDefs,
+  booking.typeDefs,
 ]
