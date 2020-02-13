@@ -44,8 +44,18 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   const handleDestination = () => {
     const start = data?.allDestinations.filter(a => a.alias === startValue)
     const stop = data?.allDestinations.filter(b => b.alias === stopValue)
+
     if (start && stop) {
-      initDrone({ variables: { start: start[0], stop: stop[0] } })
+      initDrone({
+        variables: {
+          start: {
+            alias: start[0].alias,
+            lon: start[0].lon,
+            lat: start[0].lat,
+          },
+          stop: { alias: stop[0].alias, lon: stop[0].lon, lat: stop[0].lat },
+        },
+      })
     }
   }
 
