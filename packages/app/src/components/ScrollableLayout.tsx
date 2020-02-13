@@ -5,8 +5,6 @@ import { ImageURISource } from 'react-native'
 const Container = styled.ScrollView.attrs(() => ({
   contentContainerStyle: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 }))`
   padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};

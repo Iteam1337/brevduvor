@@ -13,8 +13,10 @@ import ScrollableLayout from '~/components/ScrollableLayout'
 import InputSelect from '~/components/form/InputSelect'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
-import Trip from '~/assets/Trip'
+import TripIcon from '~/assets/Trip'
 import Heading from '~/components/typography/Heading'
+import BookingHeader from '~/components/BookingHeaderLayout'
+import styled from 'styled-components/native'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -33,6 +35,10 @@ const slussfors = {
 interface BookProps {
   navigation: any
 }
+
+const SelectContainer = styled.View`
+  width: 100%;
+`
 
 const Book: React.FC<BookProps> = ({ navigation }) => {
   const { data } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
@@ -55,23 +61,27 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
-        <Heading text="Boka transport" />
-        <Trip />
-        <InputSelect
-          label="Från"
-          name={startValue}
-          placeholder="Välj från"
-          selectOptions={data?.allDestinations}
-          callback={setStartValue}
-        />
+        <BookingHeader>
+          <Heading text="Boka transport" />
+          <TripIcon />
+        </BookingHeader>
+        <SelectContainer>
+          <InputSelect
+            label="Från"
+            name={startValue}
+            placeholder="Ange startposition"
+            selectOptions={data?.allDestinations}
+            callback={setStartValue}
+          />
 
-        <InputSelect
-          label="Till"
-          name={stopValue}
-          selectOptions={data?.allDestinations}
-          callback={setStopValue}
-          placeholder="Välj till"
-        />
+          <InputSelect
+            label="Till"
+            name={stopValue}
+            selectOptions={data?.allDestinations}
+            callback={setStopValue}
+            placeholder="Ange destination"
+          />
+        </SelectContainer>
       </ContentWrapper>
       <ButtonWrapper>
         <PrimaryButton

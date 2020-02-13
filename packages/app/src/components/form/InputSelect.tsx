@@ -46,8 +46,9 @@ const InputSelect: React.FC<InputSelectProps> = ({
 
 const PickerStyle = StyleSheet.create({
   inputIOSContainer: {
-    width: 140,
+    width: '100%',
     height: 42,
+    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: theme.colors.NGrey7,
     fontFamily: theme.typography.paragraph,

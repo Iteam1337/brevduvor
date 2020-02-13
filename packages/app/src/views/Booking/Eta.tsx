@@ -2,26 +2,27 @@ import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
 import Paragraph from '~/components/typography/Paragraph'
-import Package from '~/assets/Package'
+import ClockIcon from '~/assets/Clock'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
-
 const backgroundImage = require('~/../assets/background-topo.png')
+import BookingHeader from '~/components/BookingHeaderLayout'
 
-interface BookingPackingProps {
+interface BookingEtaProps {
   navigation: any
 }
 
-const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
+const BookingEta: React.FC<BookingEtaProps> = ({ navigation }) => {
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
-        <Heading text="Packa ditt paket" />
-        <Package />
-        <Paragraph text="Märk dina varor och paketera dem väl. Kom ihåg att..." />
+        <BookingHeader>
+          <Heading text="Beräknad tidsåtgång" />
+          <ClockIcon />
+        </BookingHeader>
+        <Paragraph text="Beräkand tidsåtgång för transport är XX min." />
       </ContentWrapper>
-
       <ButtonWrapper>
         <PrimaryButton
           text="Avbryt"
@@ -29,11 +30,11 @@ const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
         />
         <PrimaryButton
           text="Nästa"
-          callback={() => navigation.navigate('BookingSend')}
+          callback={() => navigation.navigate('BookingPacking')}
         />
       </ButtonWrapper>
     </ScrollableLayout>
   )
 }
 
-export default BookingPacking
+export default BookingEta
