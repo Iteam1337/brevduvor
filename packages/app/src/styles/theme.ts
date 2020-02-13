@@ -22,6 +22,7 @@ declare module 'styled-components' {
       sizes: { sm: string; md: string; lg: string }
     }
     spacing: {
+      xsm: string
       sm: string
       m: string
       lg: string
@@ -50,6 +51,7 @@ const theme: DefaultTheme = {
     sizes: { sm: '14px', md: '18px', lg: '24px' },
   },
   spacing: {
+    xsm: '10px',
     sm: '12px',
     m: '24px',
     lg: '47px',
