@@ -11,7 +11,7 @@ export const initDrone: MutationResolvers['initDrone'] = async (
 ) => {
   try {
     // const { body } = await dronePost('/init', { start, stop })
-    addBooking()
+
     return JSON.stringify(start)
   } catch (err) {
     throw new Error(`Error in initDrone: ${err}`)

@@ -12,7 +12,6 @@ export function addBooking() {
     status: 'Väntar på bekräftelse',
   }
 
-  return currentBookings.length
-    ? currentBookings.shift()
-    : currentBookings.push(booking)
+  currentBookings.shift()
+  currentBookings.push(booking)
 }
