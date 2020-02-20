@@ -19,6 +19,7 @@ declare module 'styled-components' {
       heading: string
       button: string
       paragraph: string
+      bold: string
       sizes: { sm: string; md: string; lg: string }
     }
     spacing: {
@@ -48,6 +49,7 @@ const theme: DefaultTheme = {
     heading: 'NunitoSans-Regular',
     button: 'NunitoSans-Bold',
     paragraph: 'NunitoSans-Regular',
+    bold: 'NunitoSans-Bold',
     sizes: { sm: '14px', md: '18px', lg: '24px' },
   },
   spacing: {
