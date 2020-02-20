@@ -11,7 +11,7 @@ import { INIT_DRONE } from '~/graphql/mutations'
 import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
 import ScrollableLayout from '~/components/ScrollableLayout'
-import InputSelect from '~/components/form/InputSelect'
+import Select from '~/components/form/Select'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
 import TripIcon from '~/assets/Trip'
@@ -66,14 +66,14 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
           <TripIcon />
         </BookingHeader>
         <SelectContainer>
-          <InputSelect
+          <Select.Geo
             label="Från"
             placeholder="Ange startposition"
             selectOptions={data?.allDestinations}
             callback={formDispatcher('start')}
           />
 
-          <InputSelect
+          <Select.Geo
             label="Till"
             selectOptions={data?.allDestinations}
             callback={formDispatcher('stop')}

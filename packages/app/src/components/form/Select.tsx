@@ -6,11 +6,11 @@ import RNPickerSelect from 'react-native-picker-select'
 import Label from '~/components/form/Label'
 import theme from '~/styles/theme'
 
-interface InputSelectProps {
+interface InputSelectProps<T = any> {
   name?: string
   label: string
   selectOptions?: Destination[]
-  callback: (value: DestinationInput) => void
+  callback: (value: T) => void
   placeholder: string
 }
 
@@ -19,7 +19,7 @@ const InputSelectWrapper = styled(View)`
   align-items: flex-start;
 `
 
-const GeoSelect: React.FC<InputSelectProps> = ({
+const Geo: React.FC<InputSelectProps<DestinationInput>> = ({
   selectOptions = [],
   callback,
   label,
@@ -76,4 +76,4 @@ const PickerStyle = StyleSheet.create({
   },
 })
 
-export default GeoSelect
+export default { Geo }
