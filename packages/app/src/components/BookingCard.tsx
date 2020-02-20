@@ -36,7 +36,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, callback }) => {
     <CardStyle onPress={callback}>
       <Paragraph text={`${booking.start.alias} - ${booking.stop.alias}`} />
       <TimeWrapper>
-        <Clock invert={true} small={true} />
+        <Clock small={true} />
         <Paragraph
           small={true}
           text={`${booking.eta} - beräknad ankomst ${booking.eta}`}
