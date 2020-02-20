@@ -13,13 +13,14 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
-const InfoText = styled.View`
-  height: 10%;
+const InfoText = styled.View<{ center: HomeProps['center'] }>`
+  height: ${({ center }) => (center ? '80%' : '10%')};
   align-items: center;
   justify-content: center;
 `
 interface HomeProps {
   navigation: any
+  center?: boolean
 }
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
@@ -27,7 +28,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (data) refetch(data)
+      if (data) refetch()
     }, [data, refetch])
   )
 
@@ -36,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
       <ContentWrapper>
         {data && (
           <>
-            <InfoText>
+            <InfoText center={false}>
               <Heading text="Aktuella bokningar" />
             </InfoText>
             <Paragraph
@@ -47,9 +48,16 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           </>
         )}
         {data ? (
-          data.bookings.map((booking: any) => <BookingCard booking={booking} />)
+          data.bookings.map((booking: any) => (
+            <BookingCard
+              booking={booking}
+              callback={() =>
+                navigation.navigate('BookingInfo', { booking: booking })
+              }
+            />
+          ))
         ) : (
-          <InfoText>
+          <InfoText center={true}>
             <Paragraph text="Du har just nu inga pågående transporter" />
           </InfoText>
         )}
