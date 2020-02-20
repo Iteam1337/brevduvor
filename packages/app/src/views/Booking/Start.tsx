@@ -5,12 +5,13 @@ import {
   Mutation,
   Destination,
   Query,
+  DestinationInput,
 } from '~/__generated__/app'
 import { INIT_DRONE } from '~/graphql/mutations'
 import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
 import ScrollableLayout from '~/components/ScrollableLayout'
-import InputSelect from '~/components/form/InputSelect'
+import Select from '~/components/form/Select'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
 import TripIcon from '~/assets/Trip'
@@ -27,12 +28,14 @@ interface BookProps {
 const SelectContainer = styled.View`
   width: 100%;
 `
+interface FormProps {
+  start?: DestinationInput
+  stop?: DestinationInput
+}
 
 const Book: React.FC<BookProps> = ({ navigation }) => {
   const { data } = useQuery<Query, Destination>(GET_ALL_DESTINATIONS)
-  const [startValue, setStartValue] = React.useState<string>('')
-
-  const [stopValue, setStopValue] = React.useState<string>('')
+  const [form, setForm] = React.useState<FormProps>({})
 
   const [initDrone] = useMutation<Mutation['initDrone'], MutationInitDroneArgs>(
     INIT_DRONE,
@@ -41,11 +44,17 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
     }
   )
 
+  const formDispatcher = (type: string) => (val: DestinationInput) =>
+    form && setForm({ ...form, [type]: val })
+
   const handleDestination = () => {
-    const start = data?.allDestinations.filter(a => a.alias === startValue)
-    const stop = data?.allDestinations.filter(b => b.alias === stopValue)
-    if (start && stop) {
-      initDrone({ variables: { start: start[0], stop: stop[0] } })
+    if (form && form.start && form.stop) {
+      initDrone({
+        variables: {
+          start: form.start,
+          stop: form.stop,
+        },
+      })
     }
   }
 
@@ -57,19 +66,17 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
           <TripIcon />
         </BookingHeader>
         <SelectContainer>
-          <InputSelect
+          <Select.Geo
             label="Från"
-            name={startValue}
             placeholder="Ange startposition"
             selectOptions={data?.allDestinations}
-            callback={setStartValue}
+            callback={formDispatcher('start')}
           />
 
-          <InputSelect
+          <Select.Geo
             label="Till"
-            name={stopValue}
             selectOptions={data?.allDestinations}
-            callback={setStopValue}
+            callback={formDispatcher('stop')}
             placeholder="Ange destination"
           />
         </SelectContainer>
