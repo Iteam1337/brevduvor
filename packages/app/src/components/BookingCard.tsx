@@ -14,6 +14,7 @@ interface BookingCardProps {
     stop: { __typename: string; alias: string }
     eta: string
   }
+  callback: () => void
 }
 
 const CardStyle = styled(TouchableOpacity)`
@@ -30,9 +31,9 @@ const TimeWrapper = styled(View)`
   align-items: center;
 `
 
-const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
+const BookingCard: React.FC<BookingCardProps> = ({ booking, callback }) => {
   return (
-    <CardStyle onPress={() => console.log}>
+    <CardStyle onPress={callback}>
       <Paragraph text={`${booking.start.alias} - ${booking.stop.alias}`} />
       <TimeWrapper>
         <Clock invert={true} small={true} />
