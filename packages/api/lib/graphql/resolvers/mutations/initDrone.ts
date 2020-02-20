@@ -10,7 +10,7 @@ export const initDrone: MutationResolvers['initDrone'] = async (
   _resolvers
 ) => {
   try {
-    // const { body } = await dronePost('/init', { start, stop })
+    const { body } = await dronePost('/init', { start, stop })
 
     return JSON.stringify(start)
   } catch (err) {
