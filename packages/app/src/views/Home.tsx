@@ -37,7 +37,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
-        {data && (
+        {data && data.bookings.length > 0 && (
           <>
             <Title text="Aktuella bokningar" />
             <Paragraph
@@ -47,7 +47,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             />
           </>
         )}
-        {data ? (
+        {data && data.bookings.length > 0 ? (
           data.bookings.map((booking: any) => (
             <BookingCard
               booking={booking}
