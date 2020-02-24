@@ -1,11 +1,17 @@
 import React from 'react'
 import Svg, { G, Path } from 'react-native-svg'
 
-const NotificationIcon = (props: any) => {
+interface NotificationIconProps {
+  active: number
+}
+
+const NotificationIcon: React.FC<NotificationIconProps> = ({
+  active = 0.4,
+}) => {
   return (
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <G
-        opacity={0.4}
+        opacity={active}
         stroke="#000"
         strokeWidth={2}
         strokeLinecap="round"
