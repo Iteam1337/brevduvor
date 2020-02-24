@@ -1,9 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { SafeAreaView, ImageURISource } from 'react-native'
+import { ImageURISource } from 'react-native'
 
-const Container = styled.ScrollView`
-  padding: ${({ theme }) => theme.spacing.sm};
+const Container = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    flex: 1,
+  },
+}))`
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.lg}`};
 `
 
 const BackgroundImage = styled.ImageBackground`
@@ -18,14 +22,10 @@ interface LayoutProps {
 const ScrollableLayout: React.FC<LayoutProps> = ({ children, image }) => {
   return image ? (
     <BackgroundImage source={image}>
-      <Container>
-        <SafeAreaView>{children}</SafeAreaView>
-      </Container>
+      <Container>{children}</Container>
     </BackgroundImage>
   ) : (
-    <Container>
-      <SafeAreaView>{children}</SafeAreaView>
-    </Container>
+    <Container>{children}</Container>
   )
 }
 

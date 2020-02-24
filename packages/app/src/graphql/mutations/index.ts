@@ -5,3 +5,11 @@ export const INIT_DRONE = gql`
     initDrone(start: $start, stop: $stop)
   }
 `
+
+export const START_DRONE = gql`
+  mutation startDrone($id: String!) {
+    startDrone(id: $id) {
+      id
+    }
+  }
+`

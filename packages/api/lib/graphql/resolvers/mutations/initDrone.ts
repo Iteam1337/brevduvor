@@ -1,5 +1,5 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
-// import { dronePost } from '../../../adapters/drone'
+import { dronePost } from '../../../adapters/drone'
 // import { insertDroneTrip } from '../../../services/drones'
 
 export const initDrone: MutationResolvers['initDrone'] = async (
@@ -9,9 +9,9 @@ export const initDrone: MutationResolvers['initDrone'] = async (
   _resolvers
 ) => {
   try {
-    // const { body } = await dronePost('/init', { start, stop })
+    const { body } = await dronePost('/init', { start, stop })
 
-    return JSON.stringify({ start, stop })
+    return JSON.stringify(body)
   } catch (err) {
     throw new Error(`Error in initDrone: ${err}`)
   }

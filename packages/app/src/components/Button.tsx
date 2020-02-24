@@ -16,7 +16,7 @@ const ButtonContainer = styled.TouchableOpacity<{
 const ButtonText = styled.Text<{
   isCancel: ButtonProps['isCancel']
 }>`
-  font-family: ${({ theme }) => theme.typography.heading};
+  font-family: ${({ theme }) => theme.typography.button};
   color: ${({ theme, isCancel }) =>
     isCancel ? theme.colors.NGrey4 : theme.colors.blue1};
 `
