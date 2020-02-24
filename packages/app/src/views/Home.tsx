@@ -17,7 +17,7 @@ const backgroundImage = require('~/../assets/background-topo.png')
 const InfoText = styled.View`
   height: 80%;
   align-self: center;
-  justify-content: flex-end;
+  justify-content: center;
   margin-bottom: 40px;
 `
 interface HomeProps {
