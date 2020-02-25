@@ -6,7 +6,7 @@ import styled from 'styled-components/native'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { GET_BOOKINGS } from '~/graphql/queries'
 import BookingCard from '~/components/BookingCard'
 import { useFocusEffect } from '@react-navigation/native'
@@ -24,14 +24,15 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
-  const { data, refetch } = useQuery(GET_BOOKINGS)
+  const [getBooking, { data }] = useLazyQuery(GET_BOOKINGS)
 
   useFocusEffect(
     React.useCallback(() => {
-      if (data) refetch()
-    }, [data, refetch])
+      getBooking()
+    }, [getBooking])
   )
 
+  console.log(data)
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
@@ -48,14 +49,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
           </>
         )}
         {data && data.bookings.length > 0 ? (
-          data.bookings.map((booking: any) => (
-            <BookingCard
-              booking={booking}
-              callback={() =>
-                navigation.navigate('BookingInfo', { booking: booking })
-              }
-            />
-          ))
+          data.bookings.map((booking: any) => <BookingCard booking={booking} />)
         ) : (
           <InfoText center={true}>
             <Paragraph text="Du har just nu inga pågående transporter" />
