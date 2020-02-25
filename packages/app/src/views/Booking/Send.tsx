@@ -22,7 +22,7 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
     MutationStartDroneArgs
   >(START_DRONE, {
     variables: { id: 'b229e5ac-488e-4dd4-98ad-4420012fd6bf' },
-    onCompleted: () => navigation.navigate('Home'),
+    onCompleted: () => navigation.navigate('BookingConfirmation'),
   })
   return (
     <ScrollableLayout image={backgroundImage}>
