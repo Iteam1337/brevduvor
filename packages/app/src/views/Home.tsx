@@ -1,22 +1,24 @@
 import React from 'react'
-import PrimaryButton from '~/components/Button'
-import Paragraph from '~/components/typography/Paragraph'
-import Heading from '~/components/typography/Heading'
 import styled from 'styled-components/native'
+import { useFocusEffect } from '@react-navigation/native'
+import { useLazyQuery } from '@apollo/client'
+import { GET_BOOKINGS } from '~/graphql/queries'
+
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
-import { useLazyQuery } from '@apollo/client'
-import { GET_BOOKINGS } from '~/graphql/queries'
 import BookingCard from '~/components/BookingCard'
-import { useFocusEffect } from '@react-navigation/native'
+import Title from '~/components/typography/Title'
+import Paragraph from '~/components/typography/Paragraph'
+import PrimaryButton from '~/components/Button'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
-const InfoText = styled.View<{ center: HomeProps['center'] }>`
-  height: ${({ center }) => (center ? '80%' : '10%')};
-  align-items: center;
+const InfoText = styled.View`
+  height: 80%;
+  align-self: center;
   justify-content: center;
+  margin-bottom: 40px;
 `
 interface HomeProps {
   navigation: any
@@ -41,9 +43,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
       <ContentWrapper>
         {bookings && bookings.bookings.length > 0 && (
           <>
-            <InfoText center={false}>
-              <Heading text="Aktuella bokningar" />
-            </InfoText>
+            <Title text="Aktuella bokningar" />
             <Paragraph
               toLeft={true}
               small={true}
@@ -61,7 +61,7 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             />
           ))
         ) : (
-          <InfoText center={true}>
+          <InfoText>
             <Paragraph text="Du har just nu inga pågående transporter" />
           </InfoText>
         )}

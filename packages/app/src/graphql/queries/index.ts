@@ -16,9 +16,13 @@ export const GET_BOOKINGS = gql`
       status
       start {
         alias
+        lon
+        lat
       }
       stop {
         alias
+        lon
+        lat
       }
       eta
     }

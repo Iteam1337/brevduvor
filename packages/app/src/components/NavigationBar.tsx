@@ -8,6 +8,7 @@ import Book from '~/views/Booking/Start'
 import Eta from '~/views/Booking/Eta'
 import Packing from '~/views/Booking/Packing'
 import Send from '~/views/Booking/Send'
+import Info from '~/views/Booking/Info'
 import Confirmation from '~/views/Booking/Confirmation'
 
 import HomeIcon from '~/assets/HomeIcon'
@@ -27,6 +28,7 @@ const BookingNavigation = () => {
       <HomeStack.Screen name="BookingPacking" component={Packing} />
       <HomeStack.Screen name="BookingSend" component={Send} />
       <HomeStack.Screen name="BookingConfirmation" component={Confirmation} />
+      <HomeStack.Screen name="BookingInfo" component={Info} />
     </HomeStack.Navigator>
   )
 }
