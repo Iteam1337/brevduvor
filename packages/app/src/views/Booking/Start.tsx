@@ -14,10 +14,11 @@ import ScrollableLayout from '~/components/ScrollableLayout'
 import Select from '~/components/form/Select'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
-import TripIcon from '~/assets/Trip'
 import Heading from '~/components/typography/Heading'
 import BookingHeader from '~/components/BookingHeaderLayout'
 import styled from 'styled-components/native'
+
+import Icons from '~/assets/Icons'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -63,7 +64,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
       <ContentWrapper>
         <BookingHeader>
           <Heading text="Boka transport" />
-          <TripIcon />
+          <Icons.Trip />
         </BookingHeader>
         <SelectContainer>
           <Select.Geo

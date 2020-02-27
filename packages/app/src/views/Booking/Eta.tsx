@@ -2,12 +2,13 @@ import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
 import Paragraph from '~/components/typography/Paragraph'
-import ClockIcon from '~/assets/Clock'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 const backgroundImage = require('~/../assets/background-topo.png')
 import BookingHeader from '~/components/BookingHeaderLayout'
+
+import Icons from '~/assets/Icons'
 
 interface BookingEtaProps {
   navigation: any
@@ -19,7 +20,7 @@ const BookingEta: React.FC<BookingEtaProps> = ({ navigation }) => {
       <ContentWrapper>
         <BookingHeader>
           <Heading text="Beräknad tidsåtgång" />
-          <ClockIcon />
+          <Icons.Clock />
         </BookingHeader>
         <Paragraph text="Beräkand tidsåtgång för transport är XX min." />
       </ContentWrapper>

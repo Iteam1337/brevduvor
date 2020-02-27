@@ -2,13 +2,13 @@ import React from 'react'
 import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
 import Paragraph from '~/components/typography/Paragraph'
-import Package from '~/assets/Package'
 import ScrollableLayout from '~/components/ScrollableLayout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 const backgroundImage = require('~/../assets/background-topo.png')
 
 import BookingHeader from '~/components/BookingHeaderLayout'
+import Icons from '~/assets/Icons'
 
 interface BookingPackingProps {
   navigation: any
@@ -20,7 +20,7 @@ const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
       <ContentWrapper>
         <BookingHeader>
           <Heading text="Packa ditt paket" />
-          <Package />
+          <Icons.Package />
         </BookingHeader>
         <Paragraph text="Märk dina varor och paketera dem väl. Kom ihåg att..." />
       </ContentWrapper>

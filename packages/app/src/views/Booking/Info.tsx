@@ -10,10 +10,7 @@ import RowWrapper from '~/components/RowWrapper'
 import Line from '~/components/Line'
 import Title from '~/components/typography/Title'
 
-import Clock from '~/assets/Clock'
-import Map from '~/assets/Map'
-import Arrow from '~/assets/Arrow'
-import Status from '~/assets/Status'
+import Icons from '~/assets/Icons'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -43,18 +40,18 @@ const BookingInfo: React.FC<BookingInfoProps> = ({ route, navigation }) => {
           text={`Rutt: ${booking.start.alias} - ${booking.stop.alias}`}
         />
         <RowWrapper>
-          <Status small={true} />
+          <Icons.Status small={true} />
           <Paragraph bold={true} small={true} text={booking.status} />
         </RowWrapper>
         <Line />
         <RowWrapper>
-          <Clock small={true} />
+          <Icons.Clock small={true} />
           <Paragraph bold={true} small={true} text="BERÄKNAD ANSKOMST" />
         </RowWrapper>
         <Line />
         <TouchableOpacity onPress={() => setShowMap(!showMap)}>
           <RowWrapper>
-            <Map />
+            <Icons.Map />
             <Paragraph bold={true} small={true} text="NUVARANDE POSITION" />
           </RowWrapper>
           <RowWrapper>
@@ -62,7 +59,7 @@ const BookingInfo: React.FC<BookingInfoProps> = ({ route, navigation }) => {
               small={true}
               text={`${booking.start.lon} ${booking.start.lat}`}
             />
-            <Arrow active={showMap} />
+            <Icons.Arrow active={showMap} />
           </RowWrapper>
         </TouchableOpacity>
         <Line />

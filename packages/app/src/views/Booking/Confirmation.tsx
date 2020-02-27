@@ -7,7 +7,7 @@ import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 const backgroundImage = require('~/../assets/background-topo.png')
 import BookingHeader from '~/components/BookingHeaderLayout'
-import Confirm from '~/assets/Confirm'
+import Icons from '~/assets/Icons'
 
 interface ConfirmationProps {
   navigation: any
@@ -19,7 +19,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({ navigation }) => {
       <ContentWrapper>
         <BookingHeader>
           <Heading text="Bekräftelse" />
-          <Confirm />
+          <Icons.Confirm />
         </BookingHeader>
         <Paragraph text="Drönaren är nu på väg och mottagaren kommar att notifieras" />
         <Paragraph text="Ankomst beräknad 14:56" />

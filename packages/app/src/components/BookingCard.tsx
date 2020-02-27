@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import Paragraph from '~/components/typography/Paragraph'
-import Clock from '~/assets/Clock'
+import Icons from '~/assets/Icons'
 interface BookingCardProps {
   booking: {
     __typename: string
@@ -36,7 +36,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking, callback }) => {
     <CardStyle onPress={callback}>
       <Paragraph text={`${booking.start.alias} - ${booking.stop.alias}`} />
       <TimeWrapper>
-        <Clock small={true} />
+        <Icons.Clock small={true} />
         <Paragraph
           small={true}
           text={`${booking.eta} - beräknad ankomst ${booking.eta}`}
