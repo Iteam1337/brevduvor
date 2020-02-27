@@ -24,7 +24,11 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
-  const [getBooking, { data }] = useLazyQuery(GET_BOOKINGS)
+  const [bookings, setBookings] = React.useState({ bookings: [] })
+  const [getBooking] = useLazyQuery(GET_BOOKINGS, {
+    onCompleted: res => setBookings(res),
+    fetchPolicy: 'network-only',
+  })
 
   useFocusEffect(
     React.useCallback(() => {
@@ -32,11 +36,10 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
     }, [getBooking])
   )
 
-  console.log(data)
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
-        {data && data.bookings.length > 0 && (
+        {bookings && bookings.bookings.length > 0 && (
           <>
             <InfoText center={false}>
               <Heading text="Aktuella bokningar" />
@@ -48,8 +51,15 @@ const Home: React.FC<HomeProps> = ({ navigation }) => {
             />
           </>
         )}
-        {data && data.bookings.length > 0 ? (
-          data.bookings.map((booking: any) => <BookingCard booking={booking} />)
+        {bookings && bookings.bookings.length > 0 ? (
+          bookings.bookings.map((booking: any) => (
+            <BookingCard
+              callback={() =>
+                navigation.navigate('BookingInfo', { booking: booking })
+              }
+              booking={booking}
+            />
+          ))
         ) : (
           <InfoText center={true}>
             <Paragraph text="Du har just nu inga pågående transporter" />
