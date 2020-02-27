@@ -10,10 +10,7 @@ import Packing from '~/views/Booking/Packing'
 import Send from '~/views/Booking/Send'
 import Confirmation from '~/views/Booking/Confirmation'
 
-import HomeIcon from '~/assets/HomeIcon'
-import HistoryIcon from '~/assets/HistoryIcon'
-import NotificationIcon from '~/assets/NotificationIcon'
-import SettingsIcon from '~/assets/SettingsIcon'
+import MenuIcons from '~/assets/MenuIcons'
 
 const BottomMenu = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -38,17 +35,15 @@ const NavigationBar = () => {
         tabBarOptions={{ showLabel: false }}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused }) => {
-            let active = focused ? 1 : 0.4
-
-            if (route.name === 'Hem') return <HomeIcon active={active} />
+            if (route.name === 'Hem') return <MenuIcons.Home active={focused} />
             if (route.name === 'Historik') {
-              return <HistoryIcon active={active} />
+              return <MenuIcons.History active={focused} />
             }
             if (route.name === 'Notifikationer') {
-              return <NotificationIcon active={active} />
+              return <MenuIcons.Notification active={focused} />
             }
             if (route.name === 'Inställningar')
-              return <SettingsIcon active={active} />
+              return <MenuIcons.Settings active={focused} />
           },
         })}
       >
