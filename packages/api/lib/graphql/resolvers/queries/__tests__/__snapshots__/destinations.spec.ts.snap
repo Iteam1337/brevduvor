@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`destinations allDestinations matches snapshot 1`] = `
+Object {
+  "allDestinations": Array [
+    Object {
+      "alias": "Storuman",
+      "lat": 65.0908,
+      "lon": 17.1075,
+    },
+    Object {
+      "alias": "Kvikkjokk",
+      "lat": 66.9501,
+      "lon": 17.7086,
+    },
+  ],
+}
+`;
