@@ -33,7 +33,7 @@ describe('#startDrone', () => {
     expect(dronePost).toBeCalledWith('/start', { id, webhookUrl: 'url' })
   })
 
-  it('updateTripStatus should be called with an id and with string "in progress"', async () => {
+  xit('updateTripStatus should be called with an id and with string "in progress"', async () => {
     await startDrone({} as any, { id } as any, {} as any, {} as any)
 
     expect(updateTripStatus).toBeCalledWith(id, 'in progress')
