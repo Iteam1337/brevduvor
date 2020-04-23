@@ -3,13 +3,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import Home from '~/views/Home'
-import Book from '~/views/Booking/Start'
-import Eta from '~/views/Booking/Eta'
-import Packing from '~/views/Booking/Packing'
-import Send from '~/views/Booking/Send'
-import Info from '~/views/Booking/Info'
-import Confirmation from '~/views/Booking/Confirmation'
+import BookingViews from '~/views/Booking'
+import HistoryViews from '~/views/History'
+import NotificationViews from '~/views/Notifications'
+import SettingViews from '~/views/Settings'
 
 import HomeIcon from '~/assets/HomeIcon'
 import HistoryIcon from '~/assets/HistoryIcon'
@@ -17,19 +14,55 @@ import NotificationIcon from '~/assets/NotificationIcon'
 import SettingsIcon from '~/assets/SettingsIcon'
 
 const BottomMenu = createBottomTabNavigator()
-const HomeStack = createStackNavigator()
+const BookingStack = createStackNavigator()
+const SettingsStack = createStackNavigator()
+const HistoryStack = createStackNavigator()
+const NotificationsStack = createStackNavigator()
 
 const BookingNavigation = () => {
   return (
-    <HomeStack.Navigator headerMode="none">
-      <HomeStack.Screen name="Home" component={Home} />
-      <HomeStack.Screen name="Book" component={Book} />
-      <HomeStack.Screen name="BookingEta" component={Eta} />
-      <HomeStack.Screen name="BookingPacking" component={Packing} />
-      <HomeStack.Screen name="BookingSend" component={Send} />
-      <HomeStack.Screen name="BookingConfirmation" component={Confirmation} />
-      <HomeStack.Screen name="BookingInfo" component={Info} />
-    </HomeStack.Navigator>
+    <BookingStack.Navigator headerMode="none">
+      <BookingStack.Screen name="Home" component={BookingViews.Home} />
+      <BookingStack.Screen name="Book" component={BookingViews.Start} />
+      <BookingStack.Screen name="BookingEta" component={BookingViews.Eta} />
+      <BookingStack.Screen
+        name="BookingPacking"
+        component={BookingViews.Packing}
+      />
+      <BookingStack.Screen name="BookingSend" component={BookingViews.Send} />
+      <BookingStack.Screen
+        name="BookingConfirmation"
+        component={BookingViews.Confirmation}
+      />
+      <BookingStack.Screen name="BookingInfo" component={BookingViews.Info} />
+    </BookingStack.Navigator>
+  )
+}
+
+const NotificationsNavigation = () => {
+  return (
+    <NotificationsStack.Navigator headerMode="none">
+      <NotificationsStack.Screen
+        name="Home"
+        component={NotificationViews.Home}
+      />
+    </NotificationsStack.Navigator>
+  )
+}
+
+const SettingsNavigation = () => {
+  return (
+    <SettingsStack.Navigator headerMode="none">
+      <SettingsStack.Screen name="Home" component={SettingViews.Home} />
+    </SettingsStack.Navigator>
+  )
+}
+
+const HistoryNavigation = () => {
+  return (
+    <HistoryStack.Navigator headerMode="none">
+      <HistoryStack.Screen name="Home" component={HistoryViews.Home} />
+    </HistoryStack.Navigator>
   )
 }
 
@@ -55,12 +88,15 @@ const NavigationBar = () => {
         })}
       >
         <BottomMenu.Screen name="Hem" component={BookingNavigation} />
-        <BottomMenu.Screen name="Historik" component={BookingNavigation} />
+        <BottomMenu.Screen name="Historik" component={HistoryNavigation} />
         <BottomMenu.Screen
           name="Notifikationer"
-          component={BookingNavigation}
+          component={NotificationsNavigation}
         />
-        <BottomMenu.Screen name="Inställningar" component={BookingNavigation} />
+        <BottomMenu.Screen
+          name="Inställningar"
+          component={SettingsNavigation}
+        />
       </BottomMenu.Navigator>
     </NavigationContainer>
   )
