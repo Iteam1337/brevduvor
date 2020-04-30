@@ -16,5 +16,6 @@
   },
   "lint-staged": {
     "*": "npm run lint"
-  }
+  },
+  "dependencies": {}
 }

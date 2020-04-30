@@ -9,3 +9,22 @@ export const GET_ALL_DESTINATIONS = gql`
     }
   }
 `
+
+export const GET_BOOKINGS = gql`
+  query {
+    bookings {
+      status
+      start {
+        alias
+        lon
+        lat
+      }
+      stop {
+        alias
+        lon
+        lat
+      }
+      eta
+    }
+  }
+`

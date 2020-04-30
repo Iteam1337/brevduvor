@@ -1,6 +1,5 @@
 package com.app;
 
-import 'react-native-gesture-handler';
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
