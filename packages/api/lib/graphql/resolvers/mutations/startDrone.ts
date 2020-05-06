@@ -1,22 +1,25 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
-import { addBooking } from '../../../services/addBooking'
 // import { dronePost } from '../../../adapters/drone'
-// // import { updateTripStatus } from '../../../services/drones'
-// import config from '../../../config'
+import { getBooking } from '../../../services/bookings'
+// import { insertDroneTrip } from '../../../services/drones'
+
+const DRONE_ID = 13
 
 export const startDrone: MutationResolvers['startDrone'] = async (
   _,
-  { id },
-  _ctx,
+  { bookingId },
+  // _ctx,
+  { dataSources: { flyPulse } },
   _resolvers
 ) => {
   try {
-    // await dronePost('/start', { id, webhookUrl: config.WEBHOOK_URL })
-    addBooking()
+    const booking = await getBooking(bookingId)
+    await flyPulse.loadBooking(DRONE_ID, booking.flypulse_mission_id)
+
+    await flyPulse.startDrone(DRONE_ID)
+
+    return true
   } catch (err) {
     throw new Error(`Error in startDrone: ${err}`)
-  }
-  return {
-    id,
   }
 }

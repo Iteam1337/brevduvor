@@ -25,7 +25,7 @@ npm generate
 In order to test things out in the client you'll most probably need a test-user.
 
 ```sh
-npm run seed # creates user: ci@ci.com with password 12341234
+npm run seed # creates users: johnny1@email.com and johnny@email.com with password 12341234
 ```
 
 You can reach the GraphQL-endpoint at: http://localhost:4000/graphql

@@ -4,11 +4,10 @@ import schema from './lib/graphql/schema'
 import config from './lib/config'
 import { createServer } from 'http'
 import OsrmAPI from './lib/datasources/osrm'
+import FlyPulse from './lib/datasources/flypulse'
 import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
 // import { verifyTokenAgainstUserRecords } from './lib/services/auth'
-
-export const osrmInstance = new OsrmAPI()
 
 export const serverConfig = {
   // context: async ({ req }: any) => {
@@ -31,7 +30,8 @@ export const serverConfig = {
   resolvers: schema.resolvers,
   schemaDirectives: schema.directives,
   dataSources: () => ({
-    osrm: osrmInstance,
+    osrm: new OsrmAPI(),
+    flyPulse: new FlyPulse(),
   }),
 }
 

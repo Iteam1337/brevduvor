@@ -11,9 +11,11 @@ import BookingHeader from '~/components/BookingHeaderLayout'
 
 interface BookingEtaProps {
   navigation: any
+  route: any
 }
 
-const BookingEta: React.FC<BookingEtaProps> = ({ navigation }) => {
+const BookingEta: React.FC<BookingEtaProps> = ({ route, navigation }) => {
+  const { bookingId } = route.params
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
@@ -21,7 +23,7 @@ const BookingEta: React.FC<BookingEtaProps> = ({ navigation }) => {
           <Heading text="Beräknad tidsåtgång" />
           <ClockIcon />
         </BookingHeader>
-        <Paragraph text="Beräkand tidsåtgång för transport är XX min." />
+        <Paragraph text="Beräknad tidsåtgång för transport är XX min." />
       </ContentWrapper>
       <ButtonWrapper>
         <PrimaryButton
@@ -30,7 +32,7 @@ const BookingEta: React.FC<BookingEtaProps> = ({ navigation }) => {
         />
         <PrimaryButton
           text="Nästa"
-          callback={() => navigation.navigate('BookingPacking')}
+          callback={() => navigation.navigate('BookingPacking', { bookingId })}
         />
       </ButtonWrapper>
     </ScrollableLayout>

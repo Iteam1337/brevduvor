@@ -26,6 +26,11 @@ const config = require('@iteam/config')({
       PORT: 6379,
       PASSWORD: 'lg565ABwjvZw4TgAQC6R',
     },
+    FLYPULSE: {
+      HOST: 'https://api-staging.flypulse.se/api',
+      USER: '',
+      PASSWORD: '',
+    },
   },
 })
 
@@ -39,4 +44,5 @@ export default {
   JWT_SECRET: config.get('jwtPrivateKey'),
   REDIS: config.get('REDIS'),
   TWILIO: config.get('TWILIO'),
+  FLYPULSE: config.get('FLYPULSE'),
 }

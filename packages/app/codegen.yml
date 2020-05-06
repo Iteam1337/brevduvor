@@ -2,7 +2,7 @@ overwrite: true
 schema: 'http://localhost:4000/graphql'
 documents: null
 generates:
-  __generated__/app.d.ts:
+  src/__generated__/app.d.ts:
     config:
       noSchemaStitching: true
       avoidOptionals: true

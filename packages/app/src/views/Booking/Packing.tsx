@@ -12,9 +12,14 @@ import BookingHeader from '~/components/BookingHeaderLayout'
 
 interface BookingPackingProps {
   navigation: any
+  route: any
 }
 
-const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
+const BookingPacking: React.FC<BookingPackingProps> = ({
+  navigation,
+  route,
+}) => {
+  const { bookingId } = route.params
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>
@@ -32,7 +37,7 @@ const BookingPacking: React.FC<BookingPackingProps> = ({ navigation }) => {
         />
         <PrimaryButton
           text="Nästa"
-          callback={() => navigation.navigate('BookingSend')}
+          callback={() => navigation.navigate('BookingSend', { bookingId })}
         />
       </ButtonWrapper>
     </ScrollableLayout>

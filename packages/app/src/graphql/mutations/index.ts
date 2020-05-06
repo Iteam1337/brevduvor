@@ -6,10 +6,14 @@ export const INIT_DRONE = gql`
   }
 `
 
+export const BOOKING = gql`
+  mutation booking($start: DestinationInput!, $stop: DestinationInput!) {
+    booking(start: $start, stop: $stop)
+  }
+`
+
 export const START_DRONE = gql`
-  mutation startDrone($id: String!) {
-    startDrone(id: $id) {
-      id
-    }
+  mutation startDrone($bookingId: String!) {
+    startDrone(bookingId: $bookingId)
   }
 `

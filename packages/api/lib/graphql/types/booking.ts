@@ -8,6 +8,11 @@ export const typeDefs = gql`
     RECIPENT_NOTIFIED
   }
 
+  input BookingInput {
+    start: DestinationInput!
+    stop: DestinationInput!
+  }
+
   type Booking {
     id: String!
     start: Destination!

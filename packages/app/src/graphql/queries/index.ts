@@ -4,8 +4,6 @@ export const GET_ALL_DESTINATIONS = gql`
   query {
     allDestinations {
       alias
-      lat
-      lon
     }
   }
 `
@@ -16,13 +14,9 @@ export const GET_BOOKINGS = gql`
       status
       start {
         alias
-        lon
-        lat
       }
       stop {
         alias
-        lon
-        lat
       }
       eta
     }

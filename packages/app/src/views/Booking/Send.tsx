@@ -14,16 +14,19 @@ const backgroundImage = require('~/../assets/background-topo.png')
 
 interface BookingSendProps {
   navigation: any
+  route: any
 }
 
-const BookingSend: React.FC<BookingSendProps> = ({ navigation }) => {
+const BookingSend: React.FC<BookingSendProps> = ({ navigation, route }) => {
+  const { bookingId } = route.params
   const [startDrone] = useMutation<
     Mutation['startDrone'],
     MutationStartDroneArgs
   >(START_DRONE, {
-    variables: { id: 'b229e5ac-488e-4dd4-98ad-4420012fd6bf' },
+    variables: { bookingId },
     onCompleted: () => navigation.navigate('BookingConfirmation'),
   })
+
   return (
     <ScrollableLayout image={backgroundImage}>
       <ContentWrapper>

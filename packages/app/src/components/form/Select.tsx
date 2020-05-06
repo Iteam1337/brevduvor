@@ -35,9 +35,9 @@ const Geo: React.FC<InputSelectProps<DestinationInput>> = ({
   const handleChange = (input: string) => {
     const selectOption = selectOptions.find(({ alias }) => alias === input)
     if (selectOption) {
-      const { alias, lat, lon } = selectOption // strip __typename prop
+      const { alias } = selectOption // strip __typename prop
 
-      callback({ alias, lat, lon })
+      callback({ alias })
     }
   }
 

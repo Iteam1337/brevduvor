@@ -9,7 +9,5 @@ export const typeDefs = gql`
 
   input DestinationInput {
     alias: String!
-    lat: Float!
-    lon: Float!
   }
 `

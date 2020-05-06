@@ -30,6 +30,28 @@ export type AuthPayload = {
   language: Maybe<Languages>
 }
 
+export type Booking = {
+  __typename?: 'Booking'
+  id: Scalars['String']
+  start: Destination
+  stop: Destination
+  eta: Scalars['String']
+  events: Array<Scalars['String']>
+  status: Scalars['String']
+}
+
+export enum BookingEvent {
+  Booked = 'BOOKED',
+  Packed = 'PACKED',
+  Sent = 'SENT',
+  RecipentNotified = 'RECIPENT_NOTIFIED',
+}
+
+export type BookingInput = {
+  start: DestinationInput
+  stop: DestinationInput
+}
+
 export enum CacheControlScope {
   Public = 'PUBLIC',
   Private = 'PRIVATE',
@@ -50,8 +72,15 @@ export type Destination = {
 
 export type DestinationInput = {
   alias: Scalars['String']
-  lat: Scalars['Float']
-  lon: Scalars['Float']
+}
+
+export type Drone = {
+  __typename?: 'Drone'
+  id: Scalars['Int']
+  status: Scalars['String']
+  description: Scalars['String']
+  name: Scalars['String']
+  active: Scalars['Boolean']
 }
 
 export type DroneStatusResponse = {
@@ -105,10 +134,11 @@ export type LogoutResponse = {
 export type Mutation = {
   __typename?: 'Mutation'
   initDrone: Scalars['String']
-  startDrone: StartDroneResponse
+  booking: Scalars['String']
   notification: Scalars['Boolean']
   login: AuthPayload
   register: AuthPayload
+  startDrone: Scalars['Boolean']
   updateUserLanguage: Scalars['Boolean']
   logout: LogoutResponse
 }
@@ -118,8 +148,9 @@ export type MutationInitDroneArgs = {
   stop: DestinationInput
 }
 
-export type MutationStartDroneArgs = {
-  id: Scalars['String']
+export type MutationBookingArgs = {
+  start: DestinationInput
+  stop: DestinationInput
 }
 
 export type MutationNotificationArgs = {
@@ -133,6 +164,10 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: RegisterInput
+}
+
+export type MutationStartDroneArgs = {
+  bookingId: Scalars['String']
 }
 
 export type MutationUpdateUserLanguageArgs = {
@@ -151,7 +186,8 @@ export type Query = {
   __typename?: 'Query'
   allDestinations: Array<Destination>
   getRoute: Route
-  drones: Array<Scalars['String']>
+  drones: Array<Drone>
+  bookings: Maybe<Array<Maybe<Booking>>>
 }
 
 export type QueryGetRouteArgs = {
@@ -171,16 +207,11 @@ export type Route = {
   trips: Array<Trip>
 }
 
-export type StartDroneResponse = {
-  __typename?: 'StartDroneResponse'
-  id: Scalars['String']
-}
-
 export type Subscription = {
   __typename?: 'Subscription'
   dronePosition: InitDroneResponse
   droneStatus: Maybe<DroneStatusResponse>
-  hasStarted: HasStartedResponse
+  hasStarted: Scalars['String']
 }
 
 export type SubscriptionDronePositionArgs = {
@@ -307,10 +338,12 @@ export type ResolversTypes = {
   Trip: ResolverTypeWrapper<Trip>
   Geometry: ResolverTypeWrapper<Geometry>
   JSON: ResolverTypeWrapper<Scalars['JSON']>
-  Mutation: ResolverTypeWrapper<{}>
-  StartDroneResponse: ResolverTypeWrapper<StartDroneResponse>
-  NotificationInput: NotificationInput
+  Drone: ResolverTypeWrapper<Drone>
+  Int: ResolverTypeWrapper<Scalars['Int']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  Booking: ResolverTypeWrapper<Booking>
+  Mutation: ResolverTypeWrapper<{}>
+  NotificationInput: NotificationInput
   AuthPayload: ResolverTypeWrapper<AuthPayload>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Languages: Languages
@@ -320,10 +353,11 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>
   InitDroneResponse: ResolverTypeWrapper<InitDroneResponse>
   Coordinates: ResolverTypeWrapper<Coordinates>
-  Int: ResolverTypeWrapper<Scalars['Int']>
   DroneStatusResponse: ResolverTypeWrapper<DroneStatusResponse>
-  hasStartedResponse: ResolverTypeWrapper<HasStartedResponse>
+  BookingEvent: BookingEvent
+  BookingInput: BookingInput
   CacheControlScope: CacheControlScope
+  hasStartedResponse: ResolverTypeWrapper<HasStartedResponse>
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']>
   Upload: ResolverTypeWrapper<Scalars['Upload']>
 }
@@ -339,10 +373,12 @@ export type ResolversParentTypes = {
   Trip: Trip
   Geometry: Geometry
   JSON: Scalars['JSON']
-  Mutation: {}
-  StartDroneResponse: StartDroneResponse
-  NotificationInput: NotificationInput
+  Drone: Drone
+  Int: Scalars['Int']
   Boolean: Scalars['Boolean']
+  Booking: Booking
+  Mutation: {}
+  NotificationInput: NotificationInput
   AuthPayload: AuthPayload
   ID: Scalars['ID']
   Languages: Languages
@@ -352,10 +388,11 @@ export type ResolversParentTypes = {
   Subscription: {}
   InitDroneResponse: InitDroneResponse
   Coordinates: Coordinates
-  Int: Scalars['Int']
   DroneStatusResponse: DroneStatusResponse
-  hasStartedResponse: HasStartedResponse
+  BookingEvent: BookingEvent
+  BookingInput: BookingInput
   CacheControlScope: CacheControlScope
+  hasStartedResponse: HasStartedResponse
   JSONObject: Scalars['JSONObject']
   Upload: Scalars['Upload']
 }
@@ -413,6 +450,18 @@ export type AuthPayloadResolvers<
   >
 }
 
+export type BookingResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Booking'] = ResolversParentTypes['Booking']
+> = {
+  id: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  start: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
+  stop: Resolver<ResolversTypes['Destination'], ParentType, ContextType>
+  eta: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  events: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  status: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
 export type CoordinatesResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']
@@ -428,6 +477,17 @@ export type DestinationResolvers<
   alias: Resolver<ResolversTypes['String'], ParentType, ContextType>
   lat: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   lon: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+}
+
+export type DroneResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Drone'] = ResolversParentTypes['Drone']
+> = {
+  id: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  status: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  description: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  active: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
 }
 
 export type DroneStatusResponseResolvers<
@@ -503,11 +563,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationInitDroneArgs, 'start' | 'stop'>
   >
-  startDrone: Resolver<
-    ResolversTypes['StartDroneResponse'],
+  booking: Resolver<
+    ResolversTypes['String'],
     ParentType,
     ContextType,
-    RequireFields<MutationStartDroneArgs, 'id'>
+    RequireFields<MutationBookingArgs, 'start' | 'stop'>
   >
   notification: Resolver<
     ResolversTypes['Boolean'],
@@ -526,6 +586,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationRegisterArgs, 'input'>
+  >
+  startDrone: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationStartDroneArgs, 'bookingId'>
   >
   updateUserLanguage: Resolver<
     ResolversTypes['Boolean'],
@@ -551,7 +617,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryGetRouteArgs, 'start' | 'stop'>
   >
-  drones: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  drones: Resolver<Array<ResolversTypes['Drone']>, ParentType, ContextType>
+  bookings: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Booking']>>>,
+    ParentType,
+    ContextType
+  >
 }
 
 export type RouteResolvers<
@@ -564,13 +635,6 @@ export type RouteResolvers<
 export interface RuleWrapperScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['RuleWrapper'], any> {
   name: 'RuleWrapper'
-}
-
-export type StartDroneResponseResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['StartDroneResponse'] = ResolversParentTypes['StartDroneResponse']
-> = {
-  id: Resolver<ResolversTypes['String'], ParentType, ContextType>
 }
 
 export type SubscriptionResolvers<
@@ -592,7 +656,7 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionDroneStatusArgs, 'id'>
   >
   hasStarted: SubscriptionResolver<
-    ResolversTypes['hasStartedResponse'],
+    ResolversTypes['String'],
     'hasStarted',
     ParentType,
     ContextType
@@ -614,8 +678,10 @@ export interface UploadScalarConfig
 
 export type Resolvers<ContextType = any> = {
   AuthPayload: AuthPayloadResolvers<ContextType>
+  Booking: BookingResolvers<ContextType>
   Coordinates: CoordinatesResolvers<ContextType>
   Destination: DestinationResolvers<ContextType>
+  Drone: DroneResolvers<ContextType>
   DroneStatusResponse: DroneStatusResponseResolvers<ContextType>
   Geometry: GeometryResolvers<ContextType>
   hasStartedResponse: HasStartedResponseResolvers<ContextType>
@@ -627,7 +693,6 @@ export type Resolvers<ContextType = any> = {
   Query: QueryResolvers<ContextType>
   Route: RouteResolvers<ContextType>
   RuleWrapper: GraphQLScalarType
-  StartDroneResponse: StartDroneResponseResolvers<ContextType>
   Subscription: SubscriptionResolvers<ContextType>
   Trip: TripResolvers<ContextType>
   Upload: GraphQLScalarType

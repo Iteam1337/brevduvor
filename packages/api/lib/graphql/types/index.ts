@@ -1,12 +1,11 @@
 import { gql } from 'apollo-server-express'
 import * as droneStatus from './droneStatus'
 import * as destinations from './destinations'
-import * as startDrone from './startDrone'
+import * as booking from './booking'
 import * as initDrone from './initDrone'
 import * as auth from './auth'
 import * as notification from './notification'
 import * as hasStartedNotification from './hasStartedNotification'
-import * as booking from './booking'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -42,16 +41,27 @@ const typeDefs = gql`
     distance: Float!
   }
 
+  type Drone {
+    id: Int!
+    status: String!
+    description: String!
+    name: String!
+    active: Boolean!
+  }
+
   type Mutation {
     initDrone(start: DestinationInput!, stop: DestinationInput!): String!
 
-    startDrone(id: String!): StartDroneResponse! @isAuthenticated
+    booking(start: DestinationInput!, stop: DestinationInput!): String!
+      @isAuthenticated
 
     notification(input: NotificationInput!): Boolean! @isAuthenticated
 
     login(email: String!, password: String!): AuthPayload!
 
     register(input: RegisterInput!): AuthPayload!
+
+    startDrone(bookingId: String!): Boolean! @isAuthenticated
 
     updateUserLanguage(email: String! @isEmail, language: Languages!): Boolean!
       @isAuthenticated
@@ -63,7 +73,7 @@ const typeDefs = gql`
     allDestinations: [Destination!]!
     getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
       @isAuthenticated
-    drones: [String!]!
+    drones: [Drone!]!
     bookings: [Booking]
   }
 
@@ -78,7 +88,6 @@ export default [
   typeDefs,
   droneStatus.typeDefs,
   destinations.typeDefs,
-  startDrone.typeDefs,
   initDrone.typeDefs,
   auth.typeDefs,
   notification.typeDefs,

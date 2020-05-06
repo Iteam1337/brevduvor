@@ -16,6 +16,12 @@ exports.up = knex => {
           .defaultTo(knex.fn.now())
           .notNullable()
         table.string('language', 8)
+        table.uuid('destination')
+        table
+          .foreign('destination')
+          .references('id')
+          .inTable('destinations')
+          .onDelete('SET NULL')
       })
     )
     .then(_ => console.log('***users migration OK!***'))

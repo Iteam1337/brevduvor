@@ -1,11 +1,11 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
-import { dronePost } from '../../../adapters/drone'
-import { addBooking } from '../../../services/addBooking'
+// import { dronePost } from '../../../adapters/drone'
+// import { addBooking } from '../../../services/addBooking'
 // import { insertDroneTrip } from '../../../services/drones'
 
 export const initDrone: MutationResolvers['initDrone'] = async (
   _,
-  { start, stop },
+  { start },
   _ctx,
   _resolvers
 ) => {

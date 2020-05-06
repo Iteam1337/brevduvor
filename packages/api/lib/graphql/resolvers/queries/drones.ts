@@ -1,7 +1,12 @@
-import { getAllDrones } from '../../../services/drones'
+// import { getAllDrones } from '../../../services/drones'
+import { QueryResolvers } from '../../../__generated__/brevduvor'
 
-export const drones = async () => {
-  const drones = await getAllDrones()
+export const drones: QueryResolvers['drones'] = async (
+  _,
+  _args,
+  { dataSources: { flyPulse } }
+) => {
+  const drones = await flyPulse.getDrones()
 
-  return drones.map(({ drone_id }) => drone_id)
+  return drones
 }
