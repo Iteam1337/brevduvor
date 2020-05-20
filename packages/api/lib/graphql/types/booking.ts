@@ -1,11 +1,19 @@
 import { gql } from 'apollo-server-express'
 
 export const typeDefs = gql`
-  enum BookingEvent {
+  enum Status {
+    CREATED
     BOOKED
     PACKED
     SENT
+    READY_TO_LAND
     RECIPENT_NOTIFIED
+    DELIVERED
+  }
+
+  type BookingEvent {
+    status: Status
+    created_at: String
   }
 
   input BookingInput {
@@ -18,7 +26,6 @@ export const typeDefs = gql`
     start: Destination!
     stop: Destination!
     eta: String!
-    events: [String!]!
-    status: String!
+    events: [BookingEvent]!
   }
 `

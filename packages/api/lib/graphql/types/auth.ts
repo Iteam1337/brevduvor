@@ -7,6 +7,7 @@ export const typeDefs = gql`
     email: String!
     username: String!
     language: Languages
+    destination: Destination
   }
 
   type LogoutResponse {

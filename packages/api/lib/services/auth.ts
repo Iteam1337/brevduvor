@@ -8,6 +8,7 @@ import { AuthenticationError } from 'apollo-server-core'
 import { errors } from 'pg-promise'
 import { GraphQLError } from 'graphql'
 import { verifyPassword } from '../helpers/password'
+import { getDestination } from './destinations'
 
 export enum Languages { // TODO Remove when typescript is great again
   English = 'ENGLISH',
@@ -19,6 +20,7 @@ export type User = {
   name: string
   email: string
   language: string
+  destination: string
 }
 
 const fromCodeToLanguageEnum = (langCode: string): Languages | null => {
@@ -40,7 +42,6 @@ export const verifyTokenAgainstUserRecords = async (
     token = token.split('Bearer ')[1]
 
     const payload = verify(token, privateKey) as User
-
     if (payload && payload.id) {
       const user = await getUserById(payload.id)
 
@@ -52,7 +53,12 @@ export const verifyTokenAgainstUserRecords = async (
         throw new GraphQLError(errorCodes.Auth.MissingUser)
       }
 
-      return { id: user.id, name: user.name, email: user.email } as User
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        destination: user.destination,
+      } as User & { destination: string }
     }
   } catch (error) {
     throw new AuthenticationError(errorCodes.Auth.RequireLogin)
@@ -88,6 +94,7 @@ export const login = async (
     name: user.name,
     email: user.email,
     id: user.id,
+    destination: user.destination,
   }
 
   const token = sign(tokenPayload, config.JWT_SECRET)
@@ -95,6 +102,7 @@ export const login = async (
   return {
     token,
     email: user.email,
+    destination: await getDestination(user.destination),
     username: user.name,
     id: user.id,
     language: fromCodeToLanguageEnum(user.language),

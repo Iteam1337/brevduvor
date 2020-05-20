@@ -4,8 +4,11 @@ import {
   getMainDefinition,
   split,
   HttpLink,
+  concat,
 } from '@apollo/client'
 import { WebSocketLink } from '@apollo/link-ws'
+import { setContext } from '@apollo/link-context'
+import AsyncStorage from '@react-native-community/async-storage'
 // @ts-ignore
 import { GRAPHQL_URI, GRAPHQL_WS_URI } from 'react-native-dotenv'
 
@@ -20,8 +23,18 @@ const wsLink = new WebSocketLink({
   },
 })
 
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem('token')
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  }
+})
+
 const link = split(
-  ({ query }) => {
+  ({ query }: { query: any }) => {
     const definition = getMainDefinition(query)
     return (
       definition.kind === 'OperationDefinition' &&
@@ -34,7 +47,7 @@ const link = split(
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link,
+  link: concat(authLink, link),
 })
 
 export default client

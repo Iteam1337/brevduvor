@@ -10,14 +10,15 @@ import {
 import { BOOKING } from '~/graphql/mutations'
 import { GET_ALL_DESTINATIONS } from '~/graphql/queries'
 import PrimaryButton from '~/components/Button'
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import Select from '~/components/form/Select'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
 import TripIcon from '~/assets/Trip'
-import Heading from '~/components/typography/Heading'
+// import Heading from '~/components/typography/Heading'
 import BookingHeader from '~/components/BookingHeaderLayout'
 import styled from 'styled-components/native'
+import { UserContext } from '~/AppContext'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -44,13 +45,18 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
     MutationBookingArgs
   >(BOOKING, {
     onCompleted: ({ booking: bookingId }) =>
-      navigation.navigate('BookingEta', { bookingId }),
+      navigation.navigate('BookingPacking', { bookingId }),
   })
+
+  const { user } = React.useContext<any>(UserContext)
 
   const formDispatcher = (type: string) => (val: DestinationInput) =>
     form && setForm({ ...form, [type]: val })
 
   const handleDestination = () => {
+    if (form && form.start && form.stop === form.start) {
+      return
+    }
     if (form && form.start && form.stop) {
       createBooking({
         variables: {
@@ -62,15 +68,16 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
   }
 
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
         <BookingHeader>
-          <Heading text="Boka transport" />
+          {/* <Heading text="Boka transport" /> */}
           <TripIcon />
         </BookingHeader>
         <SelectContainer>
           <Select.Geo
             label="Från"
+            defaultValue={user.destination.alias}
             placeholder="Ange startposition"
             selectOptions={destinations?.allDestinations}
             callback={formDispatcher('start')}
@@ -83,7 +90,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
             placeholder="Ange destination"
           />
         </SelectContainer>
-      </ContentWrapper>
+      </ScrollableLayout>
       <ButtonWrapper>
         <PrimaryButton
           text="Avbryt"
@@ -96,7 +103,7 @@ const Book: React.FC<BookProps> = ({ navigation }) => {
           }}
         />
       </ButtonWrapper>
-    </ScrollableLayout>
+    </ContentWrapper>
   )
 }
 

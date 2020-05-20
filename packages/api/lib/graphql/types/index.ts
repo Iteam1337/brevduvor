@@ -1,11 +1,8 @@
 import { gql } from 'apollo-server-express'
-import * as droneStatus from './droneStatus'
 import * as destinations from './destinations'
 import * as booking from './booking'
-import * as initDrone from './initDrone'
+import * as droneInfo from './droneInfo'
 import * as auth from './auth'
-import * as notification from './notification'
-import * as hasStartedNotification from './hasStartedNotification'
 
 import { directiveTypeDefs } from './../directives/rules'
 
@@ -32,10 +29,6 @@ const typeDefs = gql`
     lon: Float!
   }
 
-  type Route {
-    trips: [Trip!]!
-  }
-
   type Trip {
     geoJson: Geometry!
     distance: Float!
@@ -50,12 +43,11 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    initDrone(start: DestinationInput!, stop: DestinationInput!): String!
-
     booking(start: DestinationInput!, stop: DestinationInput!): String!
       @isAuthenticated
 
-    notification(input: NotificationInput!): Boolean! @isAuthenticated
+    updateBookingStatus(bookingId: String!, status: Status!): Boolean!
+      @isAuthenticated
 
     login(email: String!, password: String!): AuthPayload!
 
@@ -63,34 +55,31 @@ const typeDefs = gql`
 
     startDrone(bookingId: String!): Boolean! @isAuthenticated
 
+    landDrone(bookingId: String!): Boolean! @isAuthenticated
+
     updateUserLanguage(email: String! @isEmail, language: Languages!): Boolean!
       @isAuthenticated
+
+    updateUserDevices(deviceId: String!): Boolean! @isAuthenticated
 
     logout: LogoutResponse!
   }
 
   type Query {
     allDestinations: [Destination!]!
-    getRoute(start: DestinationInput!, stop: DestinationInput!): Route!
-      @isAuthenticated
     drones: [Drone!]!
-    bookings: [Booking]
+    bookings: [Booking] @isAuthenticated
   }
 
   type Subscription {
-    dronePosition(id: String!): InitDroneResponse! @isAuthenticated
-    droneStatus(id: String!): DroneStatusResponse
-    hasStarted: String!
+    droneInfo(id: String!): DroneInfoResponse!
   }
 `
 
 export default [
   typeDefs,
-  droneStatus.typeDefs,
   destinations.typeDefs,
-  initDrone.typeDefs,
+  droneInfo.typeDefs,
   auth.typeDefs,
-  notification.typeDefs,
-  hasStartedNotification.typeDefs,
   booking.typeDefs,
 ]

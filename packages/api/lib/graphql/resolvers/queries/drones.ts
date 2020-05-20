@@ -1,4 +1,3 @@
-// import { getAllDrones } from '../../../services/drones'
 import { QueryResolvers } from '../../../__generated__/brevduvor'
 
 export const drones: QueryResolvers['drones'] = async (

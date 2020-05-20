@@ -57,15 +57,20 @@ export default class FlyPulse extends RESTDataSource {
     try {
       return this.post('/mission/push_to_vehicle', {
         mission_id: missionId,
-        vehicle_id: droneId, //Sim3 test drone
+        vehicle_id: droneId,
       })
     } catch (error) {
       console.log('load booking error', error)
+      return Promise.resolve()
     }
   }
 
-  startDrone(droneId: string) {
+  startDrone(droneId: number) {
     return this.post(`/mission/start/${droneId}`)
+  }
+
+  landDrone(droneId: number) {
+    return this.post(`/mission/abort/${droneId}`)
   }
 
   async getDrones() {

@@ -25,15 +25,21 @@ interface ButtonProps {
   text: string
   callback: () => void
   isCancel?: boolean
+  isDisabled?: boolean
 }
 
 const PrimaryButton: React.FC<ButtonProps> = ({
   text,
   callback,
   isCancel = false,
+  isDisabled = false,
 }) => {
   return (
-    <ButtonContainer onPress={callback} isCancel={isCancel}>
+    <ButtonContainer
+      disabled={isDisabled}
+      onPress={callback}
+      isCancel={isCancel}
+    >
       <ButtonText isCancel={isCancel}>{text}</ButtonText>
     </ButtonContainer>
   )

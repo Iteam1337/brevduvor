@@ -11,14 +11,21 @@ export const GET_ALL_DESTINATIONS = gql`
 export const GET_BOOKINGS = gql`
   query {
     bookings {
-      status
+      id
       start {
         alias
+        lat
+        lon
       }
       stop {
         alias
+        lat
+        lon
       }
-      eta
+      events {
+        created_at
+        status
+      }
     }
   }
 `

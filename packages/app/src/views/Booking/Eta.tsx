@@ -3,7 +3,7 @@ import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
 import Paragraph from '~/components/typography/Paragraph'
 import ClockIcon from '~/assets/Clock'
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 const backgroundImage = require('~/../assets/background-topo.png')
@@ -17,14 +17,14 @@ interface BookingEtaProps {
 const BookingEta: React.FC<BookingEtaProps> = ({ route, navigation }) => {
   const { bookingId } = route.params
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
         <BookingHeader>
           <Heading text="Beräknad tidsåtgång" />
           <ClockIcon />
         </BookingHeader>
         <Paragraph text="Beräknad tidsåtgång för transport är XX min." />
-      </ContentWrapper>
+      </ScrollableLayout>
       <ButtonWrapper>
         <PrimaryButton
           text="Avbryt"
@@ -35,7 +35,7 @@ const BookingEta: React.FC<BookingEtaProps> = ({ route, navigation }) => {
           callback={() => navigation.navigate('BookingPacking', { bookingId })}
         />
       </ButtonWrapper>
-    </ScrollableLayout>
+    </ContentWrapper>
   )
 }
 

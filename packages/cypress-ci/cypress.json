@@ -1,4 +1,0 @@
-{
-  "browser": "chrome",
-  "pluginsFile": "cypress/plugins/index.js"
-}

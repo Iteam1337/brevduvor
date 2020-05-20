@@ -10,6 +10,20 @@ Create a `config.json`-file in the root of the API.
 }
 ```
 
+For drone integration through flypulse, also add following to `config.json`
+
+```json
+{
+  "FLYPULSE": {
+    "USER": "<PROVIED_BY_FLYPULSE>",
+    "PASSWORD": "<PROVIED_BY_FLYPULSE>",
+    "HOST": "<PROVIED_BY_FLYPULSE>",
+    "WS": "<PROVIED_BY_FLYPULSE>"
+  },
+  "DRONE":  // Drone id
+}
+```
+
 ```sh
 npm install
 
@@ -29,3 +43,7 @@ npm run seed # creates users: johnny1@email.com and johnny@email.com with passwo
 ```
 
 You can reach the GraphQL-endpoint at: http://localhost:4000/graphql
+
+## Push notifications
+
+Add `firebaseServiceAccount.json` in root with information provided in your Firebase-account.

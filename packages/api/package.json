@@ -44,7 +44,6 @@
     "@types/graphql-type-json": "^0.3.2",
     "@types/jest": "^24.0.18",
     "@types/jsonwebtoken": "^8.3.4",
-    "@types/kue": "^0.11.13",
     "@types/passport": "^1.0.1",
     "@types/passport-jwt": "^3.0.2",
     "@types/passport-local": "^1.0.33",
@@ -64,20 +63,20 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "@iteam/config": "^12.1.0",
     "@elastic/elasticsearch": "^7.3.0",
+    "@iteam/config": "^12.1.0",
     "apollo-datasource-rest": "^0.6.4",
     "apollo-server-express": "^2.9.3",
     "body-parser": "^1.19.0",
     "dedent": "^0.7.0",
+    "firebase-admin": "^8.12.1",
     "got": "^9.6.0",
     "graphql-type-json": "^0.3.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.1",
-    "kue": "^0.11.6",
     "pg": "^7.12.1",
     "pg-promise": "^9.2.1",
     "scrypt-kdf": "^2.0.1",
-    "twilio": "^3.37.0"
+    "ws": "^7.2.5"
   }
 }

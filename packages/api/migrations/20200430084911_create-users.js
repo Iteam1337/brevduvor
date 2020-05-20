@@ -22,6 +22,7 @@ exports.up = knex => {
           .references('id')
           .inTable('destinations')
           .onDelete('SET NULL')
+        table.specificType('device_ids', 'text ARRAY')
       })
     )
     .then(_ => console.log('***users migration OK!***'))

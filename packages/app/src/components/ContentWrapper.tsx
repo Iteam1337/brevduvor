@@ -5,8 +5,6 @@ console.disableYellowBox = true
 const Wrapper = styled(SafeAreaView)`
   width: 100%;
   align-items: center;
-
-  height: 90%;
 `
 
 const ContentWrapper: React.FC = ({ children }) => {

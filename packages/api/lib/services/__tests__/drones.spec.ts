@@ -1,9 +1,4 @@
-import {
-  getActiveDrones,
-  updateTripStatus,
-  insertDroneTrip,
-  Status,
-} from '../drones'
+import { getActiveDrones, Status } from '../drones'
 import { db, pgp } from '../../adapters/postgres'
 
 interface DroneTrip {

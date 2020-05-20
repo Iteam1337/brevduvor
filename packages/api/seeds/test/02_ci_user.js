@@ -11,7 +11,6 @@ exports.seed = knex => {
     .del()
     .then(async () => {
       const password = await createHash('12341234')
-
       return knex
         .raw(
           `INSERT INTO users (email, name, password, destination) (SELECT 'johnny1@email.com', 'Johnny1', '${password}', destination.id FROM destinations AS destination WHERE destination.alias = 'Storuman')`
@@ -19,6 +18,16 @@ exports.seed = knex => {
         .then(_ =>
           knex.raw(
             `INSERT INTO users (email, name, password, destination) (SELECT 'johnny2@email.com', 'Johnny2', '${password}', destination.id FROM destinations AS destination WHERE destination.alias = 'Slussfors')`
+          )
+        )
+        .then(_ =>
+          knex.raw(
+            `INSERT INTO users (email, name, password, destination) (SELECT 'ttest1@email.com', 'Johnny1', '${password}', destination.id FROM destinations AS destination WHERE destination.alias = 'Trollhättan test start')`
+          )
+        )
+        .then(_ =>
+          knex.raw(
+            `INSERT INTO users (email, name, password, destination) (SELECT 'ttest2@email.com', 'Johnny2', '${password}', destination.id FROM destinations AS destination WHERE destination.alias = 'Trollhättan test stop')`
           )
         )
     })

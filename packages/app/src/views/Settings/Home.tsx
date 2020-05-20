@@ -1,8 +1,11 @@
 import React from 'react'
 
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import ContentWrapper from '~/components/ContentWrapper'
 import Title from '~/components/typography/Title'
+import ButtonWrapper from '~/components/ButtonWrapper'
+import PrimaryButton from '~/components/Button'
+import { AuthContext } from '~/AppContext'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -11,12 +14,17 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = () => {
+  const { logout } = React.useContext<any>(AuthContext)
+
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
-        <Title text={'Settings'} />
-      </ContentWrapper>
-    </ScrollableLayout>
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
+        <Title text={'Inställningar'} />
+      </ScrollableLayout>
+      <ButtonWrapper>
+        <PrimaryButton text="Logga ut" callback={() => logout()} />
+      </ButtonWrapper>
+    </ContentWrapper>
   )
 }
 

@@ -15,6 +15,8 @@ exports.up = knex => {
           .defaultTo(knex.fn.now())
           .notNullable()
 
+        table.jsonb('events')
+
         table.uuid('created_by')
         table
           .foreign('created_by')
@@ -37,7 +39,7 @@ exports.up = knex => {
           .onDelete('SET NULL')
       })
     )
-    .then(_ => console.log('***users migration OK!***'))
+    .then(_ => console.log('***bookings migration OK!***'))
 }
 
 exports.down = knex => {

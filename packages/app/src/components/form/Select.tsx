@@ -12,6 +12,7 @@ interface InputSelectProps<T = any> {
   selectOptions?: Destination[]
   callback: (value: T) => void
   placeholder: string
+  defaultValue?: string
 }
 
 const InputSelectWrapper = styled(View)`
@@ -73,6 +74,18 @@ const PickerStyle = StyleSheet.create({
 
   inputIOS: {
     fontSize: 16,
+  },
+  inputAndroid: {
+    color: 'black',
+  },
+  viewContainer: {
+    backgroundColor: 'white',
+    fontSize: 16,
+    paddingLeft: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.NGrey7,
+    borderRadius: 7,
+    color: 'black',
   },
 })
 

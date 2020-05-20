@@ -1,36 +1,35 @@
-const express = require('express')
-const { ApolloServer } = require('apollo-server-express')
+import express from 'express'
+import { ApolloServer } from 'apollo-server-express'
 import schema from './lib/graphql/schema'
 import config from './lib/config'
 import { createServer } from 'http'
-import OsrmAPI from './lib/datasources/osrm'
 import FlyPulse from './lib/datasources/flypulse'
-import { droneStatus } from './lib/services/droneStatus'
 import bodyParser from 'body-parser'
-// import { verifyTokenAgainstUserRecords } from './lib/services/auth'
+
+import { verifyTokenAgainstUserRecords } from './lib/services/auth'
+import { startDroneListener } from './lib/services/drones'
 
 export const serverConfig = {
-  // context: async ({ req }: any) => {
-  //   try {
-  //     const token = req.headers.authorization || ''
+  context: async ({ req }: any) => {
+    if (!req) return
+    try {
+      const token = req.headers.authorization || ''
+      if (token) {
+        const user = await verifyTokenAgainstUserRecords(
+          token,
+          config.JWT_SECRET
+        )
 
-  //     if (token) {
-  //       const user = await verifyTokenAgainstUserRecords(
-  //       token,
-  //         config.JWT_SECRET
-  //       )
-
-  //       return { user }
-  //     }
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // },
+        return { user }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
   schemaDirectives: schema.directives,
   dataSources: () => ({
-    osrm: new OsrmAPI(),
     flyPulse: new FlyPulse(),
   }),
 }
@@ -47,10 +46,10 @@ app.use(bodyParser.json()).use(
   })
 )
 
-app.post('/status', droneStatus)
-
 const httpServer = createServer(app)
 server.installSubscriptionHandlers(httpServer)
+
+startDroneListener()
 
 if (process.env.NODE_ENV !== 'test') {
   httpServer.listen({ port: config.PORT || 4000 }, () =>

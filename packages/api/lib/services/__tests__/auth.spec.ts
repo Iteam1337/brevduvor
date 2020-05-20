@@ -5,6 +5,7 @@ const jsonwebtoken = require('jsonwebtoken')
 jest.mock('../users', () => ({
   createUser() {
     return Promise.resolve({
+      destination: 'someDestination',
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
       email: 'test@iteam.se',
       name: 'iteamtestuser',
@@ -12,6 +13,7 @@ jest.mock('../users', () => ({
   },
   getUserByEmail() {
     return Promise.resolve({
+      destination: 'someDestination',
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
       email: 'test@iteam.se',
       name: 'iteamtestuser',
@@ -19,6 +21,7 @@ jest.mock('../users', () => ({
   },
   getUserById() {
     return Promise.resolve({
+      destination: 'someDestination',
       id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
       email: 'test@iteam.se',
       name: 'iteamtestuser',
@@ -26,7 +29,7 @@ jest.mock('../users', () => ({
   },
 }))
 
-describe.only('authentication', () => {
+describe('authentication', () => {
   const privateKey = 'MY_PRIVATE_KEY'
   let token: string
 
@@ -58,6 +61,7 @@ describe.only('authentication', () => {
       )
 
       expect(user).resolves.toStrictEqual({
+        destination: 'someDestination',
         id: '25b12f49-9eca-4b28-9cbf-d3b70fcaf648',
         email: 'test@iteam.se',
         name: 'iteamtestuser',

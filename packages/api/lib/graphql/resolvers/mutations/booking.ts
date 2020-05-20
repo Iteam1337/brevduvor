@@ -1,6 +1,7 @@
 import { MutationResolvers } from '../../../__generated__/brevduvor'
 import { getDestinationFromAlias } from '../../../services/destinations'
 import { addBooking } from '../../../services/bookings'
+import { notifyDestinationNew } from '../../../services/notification'
 
 export const booking: MutationResolvers['booking'] = async (
   _,
@@ -21,6 +22,8 @@ export const booking: MutationResolvers['booking'] = async (
       destination.id,
       flypulseMissionId
     )
+
+    notifyDestinationNew(destination.id, id)
 
     return id
   } catch (err) {

@@ -30,14 +30,8 @@ spec:
             - secretRef:
                 name: jwt-token
           env:
-            - name: OSRM_URL
-              value: http://osrm
-            - name: DRONE_URL
-              value: https://drone.brevduvor.iteamdev.se
             - name: WEBHOOK_URL
               value: https://api.brevduvor.iteamdev.se/status
-            - name: ELASTIC_URL
-              value: http://elasticsearch.kube-logging.svc.cluster.local
             - name: POSTGRES__HOST
               value: postgres
             - name: POSTGRES__USER

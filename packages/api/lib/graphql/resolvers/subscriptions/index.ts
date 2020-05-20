@@ -1,2 +1,2 @@
-export * from './droneStatus'
-export * from './hasStarted'
+// export * from './droneStatus'
+export * from './droneInfo'

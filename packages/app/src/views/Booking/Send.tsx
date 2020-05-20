@@ -3,7 +3,7 @@ import PrimaryButton from '~/components/Button'
 import Heading from '~/components/typography/Heading'
 import Paragraph from '~/components/typography/Paragraph'
 import SendIcon from '~/assets/Send'
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import ContentWrapper from '~/components/ContentWrapper'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import { START_DRONE } from '~/graphql/mutations'
@@ -28,15 +28,15 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation, route }) => {
   })
 
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
         <BookingHeader>
           <Heading text="Skicka din drönare" />
           <SendIcon />
         </BookingHeader>
         <Paragraph text="Drönaren är nu förberedd och redo för avfärd." />
         <Paragraph text="Bekräfta för att starta färd" />
-      </ContentWrapper>
+      </ScrollableLayout>
       <ButtonWrapper>
         <PrimaryButton
           text="Avbryt"
@@ -49,7 +49,7 @@ const BookingSend: React.FC<BookingSendProps> = ({ navigation, route }) => {
           }}
         />
       </ButtonWrapper>
-    </ScrollableLayout>
+    </ContentWrapper>
   )
 }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -13,93 +12,89 @@ import HistoryIcon from '~/assets/HistoryIcon'
 import NotificationIcon from '~/assets/NotificationIcon'
 import SettingsIcon from '~/assets/SettingsIcon'
 
-const BottomMenu = createBottomTabNavigator()
-const BookingStack = createStackNavigator()
-const SettingsStack = createStackNavigator()
-const HistoryStack = createStackNavigator()
-const NotificationsStack = createStackNavigator()
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
-const BookingNavigation = () => {
+const TabNavigator = () => {
   return (
-    <BookingStack.Navigator headerMode="none">
-      <BookingStack.Screen name="Home" component={BookingViews.Home} />
-      <BookingStack.Screen name="Book" component={BookingViews.Start} />
-      <BookingStack.Screen name="BookingEta" component={BookingViews.Eta} />
-      <BookingStack.Screen
+    <Tab.Navigator
+      tabBarOptions={{ showLabel: false }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          const active = focused ? 1 : 0.4
+
+          if (route.name === 'Bookings') return <HomeIcon active={active} />
+          if (route.name === 'History') {
+            return <HistoryIcon active={active} />
+          }
+          if (route.name === 'Notifications') {
+            return <NotificationIcon active={active} />
+          }
+          if (route.name === 'Settings') return <SettingsIcon active={active} />
+        },
+      })}
+    >
+      <Tab.Screen name="Bookings" component={BookingsStack} />
+      <Tab.Screen name="History" component={HistoryViews.Home} />
+      <Tab.Screen name="Notifications" component={NotificationViews.Home} />
+      <Tab.Screen name="Settings" component={SettingViews.Home} />
+    </Tab.Navigator>
+  )
+}
+
+const BookingsStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#ECF5FF',
+        },
+        headerTintColor: '#000',
+        headerTitleStyle: {
+          fontFamily: 'NunitoSans-Bold',
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={BookingViews.Home}
+        options={{ headerTitle: 'Bokningar', headerShown: true }}
+      />
+      <Stack.Screen
+        name="Book"
+        component={BookingViews.Start}
+        options={{ headerTitle: 'Boka transport' }}
+      />
+      <Stack.Screen
+        name="BookingEta"
+        component={BookingViews.Eta}
+        options={{ headerTitle: 'ETA' }}
+      />
+      <Stack.Screen
         name="BookingPacking"
         component={BookingViews.Packing}
+        options={{ headerTitle: 'Packa' }}
       />
-      <BookingStack.Screen name="BookingSend" component={BookingViews.Send} />
-      <BookingStack.Screen
+      <Stack.Screen
+        name="BookingSend"
+        component={BookingViews.Send}
+        options={{ headerTitle: 'Skicka' }}
+      />
+      <Stack.Screen
         name="BookingConfirmation"
         component={BookingViews.Confirmation}
+        options={{ headerTitle: 'Bokningsbekräftelse' }}
       />
-      <BookingStack.Screen name="BookingInfo" component={BookingViews.Info} />
-    </BookingStack.Navigator>
-  )
-}
-
-const NotificationsNavigation = () => {
-  return (
-    <NotificationsStack.Navigator headerMode="none">
-      <NotificationsStack.Screen
-        name="Home"
-        component={NotificationViews.Home}
+      <Stack.Screen
+        name="BookingInfo"
+        component={BookingViews.Info}
+        options={{
+          headerTitle: 'Bokningsinformation',
+          headerTransparent: true,
+        }}
       />
-    </NotificationsStack.Navigator>
+    </Stack.Navigator>
   )
 }
 
-const SettingsNavigation = () => {
-  return (
-    <SettingsStack.Navigator headerMode="none">
-      <SettingsStack.Screen name="Home" component={SettingViews.Home} />
-    </SettingsStack.Navigator>
-  )
-}
-
-const HistoryNavigation = () => {
-  return (
-    <HistoryStack.Navigator headerMode="none">
-      <HistoryStack.Screen name="Home" component={HistoryViews.Home} />
-    </HistoryStack.Navigator>
-  )
-}
-
-const NavigationBar = () => {
-  return (
-    <NavigationContainer>
-      <BottomMenu.Navigator
-        tabBarOptions={{ showLabel: false }}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            let active = focused ? 1 : 0.4
-
-            if (route.name === 'Hem') return <HomeIcon active={active} />
-            if (route.name === 'Historik') {
-              return <HistoryIcon active={active} />
-            }
-            if (route.name === 'Notifikationer') {
-              return <NotificationIcon active={active} />
-            }
-            if (route.name === 'Inställningar')
-              return <SettingsIcon active={active} />
-          },
-        })}
-      >
-        <BottomMenu.Screen name="Hem" component={BookingNavigation} />
-        <BottomMenu.Screen name="Historik" component={HistoryNavigation} />
-        <BottomMenu.Screen
-          name="Notifikationer"
-          component={NotificationsNavigation}
-        />
-        <BottomMenu.Screen
-          name="Inställningar"
-          component={SettingsNavigation}
-        />
-      </BottomMenu.Navigator>
-    </NavigationContainer>
-  )
-}
-
-export default NavigationBar
+export default TabNavigator

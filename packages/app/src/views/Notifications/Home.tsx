@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import ContentWrapper from '~/components/ContentWrapper'
 import Title from '~/components/typography/Title'
 
@@ -12,11 +12,11 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = () => {
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
-        <Title text={'Notifications'} />
-      </ContentWrapper>
-    </ScrollableLayout>
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
+        <Title text={'Notifikationer'} />
+      </ScrollableLayout>
+    </ContentWrapper>
   )
 }
 

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Wrapper = styled.View`
-  height: 20%;
+  margin-top: 60px;
   align-self: center;
   justify-content: flex-end;
   margin-bottom: 40px;

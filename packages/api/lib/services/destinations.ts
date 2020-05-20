@@ -18,3 +18,7 @@ export async function getDestinationFromAlias(
 
   return data
 }
+
+export async function getDestination(id: string): Promise<Destination> {
+  return db.one(`SELECT alias, lat, lon FROM destinations WHERE id = '${id}'`)
+}

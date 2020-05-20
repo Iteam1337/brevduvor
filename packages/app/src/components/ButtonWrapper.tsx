@@ -6,6 +6,8 @@ const Wrapper = styled(SafeAreaView)`
   width: 100%;
   flex-direction: row;
   justify-content: space-around;
+  bottom: 30px;
+  position: absolute;
 `
 
 const ButtonWrapper: React.FC = ({ children }) => {

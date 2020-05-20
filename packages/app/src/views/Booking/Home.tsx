@@ -4,13 +4,14 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useLazyQuery } from '@apollo/client'
 import { GET_BOOKINGS } from '~/graphql/queries'
 
-import ScrollableLayout from '~/components/ScrollableLayout'
+import { ScrollableLayout } from '~/components/Layout'
 import ButtonWrapper from '~/components/ButtonWrapper'
 import ContentWrapper from '~/components/ContentWrapper'
 import BookingCard from '~/components/BookingCard'
 import Title from '~/components/typography/Title'
 import Paragraph from '~/components/typography/Paragraph'
 import PrimaryButton from '~/components/Button'
+import { UserContext } from '~/AppContext'
 
 const backgroundImage = require('~/../assets/background-topo.png')
 
@@ -26,53 +27,73 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ navigation }) => {
-  const [bookings, setBookings] = React.useState({ bookings: [] })
-  const [getBooking] = useLazyQuery(GET_BOOKINGS, {
-    onCompleted: res => setBookings(res),
+  const [bookings, setBookings] = React.useState([])
+  const { user } = React.useContext<any>(UserContext)
+  const [getBookings] = useLazyQuery(GET_BOOKINGS, {
+    onCompleted: res => {
+      setBookings(
+        res.bookings.filter(
+          (b: any) => b.events[b.events.length - 1].status !== 'DELIVERED'
+        )
+      )
+    },
+    onError: console.error,
     fetchPolicy: 'network-only',
   })
 
   useFocusEffect(
     React.useCallback(() => {
-      getBooking()
-    }, [getBooking])
+      getBookings()
+    }, [getBookings])
   )
 
   return (
-    <ScrollableLayout image={backgroundImage}>
-      <ContentWrapper>
-        {bookings && bookings.bookings.length > 0 && (
+    <ContentWrapper>
+      <ScrollableLayout image={backgroundImage}>
+        {bookings.length > 0 ? (
           <>
-            <Title text="Aktuella bokningar" />
-            <Paragraph
-              toLeft={true}
-              small={true}
-              text="Klicka på en transport för mer information"
-            />
+            <Title text="Mottagna" />
+            {user &&
+              bookings
+                .filter((b: any) => b.stop.alias === user.destination.alias)
+                .map((booking: any) => (
+                  <BookingCard
+                    key={booking.id}
+                    callback={() =>
+                      navigation.navigate('BookingInfo', { booking })
+                    }
+                    title={booking.start.alias}
+                    events={booking.events}
+                  />
+                ))}
+            <Title text="Skickade" />
+            {user &&
+              bookings
+                .filter((b: any) => b.start.alias === user.destination.alias)
+                .map((booking: any) => (
+                  <BookingCard
+                    key={booking.id}
+                    callback={() =>
+                      navigation.navigate('BookingInfo', { booking })
+                    }
+                    title={booking.stop.alias}
+                    events={booking.events}
+                  />
+                ))}
           </>
-        )}
-        {bookings && bookings.bookings.length > 0 ? (
-          bookings.bookings.map((booking: any) => (
-            <BookingCard
-              callback={() =>
-                navigation.navigate('BookingInfo', { booking: booking })
-              }
-              booking={booking}
-            />
-          ))
         ) : (
           <InfoText>
             <Paragraph text="Du har just nu inga pågående transporter" />
           </InfoText>
         )}
-      </ContentWrapper>
+      </ScrollableLayout>
       <ButtonWrapper>
         <PrimaryButton
           text="Ny Bokning"
           callback={() => navigation.navigate('Book')}
         />
       </ButtonWrapper>
-    </ScrollableLayout>
+    </ContentWrapper>
   )
 }
 
